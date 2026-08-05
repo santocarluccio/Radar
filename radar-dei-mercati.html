@@ -1,0 +1,1430 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Il Radar dei Mercati</title>
+<style>
+  :root {
+    --carta: #F8EEE3;
+    --pannello: #FDF6EE;
+    --inchiostro: #29241D;
+    --inchiostro-2: #4a4235;
+    --grigio: #8a7a63;
+    --linea: #DCC9B4;
+    --verde: #1B6E42;
+    --verde-scuro: #15582f;
+    --rosso: #A9382C;
+    --ambra: #B07C1F;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--carta);
+    color: var(--inchiostro);
+    font-family: -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    min-height: 100vh;
+  }
+  .contenitore { max-width: 780px; margin: 0 auto; padding: 0 16px 64px; }
+
+  header { padding: 32px 0 16px; text-align: center; border-bottom: 4px double var(--inchiostro); }
+  .data-oggi { font-size: 11px; text-transform: uppercase; letter-spacing: .3em; color: var(--grigio); margin-bottom: 4px; }
+  h1 { font-family: Georgia, "Times New Roman", serif; font-size: 42px; font-weight: bold; }
+  .sottotitolo { margin-top: 8px; font-size: 14px; font-style: italic; color: var(--inchiostro-2); font-family: Georgia, serif; }
+
+  .selettore-vista { display: flex; gap: 0; margin-top: 16px; border: 1px solid var(--inchiostro); border-radius: 6px; overflow: hidden; }
+  .selettore-vista button {
+    flex: 1; padding: 10px; font-size: 15px; border: none; background: transparent; cursor: pointer;
+    color: var(--inchiostro-2); font-family: Georgia, serif;
+  }
+  .selettore-vista button.attivo { background: var(--inchiostro); color: var(--carta); font-weight: bold; }
+
+  .barra { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 16px 0; border-bottom: 1px solid var(--linea); }
+  .filtro {
+    padding: 4px 12px; font-size: 14px; border-radius: 999px;
+    border: 1px solid var(--grigio); background: transparent; color: var(--inchiostro-2); cursor: pointer;
+  }
+  .filtro.attivo { background: var(--inchiostro); color: var(--carta); border-color: var(--inchiostro); }
+  .spazio { flex: 1; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 7px 16px; font-size: 14px; border-radius: 4px; border: none; cursor: pointer;
+  }
+  .btn-verde { background: var(--verde); color: #fff; }
+  .btn-verde:hover { background: var(--verde-scuro); }
+  .btn-rosso { background: transparent; color: var(--rosso); border: 1px solid var(--rosso); }
+  .btn-scuro { background: var(--inchiostro); color: var(--carta); }
+  .btn-icona { padding: 8px 10px; border: 1px solid var(--grigio); background: transparent; color: var(--inchiostro-2); border-radius: 4px; cursor: pointer; }
+  .btn-icona.attivo { background: var(--inchiostro); color: var(--carta); }
+
+  .avviso {
+    margin-top: 12px; padding: 12px; font-size: 14px; border-radius: 4px;
+    border: 1px solid rgba(169,56,44,.4); background: rgba(169,56,44,.05); color: var(--rosso);
+  }
+  .allerta-vendita {
+    margin-top: 12px; padding: 12px 14px; font-size: 14px; border-radius: 4px;
+    border: 2px solid var(--rosso); background: rgba(169,56,44,.07); color: var(--rosso); font-weight: 600;
+  }
+  .box-scansione { margin-top: 12px; padding: 12px; border: 1px solid var(--linea); border-radius: 4px; background: var(--pannello); font-size: 14px; }
+  .riga-scansione { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 6px; }
+  .attesa { color: var(--ambra); }
+  .barra-prog { margin-top: 8px; height: 6px; border-radius: 3px; background: var(--linea); overflow: hidden; }
+  .barra-prog > div { height: 100%; background: var(--verde); width: 0; transition: width .4s; }
+
+  .impostazioni, .pannello-box { margin-top: 16px; padding: 16px; border: 1px solid var(--linea); border-radius: 4px; background: var(--pannello); }
+  .impostazioni h2, .pannello-box h2 { font-family: Georgia, serif; font-size: 18px; margin-bottom: 12px; }
+  .impostazioni h3, .pannello-box h3 { margin: 20px 0 8px; font-size: 13px; text-transform: uppercase; letter-spacing: .08em; color: var(--inchiostro-2); }
+  .etichetta { display: block; font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  input[type=password], input[type=text], input[type=number], select {
+    padding: 8px 12px; font-size: 14px; border: 1px solid var(--grigio); border-radius: 4px; background: #fff;
+  }
+  .campo-largo { width: 100%; }
+  .nota { margin-top: 4px; font-size: 12px; color: var(--grigio); }
+  .riga-form { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip {
+    display: inline-flex; align-items: center; gap: 4px; font-size: 12px;
+    padding: 4px 10px; border-radius: 999px; border: 1px solid var(--grigio); background: #fff; margin: 2px;
+  }
+  .chip button { border: none; background: none; color: var(--rosso); cursor: pointer; font-weight: bold; font-size: 13px; }
+  .check { margin-top: 16px; display: flex; align-items: center; gap: 8px; font-size: 14px; }
+
+  .riepilogo { margin-top: 16px; display: flex; flex-wrap: wrap; gap: 6px 24px; font-size: 14px; color: var(--inchiostro-2); }
+  .forti { font-weight: 600; color: var(--verde); }
+  .deboli { font-weight: 600; color: var(--rosso); }
+
+  .riga-titolo { border-bottom: 1px solid var(--linea); padding: 16px 0; }
+  .riga-sup { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 16px; }
+  .col-simbolo { width: 96px; flex-shrink: 0; }
+  .simbolo { font-family: Georgia, serif; font-size: 18px; font-weight: bold; }
+  .regione-tag { font-size: 11px; text-transform: uppercase; letter-spacing: .1em; color: var(--grigio); }
+  .col-centro { flex: 1; min-width: 150px; }
+  .nome { font-size: 14px; color: var(--inchiostro-2); }
+  .prezzi { margin-top: 4px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+  .prezzo { font-size: 16px; font-weight: 600; }
+  .su { color: var(--verde); font-weight: 600; font-size: 14px; }
+  .giu { color: var(--rosso); font-weight: 600; font-size: 14px; }
+  .rsi-mini { font-size: 12px; color: var(--grigio); }
+  .col-punteggio { flex-shrink: 0; text-align: right; }
+  .punteggio { font-family: ui-monospace, Menlo, monospace; font-size: 26px; font-weight: bold; }
+  .punteggio small { font-size: 12px; color: var(--grigio); font-weight: normal; }
+  .badge {
+    display: inline-block; margin-top: 2px; padding: 2px 8px; font-size: 11px; font-weight: bold;
+    letter-spacing: .12em; text-transform: uppercase; border: 2px solid; border-radius: 2px;
+    font-family: Georgia, serif; transform: rotate(-2deg);
+  }
+  .badge-forte { border-color: var(--verde); color: var(--verde); background: rgba(27,110,66,.1); }
+  .badge-medio { border-color: var(--ambra); color: var(--ambra); background: rgba(176,124,31,.1); }
+  .badge-neutro { border-color: var(--grigio); color: var(--grigio); }
+  .badge-rosso { border-color: var(--rosso); color: var(--rosso); background: rgba(169,56,44,.1); }
+  .segnali { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 6px; }
+  .segnale {
+    font-size: 11px; padding: 3px 10px; border-radius: 999px;
+    border: 1px solid rgba(27,110,66,.4); color: var(--verde); background: rgba(27,110,66,.05);
+  }
+  .segnale-rosso {
+    font-size: 11px; padding: 3px 10px; border-radius: 999px;
+    border: 1px solid rgba(169,56,44,.4); color: var(--rosso); background: rgba(169,56,44,.05);
+  }
+  .errore-titolo { margin-top: 4px; font-size: 12px; color: var(--rosso); }
+
+  /* Verifica su fonti esterne */
+  .fonti { margin-top: 8px; font-size: 13px; }
+  .fonti summary { cursor: pointer; color: var(--inchiostro-2); user-select: none; list-style-position: inside; }
+  .fonti summary:hover { color: var(--inchiostro); }
+  .fonti-link { margin-top: 6px; display: flex; flex-wrap: wrap; gap: 6px; }
+  .fonti-link a {
+    font-size: 12px; padding: 4px 12px; border: 1px solid var(--grigio); border-radius: 999px;
+    color: var(--inchiostro); text-decoration: none; background: #fff;
+  }
+  .fonti-link a:hover { background: var(--inchiostro); color: var(--carta); }
+
+  /* Portafoglio */
+  .totali {
+    margin-top: 16px; padding: 14px 16px; border: 2px solid var(--inchiostro); border-radius: 4px;
+    background: var(--pannello); display: flex; flex-wrap: wrap; gap: 8px 32px; align-items: baseline;
+  }
+  .totali .voce { font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: var(--grigio); }
+  .totali .valore { font-family: ui-monospace, Menlo, monospace; font-size: 22px; font-weight: bold; }
+  .posizione { border-bottom: 1px solid var(--linea); padding: 16px 0; }
+  .pos-testa { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 16px; }
+  .pos-dati { margin-top: 6px; display: flex; flex-wrap: wrap; gap: 4px 20px; font-family: ui-monospace, Menlo, monospace; font-size: 13px; }
+  .pos-dati .etich { color: var(--grigio); font-family: inherit; }
+  .verdetto { margin-top: 10px; padding: 10px 12px; border-radius: 4px; font-size: 14px; line-height: 1.5; }
+  .verdetto-verde { border-left: 4px solid var(--verde); background: rgba(27,110,66,.06); }
+  .verdetto-ambra { border-left: 4px solid var(--ambra); background: rgba(176,124,31,.06); }
+  .verdetto-rosso { border-left: 4px solid var(--rosso); background: rgba(169,56,44,.06); }
+  .verdetto-grigio { border-left: 4px solid var(--grigio); background: rgba(138,122,99,.06); }
+  .verdetto b { display: block; margin-bottom: 2px; }
+  .btn-rimuovi-pos { border: none; background: none; color: var(--rosso); cursor: pointer; font-size: 12px; text-decoration: underline; }
+  .azioni-pos { margin-top: 10px; display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+  .btn-azione {
+    font-size: 13px; padding: 5px 14px; border-radius: 4px; cursor: pointer;
+    border: 1px solid var(--grigio); background: #fff; color: var(--inchiostro);
+  }
+  .btn-azione:hover { background: var(--inchiostro); color: var(--carta); border-color: var(--inchiostro); }
+  .btn-annulla { background: transparent; color: var(--inchiostro-2); border: 1px solid var(--grigio); }
+  .pacchetti { display: flex; flex-wrap: wrap; gap: 8px; }
+  .pacchetto {
+    font-size: 13px; padding: 7px 14px; border-radius: 999px; cursor: pointer;
+    border: 1px solid var(--grigio); background: #fff; color: var(--inchiostro);
+  }
+  .pacchetto:hover { background: var(--inchiostro); color: var(--carta); border-color: var(--inchiostro); }
+  .pacchetto.completo { border-color: var(--verde); color: var(--verde); background: rgba(27,110,66,.07); }
+  .pacchetto .conta { font-size: 11px; opacity: .7; }
+  .promemoria {
+    margin-top: 12px; padding: 12px 14px; font-size: 14px; border-radius: 4px; line-height: 1.6;
+    border: 1px solid var(--ambra); background: rgba(176,124,31,.08); color: var(--inchiostro-2);
+  }
+  .riquadro-azione {
+    margin-top: 10px; padding: 12px; border: 1px dashed var(--grigio);
+    border-radius: 4px; background: var(--pannello); font-size: 14px;
+  }
+
+  .vuoto { margin-top: 48px; text-align: center; color: var(--grigio); }
+  .vuoto p:first-child { font-family: Georgia, serif; font-size: 18px; }
+  .vuoto p:last-child { margin-top: 4px; font-size: 14px; }
+
+  footer { margin-top: 40px; padding-top: 16px; border-top: 2px solid var(--inchiostro); font-size: 12px; color: var(--grigio); line-height: 1.6; }
+
+  @media (max-width: 520px) { h1 { font-size: 32px; } }
+</style>
+</head>
+<body>
+<div class="contenitore">
+
+  <header>
+    <div class="data-oggi" id="dataOggi"></div>
+    <h1>Il Radar dei Mercati</h1>
+    <p class="sottotitolo">Segnali tecnici da America, Europa e Asia — edizione personale</p>
+  </header>
+
+  <div class="selettore-vista">
+    <button id="vistaRadar" class="attivo">📡 Radar</button>
+    <button id="vistaPortafoglio">💼 Portafoglio</button>
+    <button id="vistaImpostazioni">⚙️ Titoli</button>
+  </div>
+
+  <div class="barra" id="barraFiltri"></div>
+
+  <div id="areaAvvisi"></div>
+  <div id="areaScansione"></div>
+  <div id="areaImpostazioni" style="display:none"></div>
+
+  <div class="riepilogo" id="riepilogo"></div>
+  <main id="elenco"></main>
+
+  <footer>
+    <p><strong>Avvertenza.</strong> Questa applicazione fornisce analisi tecniche automatiche a solo scopo informativo
+    e didattico: non costituisce consulenza finanziaria, né raccomandazione di acquisto o vendita.
+    I «verdetti» sulle posizioni descrivono condizioni tecniche del passato e non prevedono il futuro:
+    anche i segnali più forti falliscono spesso. Ogni decisione di investimento resta responsabilità
+    esclusiva dell'utente. Dati forniti da Twelve Data; sul piano gratuito possono essere differiti
+    rispetto al tempo reale. Prezzi e controvalori sono convertiti in euro al cambio EUR/USD corrente:
+    poiché i titoli sono quotati in dollari, il risultato della tua posizione dipende anche
+    dall'andamento del cambio, oltre che da quello del titolo.</p>
+  </footer>
+</div>
+
+<script>
+"use strict";
+
+/* ================= Configurazione ================= */
+const LISTA_PREDEFINITA = [
+  { symbol: "AAPL", name: "Apple", region: "USA" },
+  { symbol: "MSFT", name: "Microsoft", region: "USA" },
+  { symbol: "NVDA", name: "NVIDIA", region: "USA" },
+  { symbol: "AMZN", name: "Amazon", region: "USA" },
+  { symbol: "GOOGL", name: "Alphabet", region: "USA" },
+  { symbol: "JPM", name: "JPMorgan Chase", region: "USA" },
+  { symbol: "XOM", name: "ExxonMobil", region: "USA" },
+  { symbol: "ASML", name: "ASML (Paesi Bassi)", region: "Europa" },
+  { symbol: "SAP", name: "SAP (Germania)", region: "Europa" },
+  { symbol: "NVO", name: "Novo Nordisk (Danimarca)", region: "Europa" },
+  { symbol: "TTE", name: "TotalEnergies (Francia)", region: "Europa" },
+  { symbol: "RACE", name: "Ferrari (Italia)", region: "Europa" },
+  { symbol: "E", name: "ENI (Italia)", region: "Europa" },
+  { symbol: "STLA", name: "Stellantis (Italia/UE)", region: "Europa" },
+  { symbol: "TSM", name: "TSMC (Taiwan)", region: "Asia" },
+  { symbol: "TM", name: "Toyota (Giappone)", region: "Asia" },
+  { symbol: "SONY", name: "Sony (Giappone)", region: "Asia" },
+  { symbol: "BABA", name: "Alibaba (Cina)", region: "Asia" },
+  { symbol: "INFY", name: "Infosys (India)", region: "Asia" },
+  { symbol: "SPY", name: "S&P 500 (ETF)", region: "Indici" },
+  { symbol: "FEZ", name: "Euro Stoxx 50 (ETF)", region: "Indici" },
+  { symbol: "EWJ", name: "Giappone MSCI (ETF)", region: "Indici" },
+  { symbol: "FXI", name: "Cina Large Cap (ETF)", region: "Indici" }
+];
+const REGIONI = ["Tutti", "USA", "Europa", "Asia", "Indici"];
+
+/* Pacchetti tematici: gruppi di titoli pronti, aggiungibili con un clic.
+   Tutti quotati sulle borse americane (azioni USA o ADR di società estere). */
+const PACCHETTI = [
+  { id: "tech-usa", nome: "Tecnologia USA", titoli: [
+    { symbol: "AAPL", name: "Apple", region: "USA" },
+    { symbol: "MSFT", name: "Microsoft", region: "USA" },
+    { symbol: "GOOGL", name: "Alphabet", region: "USA" },
+    { symbol: "AMZN", name: "Amazon", region: "USA" },
+    { symbol: "META", name: "Meta Platforms", region: "USA" },
+    { symbol: "ORCL", name: "Oracle", region: "USA" },
+    { symbol: "CRM", name: "Salesforce", region: "USA" }
+  ]},
+  { id: "semi", nome: "Semiconduttori", titoli: [
+    { symbol: "NVDA", name: "NVIDIA", region: "USA" },
+    { symbol: "AMD", name: "AMD", region: "USA" },
+    { symbol: "AVGO", name: "Broadcom", region: "USA" },
+    { symbol: "MU", name: "Micron", region: "USA" },
+    { symbol: "INTC", name: "Intel", region: "USA" },
+    { symbol: "TSM", name: "TSMC (Taiwan)", region: "Asia" },
+    { symbol: "ASML", name: "ASML (Paesi Bassi)", region: "Europa" }
+  ]},
+  { id: "italia", nome: "Italia", titoli: [
+    { symbol: "RACE", name: "Ferrari", region: "Europa" },
+    { symbol: "E", name: "ENI", region: "Europa" },
+    { symbol: "STLA", name: "Stellantis", region: "Europa" },
+    { symbol: "ISNPY", name: "Intesa Sanpaolo (ADR)", region: "Europa" },
+    { symbol: "UNCRY", name: "UniCredit (ADR)", region: "Europa" },
+    { symbol: "ENLAY", name: "Enel (ADR)", region: "Europa" },
+    { symbol: "FINMY", name: "Leonardo (ADR)", region: "Europa" }
+  ]},
+  { id: "lusso", nome: "Lusso e moda", titoli: [
+    { symbol: "LVMUY", name: "LVMH (ADR)", region: "Europa" },
+    { symbol: "PPRUY", name: "Kering (ADR)", region: "Europa" },
+    { symbol: "CFRUY", name: "Richemont (ADR)", region: "Europa" },
+    { symbol: "ADDYY", name: "Adidas (ADR)", region: "Europa" },
+    { symbol: "RACE", name: "Ferrari", region: "Europa" }
+  ]},
+  { id: "banche", nome: "Banche e finanza", titoli: [
+    { symbol: "JPM", name: "JPMorgan Chase", region: "USA" },
+    { symbol: "BAC", name: "Bank of America", region: "USA" },
+    { symbol: "ISNPY", name: "Intesa Sanpaolo (ADR)", region: "Europa" },
+    { symbol: "UNCRY", name: "UniCredit (ADR)", region: "Europa" },
+    { symbol: "SAN", name: "Banco Santander", region: "Europa" },
+    { symbol: "DB", name: "Deutsche Bank", region: "Europa" },
+    { symbol: "HSBC", name: "HSBC", region: "Europa" }
+  ]},
+  { id: "energia", nome: "Energia", titoli: [
+    { symbol: "XOM", name: "ExxonMobil", region: "USA" },
+    { symbol: "CVX", name: "Chevron", region: "USA" },
+    { symbol: "TTE", name: "TotalEnergies (Francia)", region: "Europa" },
+    { symbol: "SHEL", name: "Shell", region: "Europa" },
+    { symbol: "BP", name: "BP", region: "Europa" },
+    { symbol: "E", name: "ENI", region: "Europa" }
+  ]},
+  { id: "salute", nome: "Farmaceutico e salute", titoli: [
+    { symbol: "LLY", name: "Eli Lilly", region: "USA" },
+    { symbol: "JNJ", name: "Johnson & Johnson", region: "USA" },
+    { symbol: "PFE", name: "Pfizer", region: "USA" },
+    { symbol: "MRK", name: "Merck", region: "USA" },
+    { symbol: "NVO", name: "Novo Nordisk (Danimarca)", region: "Europa" },
+    { symbol: "AZN", name: "AstraZeneca", region: "Europa" },
+    { symbol: "GSK", name: "GSK", region: "Europa" }
+  ]},
+  { id: "difesa", nome: "Difesa e aerospazio", titoli: [
+    { symbol: "LMT", name: "Lockheed Martin", region: "USA" },
+    { symbol: "RTX", name: "RTX", region: "USA" },
+    { symbol: "NOC", name: "Northrop Grumman", region: "USA" },
+    { symbol: "GD", name: "General Dynamics", region: "USA" },
+    { symbol: "EADSY", name: "Airbus (ADR)", region: "Europa" },
+    { symbol: "FINMY", name: "Leonardo (ADR)", region: "Europa" }
+  ]},
+  { id: "asia", nome: "Asia", titoli: [
+    { symbol: "TSM", name: "TSMC (Taiwan)", region: "Asia" },
+    { symbol: "TM", name: "Toyota (Giappone)", region: "Asia" },
+    { symbol: "SONY", name: "Sony (Giappone)", region: "Asia" },
+    { symbol: "BABA", name: "Alibaba (Cina)", region: "Asia" },
+    { symbol: "JD", name: "JD.com (Cina)", region: "Asia" },
+    { symbol: "INFY", name: "Infosys (India)", region: "Asia" },
+    { symbol: "HMC", name: "Honda (Giappone)", region: "Asia" }
+  ]},
+  { id: "auto", nome: "Automobilistico", titoli: [
+    { symbol: "TSLA", name: "Tesla", region: "USA" },
+    { symbol: "GM", name: "General Motors", region: "USA" },
+    { symbol: "F", name: "Ford", region: "USA" },
+    { symbol: "STLA", name: "Stellantis", region: "Europa" },
+    { symbol: "RACE", name: "Ferrari", region: "Europa" },
+    { symbol: "TM", name: "Toyota (Giappone)", region: "Asia" }
+  ]},
+  { id: "dividendi", nome: "Grandi dividendi USA", titoli: [
+    { symbol: "KO", name: "Coca-Cola", region: "USA" },
+    { symbol: "PG", name: "Procter & Gamble", region: "USA" },
+    { symbol: "PEP", name: "PepsiCo", region: "USA" },
+    { symbol: "MCD", name: "McDonald's", region: "USA" },
+    { symbol: "VZ", name: "Verizon", region: "USA" },
+    { symbol: "T", name: "AT&T", region: "USA" }
+  ]},
+  { id: "consumo-eu", nome: "Consumi Europa", titoli: [
+    { symbol: "NSRGY", name: "Nestlé (ADR)", region: "Europa" },
+    { symbol: "UL", name: "Unilever", region: "Europa" },
+    { symbol: "DEO", name: "Diageo", region: "Europa" },
+    { symbol: "BUD", name: "AB InBev", region: "Europa" },
+    { symbol: "SAP", name: "SAP (Germania)", region: "Europa" }
+  ]},
+  { id: "indici", nome: "Indici mondiali (ETF)", titoli: [
+    { symbol: "SPY", name: "S&P 500 (ETF)", region: "Indici" },
+    { symbol: "QQQ", name: "Nasdaq 100 (ETF)", region: "Indici" },
+    { symbol: "FEZ", name: "Euro Stoxx 50 (ETF)", region: "Indici" },
+    { symbol: "EWI", name: "Italia MSCI (ETF)", region: "Indici" },
+    { symbol: "EWG", name: "Germania MSCI (ETF)", region: "Indici" },
+    { symbol: "EWJ", name: "Giappone MSCI (ETF)", region: "Indici" },
+    { symbol: "FXI", name: "Cina Large Cap (ETF)", region: "Indici" },
+    { symbol: "EEM", name: "Mercati emergenti (ETF)", region: "Indici" }
+  ]}
+];const CHIAVE_STORAGE = "radar_mercati_v2";
+const DIM_LOTTO = 7;
+const PAUSA_LOTTO_SEC = 62;
+
+/* ================= Stato ================= */
+let stato = {
+  apiKey: "",
+  ricordaChiave: true,       /* se false, la chiave resta solo in memoria per la sessione */
+  cambio: null,              /* {eurusd, quando} — tasso EUR/USD dell'ultima scansione */
+  watchlist: LISTA_PREDEFINITA.slice(),
+  portafoglio: [],           /* {symbol, name, qty, carico}  — carico in EURO per azione */
+  risultati: {},
+  errori: {},
+  regione: "Tutti",
+  vista: "radar",            /* "radar" | "portafoglio" */
+  inScansione: false,
+  progresso: { fatti: 0, totale: 0 },
+  attesa: 0,
+  ultimaScansione: null,
+  autoScan: false,
+  fermare: false,
+  ultimoBackup: null,        /* data dell'ultima copia di sicurezza */
+  editSym: null,             /* posizione in modifica */
+  vendiSym: null             /* posizione in vendita */
+};
+let timerAuto = null;
+
+/* ================= Persistenza ================= */
+function carica() {
+  try {
+    /* migrazione dalla v1, se presente */
+    let raw = localStorage.getItem(CHIAVE_STORAGE) || localStorage.getItem("radar_mercati_v1");
+    if (!raw) return;
+    const d = JSON.parse(raw);
+    if (d.apiKey) stato.apiKey = d.apiKey;
+    if (Array.isArray(d.watchlist) && d.watchlist.length) stato.watchlist = d.watchlist;
+    if (Array.isArray(d.portafoglio)) stato.portafoglio = d.portafoglio;
+    if (d.risultati) {
+      /* normalizzazione: i dati della v1 non avevano i campi di ribasso */
+      Object.keys(d.risultati).forEach(function (k) {
+        const r = d.risultati[k];
+        if (!Array.isArray(r.segnali)) r.segnali = [];
+        if (!Array.isArray(r.segnaliRibasso)) r.segnaliRibasso = [];
+        if (typeof r.punteggio !== "number") r.punteggio = 0;
+        if (typeof r.pRibasso !== "number") r.pRibasso = 0;
+      });
+      stato.risultati = d.risultati;
+    }
+    if (d.ultimaScansione) stato.ultimaScansione = d.ultimaScansione;
+    if (typeof d.autoScan === "boolean") stato.autoScan = d.autoScan;
+    if (typeof d.ricordaChiave === "boolean") stato.ricordaChiave = d.ricordaChiave;
+    if (d.cambio && typeof d.cambio.eurusd === "number") stato.cambio = d.cambio;
+    if (d.ultimoBackup) stato.ultimoBackup = d.ultimoBackup;
+  } catch (e) { /* primo avvio */ }
+}
+function salva() {
+  try {
+    localStorage.setItem(CHIAVE_STORAGE, JSON.stringify({
+      apiKey: stato.ricordaChiave ? stato.apiKey : "",
+      ricordaChiave: stato.ricordaChiave,
+      cambio: stato.cambio,
+      ultimoBackup: stato.ultimoBackup,
+      watchlist: stato.watchlist,
+      portafoglio: stato.portafoglio,
+      risultati: stato.risultati,
+      ultimaScansione: stato.ultimaScansione,
+      autoScan: stato.autoScan
+    }));
+  } catch (e) { /* spazio esaurito: si continua in memoria */ }
+}
+
+/* ================= Indicatori tecnici ================= */
+function smaAt(arr, period, i) {
+  if (i < period - 1) return null;
+  let s = 0;
+  for (let j = i - period + 1; j <= i; j++) s += arr[j];
+  return s / period;
+}
+function rsiSeries(closes, period) {
+  period = period || 14;
+  const out = new Array(closes.length).fill(null);
+  if (closes.length <= period) return out;
+  let gain = 0, loss = 0;
+  for (let i = 1; i <= period; i++) {
+    const d = closes[i] - closes[i - 1];
+    if (d > 0) gain += d; else loss -= d;
+  }
+  let avgG = gain / period, avgL = loss / period;
+  out[period] = avgL === 0 ? 100 : 100 - 100 / (1 + avgG / avgL);
+  for (let i = period + 1; i < closes.length; i++) {
+    const d = closes[i] - closes[i - 1];
+    avgG = (avgG * (period - 1) + Math.max(d, 0)) / period;
+    avgL = (avgL * (period - 1) + Math.max(-d, 0)) / period;
+    out[i] = avgL === 0 ? 100 : 100 - 100 / (1 + avgG / avgL);
+  }
+  return out;
+}
+function emaSeries(values, period) {
+  const k = 2 / (period + 1);
+  const out = [values[0]];
+  for (let i = 1; i < values.length; i++) out.push(values[i] * k + out[i - 1] * (1 - k));
+  return out;
+}
+function macdSeries(closes) {
+  const e12 = emaSeries(closes, 12);
+  const e26 = emaSeries(closes, 26);
+  const macd = closes.map((_, i) => e12[i] - e26[i]);
+  const signal = emaSeries(macd, 9);
+  return { macd: macd, signal: signal };
+}
+
+/* Analisi bidirezionale: punteggio di rialzo E punteggio di ribasso */
+function analizza(valuesNewestFirst) {
+  const rows = valuesNewestFirst.slice().reverse();
+  const closes = rows.map(r => parseFloat(r.close));
+  const opens = rows.map(r => parseFloat(r.open));
+  const highs = rows.map(r => parseFloat(r.high));
+  const lows = rows.map(r => parseFloat(r.low));
+  const volumes = rows.map(r => parseFloat(r.volume || 0));
+  const n = closes.length;
+  if (n < 55) return null;
+
+  const last = n - 1;
+  const prezzo = closes[last];
+  const varPct = ((prezzo - closes[last - 1]) / closes[last - 1]) * 100;
+
+  const rsi = rsiSeries(closes);
+  const md = macdSeries(closes);
+  const sma20 = smaAt(closes, 20, last);
+  const sma50 = smaAt(closes, 50, last);
+
+  let pRialzo = 0, pRibasso = 0;
+  const segRialzo = [], segRibasso = [];
+
+  /* ---- Segnali di RIALZO ---- */
+  for (let i = last; i > last - 3 && i > 0; i--) {
+    if (md.macd[i] > md.signal[i] && md.macd[i - 1] <= md.signal[i - 1]) {
+      pRialzo += 25; segRialzo.push("Incrocio MACD rialzista"); break;
+    }
+  }
+  for (let i = last; i > last - 5 && i >= 50; i--) {
+    const a20 = smaAt(closes, 20, i), a50 = smaAt(closes, 50, i);
+    const b20 = smaAt(closes, 20, i - 1), b50 = smaAt(closes, 50, i - 1);
+    if (a20 && a50 && b20 && b50 && a20 > a50 && b20 <= b50) {
+      pRialzo += 25; segRialzo.push("Golden cross (SMA 20 sopra SMA 50)"); break;
+    }
+  }
+  if (sma20 && sma50 && prezzo > sma20 && sma20 > sma50) {
+    pRialzo += 10; segRialzo.push("Trend rialzista allineato");
+  }
+  for (let i = last; i > last - 5 && i > 14; i--) {
+    if (rsi[i] !== null && rsi[i - 1] !== null && rsi[i] > 30 && rsi[i - 1] <= 30) {
+      pRialzo += 20; segRialzo.push("RSI in ripresa dall'ipervenduto"); break;
+    }
+  }
+  const r0 = rsi[last], r3 = rsi[last - 3];
+  if (r0 !== null && r3 !== null && r0 >= 40 && r0 <= 65 && r0 > r3) {
+    pRialzo += 10; segRialzo.push("RSI in crescita in zona neutra");
+  }
+  let max20 = -Infinity;
+  for (let i = last - 20; i < last; i++) max20 = Math.max(max20, highs[i]);
+  if (prezzo > max20) {
+    pRialzo += 20; segRialzo.push("Rottura dei massimi a 20 giorni");
+  }
+  const volMedio = smaAt(volumes, 20, last - 1);
+  if (volMedio && volumes[last] > 1.5 * volMedio && prezzo > opens[last]) {
+    pRialzo += 15; segRialzo.push("Volume in forte aumento su rialzo");
+  }
+
+  /* ---- Segnali di RIBASSO (speculari) ---- */
+  for (let i = last; i > last - 3 && i > 0; i--) {
+    if (md.macd[i] < md.signal[i] && md.macd[i - 1] >= md.signal[i - 1]) {
+      pRibasso += 25; segRibasso.push("Incrocio MACD ribassista"); break;
+    }
+  }
+  for (let i = last; i > last - 5 && i >= 50; i--) {
+    const a20 = smaAt(closes, 20, i), a50 = smaAt(closes, 50, i);
+    const b20 = smaAt(closes, 20, i - 1), b50 = smaAt(closes, 50, i - 1);
+    if (a20 && a50 && b20 && b50 && a20 < a50 && b20 >= b50) {
+      pRibasso += 25; segRibasso.push("Death cross (SMA 20 sotto SMA 50)"); break;
+    }
+  }
+  if (sma20 && sma50 && prezzo < sma20 && sma20 < sma50) {
+    pRibasso += 10; segRibasso.push("Trend ribassista allineato");
+  }
+  for (let i = last; i > last - 5 && i > 14; i--) {
+    if (rsi[i] !== null && rsi[i - 1] !== null && rsi[i] < 70 && rsi[i - 1] >= 70) {
+      pRibasso += 20; segRibasso.push("RSI in discesa dall'ipercomprato"); break;
+    }
+  }
+  if (r0 !== null && r3 !== null && r0 >= 35 && r0 <= 60 && r0 < r3 - 3) {
+    pRibasso += 10; segRibasso.push("RSI in indebolimento");
+  }
+  let min20 = Infinity;
+  for (let i = last - 20; i < last; i++) min20 = Math.min(min20, lows[i]);
+  if (prezzo < min20) {
+    pRibasso += 20; segRibasso.push("Rottura dei minimi a 20 giorni");
+  }
+  if (volMedio && volumes[last] > 1.5 * volMedio && prezzo < opens[last]) {
+    pRibasso += 15; segRibasso.push("Volume in forte aumento su ribasso");
+  }
+
+  return {
+    prezzo: prezzo, varPct: varPct,
+    punteggio: Math.min(100, pRialzo),
+    pRibasso: Math.min(100, pRibasso),
+    segnali: segRialzo, segnaliRibasso: segRibasso,
+    rsi: r0, dataUltima: rows[last].datetime
+  };
+}
+
+/* Verdetto sintetico per una posizione detenuta */
+function verdetto(d) {
+  if (d.pRibasso >= 60) return {
+    classe: "verdetto-rosso", badge: "badge-rosso", etichetta: "Allerta debolezza",
+    titolo: "⚠ Più segnali tecnici di indebolimento attivi",
+    testo: "Il quadro tecnico suggerisce un possibile ribasso: valuta se ridurre la posizione, impostare uno stop di protezione o approfondire con le notizie sul titolo prima di decidere."
+  };
+  if (d.pRibasso >= 40) return {
+    classe: "verdetto-ambra", badge: "badge-medio", etichetta: "Indebolimento",
+    titolo: "Segnali di indebolimento in formazione",
+    testo: "Il trend mostra crepe ma il quadro non è ancora compromesso: sorveglia il titolo con più frequenza e definisci in anticipo a quale prezzo interverresti."
+  };
+  if (d.punteggio >= 60) return {
+    classe: "verdetto-verde", badge: "badge-forte", etichetta: "Trend forte",
+    titolo: "✓ Trend in crescita con più segnali rialzisti",
+    testo: "La posizione è tecnicamente ben impostata: da mantenere. Se stavi valutando un incremento, il quadro tecnico attuale è favorevole — sempre nei limiti della tua diversificazione."
+  };
+  if (d.punteggio >= 40) return {
+    classe: "verdetto-verde", badge: "badge-forte", etichetta: "Trend positivo",
+    titolo: "Trend positivo",
+    testo: "Alcuni segnali rialzisti attivi e nessuna allerta: posizione da mantenere."
+  };
+  return {
+    classe: "verdetto-grigio", badge: "badge-neutro", etichetta: "Neutro",
+    titolo: "Quadro neutro",
+    testo: "Né segnali di forza né di debolezza rilevanti: mantieni e osserva alla prossima scansione."
+  };
+}
+
+/* ================= Chiamata API ================= */
+async function scaricaSerie(symbol) {
+  const url = "https://api.twelvedata.com/time_series?symbol=" + encodeURIComponent(symbol) +
+              "&interval=1day&outputsize=120&apikey=" + encodeURIComponent(stato.apiKey.trim());
+  const resp = await fetch(url);
+  const json = await resp.json();
+  if (json.status === "error" || json.code) {
+    const err = new Error(json.message || "Errore sconosciuto");
+    err.codice = json.code;
+    throw err;
+  }
+  if (!json.values || !json.values.length) throw new Error("Nessun dato ricevuto");
+  return json.values;
+}
+/* Tasso di cambio EUR/USD (1 richiesta). Non bloccante: in caso di errore
+   si continua con l'ultimo cambio noto. */
+async function scaricaCambio() {
+  const url = "https://api.twelvedata.com/price?symbol=" + encodeURIComponent("EUR/USD") +
+              "&apikey=" + encodeURIComponent(stato.apiKey.trim());
+  const resp = await fetch(url);
+  const json = await resp.json();
+  if (json.price) {
+    const v = parseFloat(json.price);
+    if (v > 0) {
+      stato.cambio = { eurusd: v, quando: new Date().toISOString() };
+      salva();
+    }
+  }
+}
+
+/* ================= Scansione ================= */
+function attendi(sec) {
+  return new Promise(function (resolve) {
+    let rimasti = sec;
+    stato.attesa = rimasti; renderScansione();
+    const t = setInterval(function () {
+      rimasti -= 1;
+      stato.attesa = rimasti; renderScansione();
+      if (rimasti <= 0 || stato.fermare) { clearInterval(t); stato.attesa = 0; resolve(); }
+    }, 1000);
+  });
+}
+
+async function eseguiScansione(simboli) {
+  if (stato.inScansione) return;
+  if (!stato.apiKey.trim()) {
+    mostraAvviso("Inserisci prima la tua chiave API gratuita di Twelve Data nella scheda «Titoli».");
+    stato.vista = "impostazioni";
+    renderTutto();
+    return;
+  }
+  stato.inScansione = true;
+  stato.fermare = false;
+  simboli.forEach(function (s) { delete stato.errori[s]; });
+  stato.progresso = { fatti: 0, totale: simboli.length };
+  mostraAvviso("");
+  renderTutto();
+
+  /* aggiorna il cambio EUR/USD (non blocca la scansione se fallisce) */
+  try { await scaricaCambio(); } catch (e) { /* si usa l'ultimo cambio noto */ }
+
+  let fatti = 0;
+  for (let i = 0; i < simboli.length; i += DIM_LOTTO) {
+    if (stato.fermare) break;
+    const lotto = simboli.slice(i, i + DIM_LOTTO);
+    const esiti = await Promise.allSettled(lotto.map(s => scaricaSerie(s)));
+    esiti.forEach(function (esito, j) {
+      const sym = lotto[j];
+      if (esito.status === "fulfilled") {
+        const analisi = analizza(esito.value);
+        if (analisi) stato.risultati[sym] = analisi;
+        else stato.errori[sym] = "Dati storici insufficienti";
+      } else {
+        const msg = String((esito.reason && esito.reason.message) || "Errore");
+        stato.errori[sym] = (msg.indexOf("run out") >= 0 || (esito.reason && esito.reason.codice === 429))
+          ? "Limite di richieste raggiunto: riprova tra un minuto"
+          : msg;
+      }
+    });
+    fatti += lotto.length;
+    stato.progresso = { fatti: fatti, totale: simboli.length };
+    renderElenco(); renderScansione(); renderRiepilogo();
+
+    const restanti = simboli.length - (i + DIM_LOTTO);
+    if (restanti > 0 && !stato.fermare) await attendi(PAUSA_LOTTO_SEC);
+  }
+
+  stato.ultimaScansione = new Date().toISOString();
+  stato.inScansione = false;
+  salva();
+  renderTutto();
+}
+
+function avviaScansioneCompleta() {
+  /* watchlist + eventuali titoli in portafoglio non presenti in lista */
+  const simboli = stato.watchlist.map(t => t.symbol);
+  stato.portafoglio.forEach(function (p) {
+    if (simboli.indexOf(p.symbol) < 0) simboli.push(p.symbol);
+  });
+  eseguiScansione(simboli);
+}
+function avviaScansionePortafoglio() {
+  if (!stato.portafoglio.length) {
+    mostraAvviso("Il portafoglio è vuoto: aggiungi prima una posizione.");
+    return;
+  }
+  eseguiScansione(stato.portafoglio.map(p => p.symbol));
+}
+
+function impostaAutoScan(attivo) {
+  stato.autoScan = attivo;
+  salva();
+  if (timerAuto) { clearInterval(timerAuto); timerAuto = null; }
+  if (attivo) {
+    timerAuto = setInterval(function () {
+      if (!stato.inScansione) avviaScansioneCompleta();
+    }, 30 * 60 * 1000);
+  }
+}
+
+/* ================= Watchlist ================= */
+function aggiungiTitolo() {
+  const testo = document.getElementById("nuovoSimbolo").value;
+  const reg = document.getElementById("nuovaRegione").value;
+  const simboli = testo.split(/[\s,;]+/).map(s => s.trim().toUpperCase()).filter(s => s.length > 0);
+  if (!simboli.length) { mostraAvviso("Indica almeno un simbolo di borsa."); return; }
+
+  let aggiunti = 0, gia = [];
+  simboli.forEach(function (sym) {
+    if (stato.watchlist.some(t => t.symbol === sym)) { gia.push(sym); return; }
+    stato.watchlist.push({ symbol: sym, name: sym, region: reg });
+    aggiunti++;
+  });
+  salva();
+  mostraAvviso(gia.length ? "Già presenti in lista: " + gia.join(", ") + "." : "");
+  renderImpostazioni(); renderElenco();
+  document.getElementById("nuovoSimbolo").value = "";
+}
+/* Aggiunge in blocco i titoli di un pacchetto tematico, saltando i duplicati */
+function aggiungiPacchetto(id) {
+  const pac = PACCHETTI.find(p => p.id === id);
+  if (!pac) return;
+  let aggiunti = 0;
+  pac.titoli.forEach(function (t) {
+    if (stato.watchlist.some(w => w.symbol === t.symbol)) return;
+    stato.watchlist.push({ symbol: t.symbol, name: t.name, region: t.region });
+    aggiunti++;
+  });
+  salva();
+  mostraAvviso(aggiunti
+    ? ""
+    : "Tutti i titoli del pacchetto «" + pac.nome + "» erano già nella lista.");
+  renderImpostazioni(); renderElenco();
+}
+function rimuoviTitolo(sym) {
+  stato.watchlist = stato.watchlist.filter(t => t.symbol !== sym);
+  salva();
+  renderImpostazioni(); renderElenco(); renderRiepilogo();
+}
+
+/* ================= Portafoglio ================= */
+function aggiungiPosizione() {
+  const sym = document.getElementById("posSimbolo").value.trim().toUpperCase();
+  const qty = parseFloat(document.getElementById("posQty").value);
+  const carico = parseFloat(document.getElementById("posCarico").value);
+  if (!sym) { mostraAvviso("Indica il simbolo del titolo acquistato."); return; }
+  if (!(qty > 0)) { mostraAvviso("Indica una quantità valida (maggiore di zero)."); return; }
+  if (!(carico > 0)) { mostraAvviso("Indica il prezzo di acquisto per azione, in euro."); return; }
+
+  const inLista = stato.watchlist.find(t => t.symbol === sym);
+  const esistente = stato.portafoglio.find(p => p.symbol === sym);
+  if (esistente) {
+    /* acquisto aggiuntivo: quantità sommata, prezzo medio di carico ponderato */
+    const nuovoTot = esistente.qty + qty;
+    esistente.carico = (esistente.carico * esistente.qty + carico * qty) / nuovoTot;
+    esistente.qty = nuovoTot;
+  } else {
+    stato.portafoglio.push({
+      symbol: sym,
+      name: inLista ? inLista.name : sym,
+      qty: qty,
+      carico: carico
+    });
+  }
+  salva();
+  mostraAvviso("");
+  renderElenco(); renderRiepilogo();
+  document.getElementById("posSimbolo").value = "";
+  document.getElementById("posQty").value = "";
+  document.getElementById("posCarico").value = "";
+}
+function rimuoviPosizione(sym) {
+  if (!confirm("Rimuovere " + sym + " dal portafoglio?")) return;
+  stato.portafoglio = stato.portafoglio.filter(p => p.symbol !== sym);
+  stato.editSym = null; stato.vendiSym = null;
+  salva();
+  renderElenco(); renderRiepilogo();
+}
+/* Correzione di una posizione inserita male: nuova quantità e nuovo carico */
+function salvaModificaPosizione(sym) {
+  const p = stato.portafoglio.find(x => x.symbol === sym);
+  if (!p) return;
+  const qty = parseFloat(document.getElementById("editQty").value);
+  const carico = parseFloat(document.getElementById("editCarico").value);
+  if (!(qty > 0)) { mostraAvviso("La quantità deve essere maggiore di zero (per azzerare usa «Rimuovi»)."); return; }
+  if (!(carico > 0)) { mostraAvviso("Il prezzo medio di carico deve essere maggiore di zero, in euro."); return; }
+  p.qty = qty;
+  p.carico = carico;
+  stato.editSym = null;
+  salva();
+  mostraAvviso("");
+  renderElenco(); renderRiepilogo();
+}
+/* Vendita totale o parziale: riduce la quantità; se azzerata, chiude la posizione */
+function confermaVendita(sym) {
+  const p = stato.portafoglio.find(x => x.symbol === sym);
+  if (!p) return;
+  const qty = parseFloat(document.getElementById("vendiQty").value);
+  if (!(qty > 0)) { mostraAvviso("Indica la quantità venduta (maggiore di zero)."); return; }
+  if (qty > p.qty) { mostraAvviso("Hai indicato una vendita di " + qty + " ma ne possiedi " + p.qty + "."); return; }
+  if (qty === p.qty) {
+    stato.portafoglio = stato.portafoglio.filter(x => x.symbol !== sym);
+  } else {
+    p.qty = p.qty - qty; /* il prezzo medio di carico delle azioni residue non cambia */
+  }
+  stato.vendiSym = null;
+  salva();
+  mostraAvviso("");
+  renderElenco(); renderRiepilogo();
+}
+
+/* ================= Copia di sicurezza ================= */
+function esportaDati() {
+  const dati = {
+    formato: "radar-dei-mercati",
+    versione: 3,
+    salvatoIl: new Date().toISOString(),
+    apiKey: stato.apiKey,
+    watchlist: stato.watchlist,
+    portafoglio: stato.portafoglio,
+    cambio: stato.cambio
+  };
+  const blob = new Blob([JSON.stringify(dati, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  const oggi = new Date().toISOString().slice(0, 10);
+  a.href = url;
+  a.download = "radar-copia-" + oggi + ".json";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(function () { URL.revokeObjectURL(url); }, 2000);
+
+  stato.ultimoBackup = new Date().toISOString();
+  salva();
+  const st = document.getElementById("statoBackup");
+  if (st) {
+    st.textContent = "✓ Copia salvata nella cartella Download del dispositivo.";
+    st.style.color = "var(--verde)";
+  }
+}
+
+function importaDati(file) {
+  const lettore = new FileReader();
+  lettore.onload = function (ev) {
+    try {
+      const d = JSON.parse(ev.target.result);
+      if (d.formato !== "radar-dei-mercati") throw new Error("Il file non è una copia del Radar dei Mercati.");
+      const nPort = Array.isArray(d.portafoglio) ? d.portafoglio.length : 0;
+      const nList = Array.isArray(d.watchlist) ? d.watchlist.length : 0;
+      const quando = d.salvatoIl ? new Date(d.salvatoIl).toLocaleString("it-IT") : "data sconosciuta";
+      if (!confirm("Copia del " + quando + ": " + nPort + " posizioni in portafoglio e " + nList +
+                   " titoli in lista.\n\nRipristinare questi dati? I dati attuali verranno sostituiti.")) return;
+
+      if (Array.isArray(d.watchlist) && d.watchlist.length) stato.watchlist = d.watchlist;
+      if (Array.isArray(d.portafoglio)) stato.portafoglio = d.portafoglio;
+      if (d.apiKey) stato.apiKey = d.apiKey;
+      if (d.cambio && typeof d.cambio.eurusd === "number") stato.cambio = d.cambio;
+      salva();
+      mostraAvviso("");
+      renderTutto();
+      const st = document.getElementById("statoBackup");
+      if (st) {
+        st.textContent = "✓ Dati ripristinati dalla copia del " + quando + ".";
+        st.style.color = "var(--verde)";
+      }
+    } catch (err) {
+      mostraAvviso("Ripristino non riuscito: " + err.message);
+    }
+  };
+  lettore.onerror = function () { mostraAvviso("Non è stato possibile leggere il file."); };
+  lettore.readAsText(file);
+}
+
+/* ================= Interfaccia ================= */
+function esc(s) {
+  return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+function usd(v) {
+  return v.toLocaleString("it-IT", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " $";
+}
+function eurFmt(v) {
+  return v.toLocaleString("it-IT", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " €";
+}
+/* Converte un valore in dollari nell'equivalente in euro (null se cambio non disponibile) */
+function inEuro(vUsd) {
+  return (stato.cambio && stato.cambio.eurusd > 0) ? vUsd / stato.cambio.eurusd : null;
+}
+/* Prezzo da mostrare: euro se il cambio è noto, altrimenti dollari */
+function prezzoTxt(vUsd) {
+  const e = inEuro(vUsd);
+  return e === null ? usd(vUsd) : eurFmt(e);
+}
+/* Collegamenti di verifica su fonti affidabili, in nuova scheda */
+function fontiHTML(sym) {
+  const s = encodeURIComponent(sym);
+  return '<details class="fonti"><summary>🔍 Verifica il titolo su fonti affidabili</summary>' +
+    '<div class="fonti-link">' +
+      '<a href="https://finance.yahoo.com/quote/' + s + '" target="_blank" rel="noopener">Yahoo Finance</a>' +
+      '<a href="https://www.tradingview.com/symbols/' + s + '/" target="_blank" rel="noopener">TradingView</a>' +
+      '<a href="https://www.marketwatch.com/investing/stock/' + esc(sym.toLowerCase()) + '" target="_blank" rel="noopener">MarketWatch</a>' +
+      '<a href="https://stockanalysis.com/stocks/' + esc(sym.toLowerCase()) + '/" target="_blank" rel="noopener">Stock Analysis</a>' +
+      '<a href="https://news.google.com/search?q=' + s + '%20stock" target="_blank" rel="noopener">Notizie recenti</a>' +
+    '</div></details>';
+}
+function mostraAvviso(msg) {
+  const area = document.getElementById("areaAvvisi");
+  const allerte = area.querySelector(".allerta-vendita");
+  area.innerHTML = (msg ? '<div class="avviso">⚠ ' + esc(msg) + '</div>' : "") +
+                   (allerte ? allerte.outerHTML : "");
+}
+
+function renderVista() {
+  document.getElementById("vistaRadar").className = stato.vista === "radar" ? "attivo" : "";
+  document.getElementById("vistaPortafoglio").className = stato.vista === "portafoglio" ? "attivo" : "";
+  document.getElementById("vistaImpostazioni").className = stato.vista === "impostazioni" ? "attivo" : "";
+}
+
+function renderFiltri() {
+  const barra = document.getElementById("barraFiltri");
+  let html = "";
+  if (stato.vista === "radar") {
+    REGIONI.forEach(function (r) {
+      html += '<button class="filtro' + (stato.regione === r ? " attivo" : "") + '" data-reg="' + r + '">' + r + '</button>';
+    });
+  }
+  html += '<div class="spazio"></div>';
+  if (stato.vista === "impostazioni" && !stato.inScansione) {
+    html += '';
+  } else if (stato.inScansione) {
+    html += '<button class="btn btn-rosso" id="btnStop">■ Interrompi</button>';
+  } else if (stato.vista === "radar") {
+    html += '<button class="btn btn-verde" id="btnScan">⟳ Avvia scansione</button>';
+  } else {
+    html += '<button class="btn btn-verde" id="btnScanPort">⟳ Aggiorna portafoglio</button>';
+  }
+  barra.innerHTML = html;
+
+  barra.querySelectorAll(".filtro").forEach(function (b) {
+    b.onclick = function () { stato.regione = b.dataset.reg; renderFiltri(); renderElenco(); };
+  });
+  const bs = document.getElementById("btnScan");
+  if (bs) bs.onclick = avviaScansioneCompleta;
+  const bp = document.getElementById("btnScanPort");
+  if (bp) bp.onclick = avviaScansionePortafoglio;
+  const bt = document.getElementById("btnStop");
+  if (bt) bt.onclick = function () { stato.fermare = true; };
+}
+
+function renderScansione() {
+  const area = document.getElementById("areaScansione");
+  if (!stato.inScansione) { area.innerHTML = ""; return; }
+  const pct = (stato.progresso.fatti / Math.max(1, stato.progresso.totale)) * 100;
+  area.innerHTML =
+    '<div class="box-scansione">' +
+      '<div class="riga-scansione">' +
+        '<span>⟳ Scansione in corso: ' + stato.progresso.fatti + ' di ' + stato.progresso.totale + ' titoli</span>' +
+        (stato.attesa > 0 ? '<span class="attesa">⏸ pausa di ' + stato.attesa + 's (limite del piano gratuito)</span>' : "") +
+      '</div>' +
+      '<div class="barra-prog"><div style="width:' + pct + '%"></div></div>' +
+    '</div>';
+}
+
+function renderImpostazioni() {
+  const area = document.getElementById("areaImpostazioni");
+  if (stato.vista !== "impostazioni") { area.style.display = "none"; return; }
+  area.style.display = "block";
+
+  let chips = "";
+  stato.watchlist.forEach(function (t) {
+    chips += '<span class="chip">' + esc(t.symbol) +
+             '<button data-sym="' + esc(t.symbol) + '" aria-label="Rimuovi ' + esc(t.symbol) + '">×</button></span>';
+  });
+  let opzioni = "";
+  REGIONI.filter(r => r !== "Tutti").forEach(function (r) { opzioni += "<option>" + r + "</option>"; });
+
+  let pacchettiHTML = "";
+  PACCHETTI.forEach(function (pac) {
+    const presenti = pac.titoli.filter(t => stato.watchlist.some(w => w.symbol === t.symbol)).length;
+    const tutti = presenti === pac.titoli.length;
+    pacchettiHTML += '<button class="pacchetto' + (tutti ? " completo" : "") + '" data-pacco="' + pac.id + '">' +
+      esc(pac.nome) + ' <span class="conta">' + presenti + '/' + pac.titoli.length + '</span></button>';
+  });
+
+  area.innerHTML =
+    '<div class="impostazioni">' +
+      '<h2>Impostazioni</h2>' +
+      '<label class="etichetta">🔑 Chiave API Twelve Data</label>' +
+      '<div class="riga-form">' +
+        '<input type="password" id="campoApiKey" placeholder="Incolla qui la tua chiave gratuita" value="' + esc(stato.apiKey) + '" style="flex:1;min-width:200px">' +
+        '<button class="btn btn-scuro" id="btnProva">Prova connessione</button>' +
+      '</div>' +
+      '<p class="nota" id="esitoProva">Chiave gratuita su twelvedata.com → «Get API key». Le istruzioni complete sono nel manuale.</p>' +
+      '<label class="check"><input type="checkbox" id="campoRicorda"' + (stato.ricordaChiave ? " checked" : "") + '> Memorizza la chiave su questo dispositivo</label>' +
+      '<p class="nota">Se togli la spunta, la chiave resta attiva solo fino alla chiusura della pagina e dovrai reinserirla a ogni avvio: più sicuro su computer condivisi. La chiave viene salvata soltanto nel tuo browser, non viene mai inviata a nessuno tranne che a Twelve Data.</p>' +
+      '<p style="margin-top:8px"><button class="btn-azione" id="btnCancellaChiave">Cancella la chiave da questo dispositivo</button></p>' +
+      '<label class="check"><input type="checkbox" id="campoAutoScan"' + (stato.autoScan ? " checked" : "") + '> Riscansione automatica ogni 30 minuti (finché questa pagina resta aperta)</label>' +
+      '<h3>Aggiungi titoli alla lista di osservazione</h3>' +
+      '<div class="riga-form">' +
+        '<input type="text" id="nuovoSimbolo" placeholder="Simboli, es. KO, DIS, NKE" style="flex:1;min-width:180px">' +
+        '<select id="nuovaRegione">' + opzioni + '</select>' +
+        '<button class="btn btn-scuro" id="btnAggiungi">+ Aggiungi</button>' +
+      '</div>' +
+      '<p class="nota">Puoi inserire più simboli separati da virgola o spazio. Per le società europee e asiatiche usa il codice dell\u2019ADR quotato a New York (cerca «<i>nome società</i> ADR ticker»).</p>' +
+      '<h3>Pacchetti pronti per settore e mercato</h3>' +
+      '<p class="nota" style="margin-bottom:8px">Un tocco e aggiungi in blocco i principali titoli del tema; quelli già presenti vengono ignorati.</p>' +
+      '<div class="pacchetti">' + pacchettiHTML + '</div>' +
+      '<h3>Lista attuale (' + stato.watchlist.length + ' titoli)</h3>' +
+      '<div>' + chips + '</div>' +
+      '<p class="nota" style="margin-top:10px"><button class="btn-azione" id="btnSvuota">Svuota la lista</button> ' +
+        '<button class="btn-azione" id="btnRipristina">Ripristina la lista iniziale</button></p>' +
+      '<h3>Copia di sicurezza dei tuoi dati</h3>' +
+      '<p class="nota" style="margin-bottom:8px">Salva un file con portafoglio, lista titoli e chiave: ti protegge se il browser cancella i dati o se cambi telefono. Conservalo dove vuoi (Download, Google Drive, e-mail a te stesso).</p>' +
+      '<div class="riga-form">' +
+        '<button class="btn btn-scuro" id="btnEsporta">💾 Salva copia di sicurezza</button>' +
+        '<button class="btn-azione" id="btnImporta">📂 Ripristina da copia</button>' +
+        '<input type="file" id="fileImporta" accept=".json,application/json" style="display:none">' +
+      '</div>' +
+      (stato.ultimoBackup
+        ? '<p class="nota" id="statoBackup">Ultima copia salvata: ' + new Date(stato.ultimoBackup).toLocaleString("it-IT") + '</p>'
+        : '<p class="nota" id="statoBackup">Non hai ancora salvato nessuna copia di sicurezza.</p>') +
+    '</div>';
+
+  document.getElementById("campoApiKey").oninput = function (e) { stato.apiKey = e.target.value; salva(); };
+  document.getElementById("campoRicorda").onchange = function (e) {
+    stato.ricordaChiave = e.target.checked;
+    salva();
+    const esito = document.getElementById("esitoProva");
+    esito.textContent = stato.ricordaChiave
+      ? "La chiave verrà memorizzata su questo dispositivo."
+      : "La chiave non verrà memorizzata: dovrai reinserirla a ogni avvio dell'app.";
+    esito.style.color = "var(--grigio)";
+  };
+  document.getElementById("btnCancellaChiave").onclick = function () {
+    if (!confirm("Cancellare la chiave API da questo dispositivo? Dovrai reinserirla per usare l'app.")) return;
+    stato.apiKey = "";
+    salva();
+    renderImpostazioni();
+    mostraAvviso("");
+    const esito = document.getElementById("esitoProva");
+    esito.textContent = "Chiave cancellata da questo dispositivo.";
+    esito.style.color = "var(--grigio)";
+  };
+  document.getElementById("btnProva").onclick = async function () {
+    const esito = document.getElementById("esitoProva");
+    if (!stato.apiKey.trim()) {
+      esito.textContent = "⚠ Inserisci prima la chiave nel campo qui sopra.";
+      esito.style.color = "var(--rosso)";
+      return;
+    }
+    esito.textContent = "Verifica in corso…";
+    esito.style.color = "var(--grigio)";
+    try {
+      await scaricaSerie("AAPL");
+      esito.textContent = "✓ Connessione riuscita: la chiave funziona. Puoi avviare la scansione.";
+      esito.style.color = "var(--verde)";
+    } catch (e) {
+      esito.textContent = "✗ Connessione fallita: " + e.message +
+        " — Se il messaggio è «Failed to fetch», stai aprendo l'app dall'anteprima di Claude o senza connessione a Internet: scarica il file e aprilo dal browser. Se parla di «apikey», la chiave è errata o incompleta.";
+      esito.style.color = "var(--rosso)";
+    }
+  };
+  document.getElementById("campoAutoScan").onchange = function (e) { impostaAutoScan(e.target.checked); };
+  document.getElementById("btnAggiungi").onclick = aggiungiTitolo;
+  area.querySelectorAll("[data-pacco]").forEach(function (b) {
+    b.onclick = function () { aggiungiPacchetto(b.dataset.pacco); };
+  });
+  document.getElementById("btnEsporta").onclick = esportaDati;
+  document.getElementById("btnImporta").onclick = function () {
+    document.getElementById("fileImporta").click();
+  };
+  document.getElementById("fileImporta").onchange = function (e) {
+    if (e.target.files && e.target.files[0]) importaDati(e.target.files[0]);
+  };
+  document.getElementById("btnSvuota").onclick = function () {
+    if (!confirm("Svuotare completamente la lista di osservazione? Il portafoglio non viene toccato.")) return;
+    stato.watchlist = [];
+    salva(); renderImpostazioni(); renderElenco();
+  };
+  document.getElementById("btnRipristina").onclick = function () {
+    if (!confirm("Ripristinare la lista iniziale di 23 titoli? Le tue aggiunte verranno sostituite.")) return;
+    stato.watchlist = LISTA_PREDEFINITA.slice();
+    salva(); renderImpostazioni(); renderElenco();
+  };
+  area.querySelectorAll(".chip button").forEach(function (b) {
+    b.onclick = function () { rimuoviTitolo(b.dataset.sym); };
+  });
+}
+
+function renderRiepilogo() {
+  const area = document.getElementById("riepilogo");
+  let html = "";
+  if (stato.ultimaScansione) {
+    html += '<span>🕐 Ultimo aggiornamento: ' + new Date(stato.ultimaScansione).toLocaleString("it-IT") + '</span>';
+  }
+  if (stato.vista === "radar") {
+    const forti = stato.watchlist.filter(t => (stato.risultati[t.symbol] && stato.risultati[t.symbol].punteggio >= 60)).length;
+    if (forti > 0) html += '<span class="forti">' + forti + (forti === 1 ? " titolo con segnale forte" : " titoli con segnale forte") + '</span>';
+  } else {
+    const allerta = stato.portafoglio.filter(p => (stato.risultati[p.symbol] && stato.risultati[p.symbol].pRibasso >= 60)).length;
+    if (allerta > 0) html += '<span class="deboli">⚠ ' + allerta + (allerta === 1 ? " posizione in allerta" : " posizioni in allerta") + '</span>';
+  }
+  area.innerHTML = html;
+}
+
+/* ---------- Vista Radar ---------- */
+function renderElencoRadar(main) {
+  const visibili = stato.watchlist
+    .filter(t => stato.regione === "Tutti" || t.region === stato.regione)
+    .slice()
+    .sort(function (a, b) {
+      const pa = stato.risultati[a.symbol] ? stato.risultati[a.symbol].punteggio : -1;
+      const pb = stato.risultati[b.symbol] ? stato.risultati[b.symbol].punteggio : -1;
+      return pb - pa;
+    });
+
+  if (Object.keys(stato.risultati).length === 0 && !stato.inScansione) {
+    main.innerHTML =
+      '<div class="vuoto"><p>Il radar è pronto.</p>' +
+      '<p>Inserisci la chiave API nelle impostazioni, poi premi «Avvia scansione» per analizzare i ' +
+      stato.watchlist.length + ' titoli della lista.</p></div>';
+    return;
+  }
+
+  let html = "";
+  visibili.forEach(function (t) {
+    const d = stato.risultati[t.symbol];
+    const err = stato.errori[t.symbol];
+    html += '<div class="riga-titolo"><div class="riga-sup">';
+    html += '<div class="col-simbolo"><div class="simbolo">' + esc(t.symbol) + '</div><div class="regione-tag">' + esc(t.region) + '</div></div>';
+    html += '<div class="col-centro"><div class="nome">' + esc(t.name) + '</div>';
+    if (d) {
+      const positivo = d.varPct >= 0;
+      html += '<div class="prezzi">' +
+        '<span class="prezzo">' + prezzoTxt(d.prezzo) + '</span>' +
+        '<span class="' + (positivo ? "su" : "giu") + '">' + (positivo ? "▲ +" : "▼ ") + d.varPct.toFixed(2) + '%</span>' +
+        (d.rsi !== null ? '<span class="rsi-mini">RSI ' + d.rsi.toFixed(0) + '</span>' : "") +
+        '</div>';
+    }
+    if (err) html += '<div class="errore-titolo">⚠ ' + esc(err) + '</div>';
+    html += '</div>';
+    if (d) {
+      let badge = '<span class="badge badge-neutro">Neutro</span>';
+      if (d.pRibasso >= 60) badge = '<span class="badge badge-rosso">Debolezza</span>';
+      else if (d.punteggio >= 60) badge = '<span class="badge badge-forte">Segnale forte</span>';
+      else if (d.punteggio >= 40) badge = '<span class="badge badge-medio">Da osservare</span>';
+      html += '<div class="col-punteggio"><div class="punteggio">' + d.punteggio + '<small>/100</small></div>' + badge + '</div>';
+    }
+    html += '</div>';
+    if (d && (d.segnali.length || d.segnaliRibasso.length)) {
+      html += '<div class="segnali">';
+      d.segnali.forEach(function (s) { html += '<span class="segnale">' + esc(s) + '</span>'; });
+      d.segnaliRibasso.forEach(function (s) { html += '<span class="segnale-rosso">' + esc(s) + '</span>'; });
+      html += '</div>';
+    }
+    html += fontiHTML(t.symbol);
+    html += '</div>';
+  });
+  main.innerHTML = html;
+}
+
+/* ---------- Vista Portafoglio ---------- */
+function renderElencoPortafoglio(main) {
+  let html = "";
+
+  /* Form di inserimento posizione */
+  html +=
+    '<div class="pannello-box">' +
+      '<h2>Registra un acquisto</h2>' +
+      '<div class="riga-form">' +
+        '<input type="text" id="posSimbolo" placeholder="Simbolo (es. RACE)" style="width:140px">' +
+        '<input type="number" id="posQty" placeholder="Quantità" min="0" step="any" style="width:110px">' +
+        '<input type="number" id="posCarico" placeholder="Prezzo acquisto €" min="0" step="any" style="width:160px">' +
+        '<button class="btn btn-scuro" id="btnAggiungiPos">+ Registra</button>' +
+      '</div>' +
+      '<p class="nota">Prezzo per singola azione, in euro (quello che hai effettivamente pagato). Se registri un secondo acquisto dello stesso titolo, quantità e prezzo medio di carico vengono ricalcolati automaticamente.</p>' +
+    '</div>';
+
+  if (!stato.portafoglio.length) {
+    html += '<div class="vuoto"><p>Il portafoglio è vuoto.</p>' +
+            '<p>Registra qui i titoli che acquisti: a ogni scansione l\u2019app ne controllerà lo stato di salute tecnico.</p></div>';
+    main.innerHTML = html;
+    document.getElementById("btnAggiungiPos").onclick = aggiungiPosizione;
+    return;
+  }
+
+  /* Promemoria copia di sicurezza */
+  const giorniDaBackup = stato.ultimoBackup
+    ? (Date.now() - new Date(stato.ultimoBackup).getTime()) / 86400000
+    : Infinity;
+  if (giorniDaBackup > 7) {
+    html += '<div class="promemoria">💾 ' +
+      (stato.ultimoBackup
+        ? 'L\u2019ultima copia di sicurezza risale a più di una settimana fa.'
+        : 'Non hai ancora salvato una copia di sicurezza del portafoglio.') +
+      ' Se il browser cancella i dati salvati, perderesti quantità e prezzi di carico. ' +
+      '<button class="btn-azione" id="btnBackupRapido">Salva copia adesso</button></div>';
+  }
+
+  /* Avviso se il cambio non è ancora disponibile */
+  if (!stato.cambio) {
+    html += '<div class="box-scansione">Il cambio euro/dollaro non è ancora stato scaricato: premi «Aggiorna portafoglio» per avere prezzi e controvalori in euro.</div>';
+  }
+
+  /* Totali (in euro) */
+  let valTotUsd = 0, costoTotEur = 0, valDisponibile = !!stato.cambio;
+  stato.portafoglio.forEach(function (p) {
+    const d = stato.risultati[p.symbol];
+    costoTotEur += p.qty * p.carico;
+    if (d) valTotUsd += p.qty * d.prezzo; else valDisponibile = false;
+  });
+  if (valDisponibile) {
+    const valTot = inEuro(valTotUsd);
+    const pl = valTot - costoTotEur;
+    const plPct = costoTotEur > 0 ? (pl / costoTotEur) * 100 : 0;
+    html +=
+      '<div class="totali">' +
+        '<div><div class="voce">Valore attuale</div><div class="valore">' + eurFmt(valTot) + '</div></div>' +
+        '<div><div class="voce">Investito</div><div class="valore">' + eurFmt(costoTotEur) + '</div></div>' +
+        '<div><div class="voce">Risultato</div><div class="valore ' + (pl >= 0 ? "su" : "giu") + '">' +
+          (pl >= 0 ? "+" : "") + eurFmt(pl) + ' (' + (pl >= 0 ? "+" : "") + plPct.toFixed(2) + '%)</div></div>' +
+      '</div>';
+  }
+  if (stato.cambio) {
+    html += '<p class="nota">Cambio applicato: 1 € = ' + stato.cambio.eurusd.toFixed(4) +
+            ' $ (aggiornato il ' + new Date(stato.cambio.quando).toLocaleString("it-IT") + ')</p>';
+  }
+
+  /* Allerta complessiva */
+  const inAllerta = stato.portafoglio.filter(p => stato.risultati[p.symbol] && stato.risultati[p.symbol].pRibasso >= 60);
+  if (inAllerta.length) {
+    html += '<div class="allerta-vendita">⚠ Attenzione: ' +
+      inAllerta.map(p => p.symbol).join(", ") +
+      (inAllerta.length === 1 ? " mostra" : " mostrano") +
+      ' più segnali tecnici di indebolimento. Vedi il dettaglio qui sotto.</div>';
+  }
+
+  /* Posizioni ordinate: prima le allerte */
+  const posizioni = stato.portafoglio.slice().sort(function (a, b) {
+    const ra = stato.risultati[a.symbol] ? stato.risultati[a.symbol].pRibasso : -1;
+    const rb = stato.risultati[b.symbol] ? stato.risultati[b.symbol].pRibasso : -1;
+    return rb - ra;
+  });
+
+  posizioni.forEach(function (p) {
+    const d = stato.risultati[p.symbol];
+    const err = stato.errori[p.symbol];
+    const prezzoEur = d ? inEuro(d.prezzo) : null;
+
+    html += '<div class="posizione">';
+    html += '<div class="pos-testa">';
+    html += '<div class="col-simbolo"><div class="simbolo">' + esc(p.symbol) + '</div></div>';
+    html += '<div class="col-centro"><div class="nome">' + esc(p.name) + '</div>';
+    html += '<div class="pos-dati">' +
+      '<span><span class="etich">Quantità:</span> ' + p.qty + '</span>' +
+      '<span><span class="etich">Carico medio:</span> ' + eurFmt(p.carico) + '</span>';
+    if (prezzoEur !== null) {
+      const pl = p.qty * (prezzoEur - p.carico);
+      const plPct = ((prezzoEur - p.carico) / p.carico) * 100;
+      html +=
+        '<span><span class="etich">Prezzo attuale:</span> ' + eurFmt(prezzoEur) + '</span>' +
+        '<span><span class="etich">Valore:</span> ' + eurFmt(p.qty * prezzoEur) + '</span>' +
+        '<span class="' + (pl >= 0 ? "su" : "giu") + '">' + (pl >= 0 ? "+" : "") + eurFmt(pl) +
+          ' (' + (pl >= 0 ? "+" : "") + plPct.toFixed(2) + '%)</span>';
+    } else if (d) {
+      html += '<span><span class="etich">Prezzo attuale:</span> ' + usd(d.prezzo) + ' (cambio non disponibile)</span>';
+    }
+    html += '</div>';
+    if (err) html += '<div class="errore-titolo">⚠ ' + esc(err) + '</div>';
+    html += '</div>';
+    if (d) {
+      const v = verdetto(d);
+      html += '<div class="col-punteggio"><span class="badge ' + v.badge + '">' + v.etichetta + '</span></div>';
+    }
+    html += '</div>'; /* pos-testa */
+
+    if (d) {
+      const v = verdetto(d);
+      html += '<div class="verdetto ' + v.classe + '"><b>' + v.titolo + '</b>' + v.testo + '</div>';
+      const seg = (d.pRibasso >= 40 ? d.segnaliRibasso : d.segnali);
+      if (seg.length) {
+        html += '<div class="segnali">';
+        seg.forEach(function (s) {
+          html += '<span class="' + (d.pRibasso >= 40 ? "segnale-rosso" : "segnale") + '">' + esc(s) + '</span>';
+        });
+        html += '</div>';
+      }
+    } else if (!err) {
+      html += '<div class="nota" style="margin-top:8px">Premi «Aggiorna portafoglio» per analizzare questa posizione.</div>';
+    }
+    html += fontiHTML(p.symbol);
+
+    /* --- Riquadro di correzione --- */
+    if (stato.editSym === p.symbol) {
+      html +=
+        '<div class="riquadro-azione">' +
+          '<b>Correggi la posizione</b>' +
+          '<div class="riga-form" style="margin-top:8px">' +
+            '<input type="number" id="editQty" value="' + p.qty + '" min="0" step="any" style="width:120px" placeholder="Quantità">' +
+            '<input type="number" id="editCarico" value="' + p.carico.toFixed(4) + '" min="0" step="any" style="width:170px" placeholder="Carico medio €">' +
+            '<button class="btn btn-scuro" data-salva="' + esc(p.symbol) + '">Salva correzione</button>' +
+            '<button class="btn btn-annulla" data-annulla="1">Annulla</button>' +
+          '</div>' +
+          '<p class="nota">Quantità totale posseduta e prezzo medio di carico per azione, in euro. Usa questo riquadro per correggere un inserimento sbagliato.</p>' +
+        '</div>';
+    }
+
+    /* --- Riquadro di vendita --- */
+    if (stato.vendiSym === p.symbol) {
+      const valoreUnit = prezzoEur !== null ? prezzoEur : null;
+      html +=
+        '<div class="riquadro-azione">' +
+          '<b>Registra una vendita</b>' +
+          '<div class="riga-form" style="margin-top:8px">' +
+            '<input type="number" id="vendiQty" min="0" step="any" max="' + p.qty + '" style="width:140px" placeholder="Quantità venduta">' +
+            '<button class="btn btn-scuro" data-vendi="' + esc(p.symbol) + '">Conferma vendita</button>' +
+            '<button class="btn btn-annulla" data-annulla="1">Annulla</button>' +
+          '</div>' +
+          '<p class="nota">Possiedi ' + p.qty + ' azioni' +
+            (valoreUnit !== null ? ', valore attuale ' + eurFmt(valoreUnit) + ' per azione' : '') +
+            '. Vendendole tutte la posizione viene chiusa; con una vendita parziale resta la quantità residua allo stesso prezzo medio di carico.</p>' +
+        '</div>';
+    }
+
+    /* --- Pulsanti di gestione --- */
+    html += '<div class="azioni-pos">' +
+      '<button class="btn-azione" data-edit="' + esc(p.symbol) + '">✎ Correggi</button>' +
+      '<button class="btn-azione" data-vendita="' + esc(p.symbol) + '">− Vendi</button>' +
+      '<button class="btn-rimuovi-pos" data-sym="' + esc(p.symbol) + '">Rimuovi posizione</button>' +
+    '</div>';
+    html += '</div>'; /* posizione */
+  });
+
+  main.innerHTML = html;
+  document.getElementById("btnAggiungiPos").onclick = aggiungiPosizione;
+  const bBk = document.getElementById("btnBackupRapido");
+  if (bBk) bBk.onclick = esportaDati;
+  main.querySelectorAll("[data-sym]").forEach(function (b) {
+    b.onclick = function () { rimuoviPosizione(b.dataset.sym); };
+  });
+  main.querySelectorAll("[data-edit]").forEach(function (b) {
+    b.onclick = function () {
+      stato.editSym = (stato.editSym === b.dataset.edit) ? null : b.dataset.edit;
+      stato.vendiSym = null;
+      renderElenco();
+    };
+  });
+  main.querySelectorAll("[data-vendita]").forEach(function (b) {
+    b.onclick = function () {
+      stato.vendiSym = (stato.vendiSym === b.dataset.vendita) ? null : b.dataset.vendita;
+      stato.editSym = null;
+      renderElenco();
+    };
+  });
+  main.querySelectorAll("[data-salva]").forEach(function (b) {
+    b.onclick = function () { salvaModificaPosizione(b.dataset.salva); };
+  });
+  main.querySelectorAll("[data-vendi]").forEach(function (b) {
+    b.onclick = function () { confermaVendita(b.dataset.vendi); };
+  });
+  main.querySelectorAll("[data-annulla]").forEach(function (b) {
+    b.onclick = function () { stato.editSym = null; stato.vendiSym = null; renderElenco(); };
+  });
+}
+
+function renderElenco() {
+  const main = document.getElementById("elenco");
+  if (stato.vista === "impostazioni") { main.innerHTML = ""; return; }
+  if (stato.vista === "radar") renderElencoRadar(main);
+  else renderElencoPortafoglio(main);
+}
+
+function renderTutto() {
+  renderVista(); renderFiltri(); renderScansione(); renderImpostazioni(); renderRiepilogo(); renderElenco();
+}
+
+/* ================= Avvio ================= */
+window.onerror = function (msg) {
+  try {
+    stato.inScansione = false;
+    mostraAvviso("Errore interno dell'app: " + msg + " — Riprova; se l'errore persiste, prova a ricaricare la pagina.");
+  } catch (e) { /* ignora */ }
+};
+window.onunhandledrejection = function (ev) {
+  try {
+    stato.inScansione = false;
+    mostraAvviso("Errore interno dell'app: " + (ev.reason && ev.reason.message ? ev.reason.message : ev.reason) + " — Riprova; se l'errore persiste, prova a ricaricare la pagina.");
+  } catch (e) { /* ignora */ }
+};
+document.getElementById("dataOggi").textContent =
+  new Date().toLocaleDateString("it-IT", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
+document.getElementById("vistaRadar").onclick = function () { stato.vista = "radar"; renderTutto(); };
+document.getElementById("vistaPortafoglio").onclick = function () { stato.vista = "portafoglio"; renderTutto(); };
+document.getElementById("vistaImpostazioni").onclick = function () { stato.vista = "impostazioni"; renderTutto(); };
+carica();
+if (stato.autoScan) impostaAutoScan(true);
+renderTutto();
+</script>
+</body>
+</html>
