@@ -138,10 +138,13 @@ def scarica(strumenti: list[dict], modalita_demo: bool, adesso_utc: dt.datetime,
                 serie[s["id"]] = kr
                 fonti_usate["kraken"].append(s["id"])
                 log(f"  {s['id']}: dati da Kraken ({len(kr)} barre)")
-        elif kr.index[-1] > df.index[-1]:
-            nuove = kr[kr.index > df.index[-1]]
-            serie[s["id"]] = pd.concat([df, nuove])
-            fonti_usate["kraken_completamento"].append(s["id"])
+        else:
+            # giorni recenti presenti su Kraken ma assenti da Yahoo (anche in mezzo, non solo in coda)
+            recenti = kr[kr.index >= df.index[-1] - pd.Timedelta(days=10)]
+            mancanti = recenti[~recenti.index.isin(df.index)]
+            if len(mancanti):
+                serie[s["id"]] = pd.concat([df, mancanti]).sort_index()
+                fonti_usate["kraken_completamento"].append(s["id"])
     if fonti_usate["kraken_completamento"]:
         log(f"  ultime barre completate con Kraken per {len(fonti_usate['kraken_completamento'])} crypto")
     for s in strumenti:

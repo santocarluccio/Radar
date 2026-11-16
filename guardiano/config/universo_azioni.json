@@ -812,9 +812,9 @@
    "valuta": "CHF"
   },
   {
-   "nome": "Roche",
-   "ticker_yahoo": "ROG.SW",
-   "isin": "CH0012032048",
+   "nome": "Roche (al portatore)",
+   "ticker_yahoo": "RO.SW",
+   "isin": null,
    "mercato": "EU",
    "paese": "Svizzera",
    "indice": "SMI",
@@ -1478,6 +1478,10 @@
   {
    "strumento": "BPSO.MI",
    "nota": "Escluso: acquisita da BPER, fuori dal FTSE MIB da marzo 2026."
+  },
+  {
+   "strumento": "RO.SW",
+   "nota": "Yahoo non restituisce dati per ROG.SW (buoni di godimento, la linea più scambiata): si usa l'azione al portatore RO.SW. ISIN non inserito."
   }
  ]
 }
