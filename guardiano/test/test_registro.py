@@ -53,3 +53,24 @@ def test_segnale_annullato_in_apertura():
     s = r["segnali"][0]
     assert s["stato"] == "chiuso" and s["motivo_chiusura"] == "annullato"
     assert r["riepilogo"]["annullati"] == 1 and r["riepilogo"]["chiusi"] == 0
+
+
+def test_una_operazione_alla_volta_per_coppia():
+    # giorni: 0 segnale A, 1 ingresso, 2 nuovo segnale B (mentre A è aperta), 3 stop di A, 3 segnale C (giorno d'uscita)
+    righe = [(10, 10.2, 9.8, 10.0), (10.1, 10.5, 10.0, 10.4), (10.4, 10.9, 10.3, 10.8), (10.0, 10.1, 8.8, 9.1), (9.2, 9.6, 9.0, 9.5)]
+    d = _dati(righe)
+    giorno = [x.strftime("%Y-%m-%d") for x in d.index]
+    usc = {"PROVA.MI": {r: pd.Series(False, index=d.index) for r in ("rottura", "ritracciamento", "ripartenza")}}
+
+    def con(data_segnale):
+        st = _strumento(data_segnale)
+        return [st]
+
+    r = rg.aggiorna(None, con(giorno[0]), {"PROVA.MI": d.iloc[:2]}, usc, PAR, "t1")
+    assert r["segnali"][0]["stato"] == "aperto"
+    r = rg.aggiorna(r, con(giorno[2]), {"PROVA.MI": d.iloc[:3]}, usc, PAR, "t2")
+    assert len(r["segnali"]) == 1  # B cade mentre A è aperta: non si registra
+    r = rg.aggiorna(r, con(giorno[3]), {"PROVA.MI": d.iloc[:4]}, usc, PAR, "t3")
+    ids = {s["id"]: s for s in r["segnali"]}
+    assert ids[f"{giorno[0]}-PROVA.MI-rottura"]["stato"] == "chiuso"
+    assert f"{giorno[3]}-PROVA.MI-rottura" in ids  # C nel giorno dell'uscita: ammesso, come nel backtest

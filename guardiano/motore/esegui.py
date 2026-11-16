@@ -284,7 +284,7 @@ def esegui(args, log: Diario, adesso_utc: dt.datetime, generato: str) -> tuple[d
         else:
             id_idx = INDICE_PRINCIPALE[m]
             nome_idx = next((i["nome"] for i in az["indici_riferimento"] if i["ticker_yahoo"] == id_idx), id_idx)
-        righe = [calcolati[s["id"]].iloc[-1] for s in membri]
+        righe = [calcolati[s["id"]].iloc[-1] for s in membri if qualita.get(s["id"]) != "dati_vecchi"]
         c = cl.calcola_mercato(m, nome_idx, calcolati.get(id_idx), righe, par)
         mercati_clima.append(c)
         clima_per[m] = c
@@ -326,6 +326,8 @@ def esegui(args, log: Diario, adesso_utc: dt.datetime, generato: str) -> tuple[d
             comp = sg.componenti_punteggio(u, p6[s["id"]], p12[s["id"]], alto, segn, s["tipo"], par)
             punteggio = int(sum(comp.values()))
             st, fren = sg.stato(punteggio, segn, avv, stato_clima, par)
+            if st == "COMPRA" and qualita[s["id"]] == "dati_vecchi":
+                st = "OSSERVA"  # un segnale su dati fermi da giorni non è un acquisto
             oggetti[s["id"]] = oggetto_strumento(s, calcolati[s["id"]], segn, avv, comp, punteggio, st, fren,
                                                  p6[s["id"]], par, qualita[s["id"]])
     conteggio_stati = pd.Series([o["stato"] for o in oggetti.values()]).value_counts().to_dict() if oggetti else {}

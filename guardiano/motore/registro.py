@@ -97,29 +97,51 @@ def riepilogo(segnali: list[dict]) -> dict:
     }
 
 
+def _sovrapposto(segnali: list[dict], nuovo: dict) -> bool:
+    """Vero se il nuovo segnale cade mentre un'operazione sulla stessa coppia strumento–regola
+    è in attesa o aperta (come nel backtest, un segnale nel giorno dell'uscita è ammesso)."""
+    for s in segnali:
+        if s["strumento"] != nuovo["strumento"] or s["regola"] != nuovo["regola"]:
+            continue
+        fine = s["data_chiusura"] if s["stato"] == "chiuso" else None
+        if s["data"] < nuovo["data"] and (fine is None or nuovo["data"] < fine):
+            return True
+    return False
+
+
 def aggiorna(precedente: dict | None, strumenti: list[dict], dati: dict, uscite: dict,
              par: dict, adesso_iso: str) -> dict:
     """`strumenti`: oggetti strumento esportati (con stato e segnali_attivi);
-    `dati[id]`: serie con indicatori; `uscite[id][regola]`: condizione d'uscita alla chiusura."""
+    `dati[id]`: serie con indicatori; `uscite[id][regola]`: condizione d'uscita alla chiusura.
+    Prima si aggiornano i segnali già registrati, poi si aggiungono i nuovi che non si
+    sovrappongono a un'operazione della stessa coppia, infine si aggiornano i nuovi."""
     segnali = list((precedente or {}).get("segnali", []))
     noti = {s["id"] for s in segnali}
     k = par["validita_segnale_barre"]
+
+    def avanza_tutti(lista: list[dict]) -> None:
+        for s in lista:
+            if s["stato"] == "chiuso" or s["strumento"] not in dati:
+                continue
+            tipo = s.get("tipo", "azione")
+            costo = par["costi_per_lato_pct"].get(tipo, par["costi_per_lato_pct"]["azione"])
+            max_b = par["regole"]["ritracciamento"]["max_barre"] if s["regola"] == "ritracciamento" else None
+            avanza(s, dati[s["strumento"]], uscite[s["strumento"]][s["regola"]], costo, max_b)
+
+    avanza_tutti(segnali)
+    nuovi: list[dict] = []
     for st in strumenti:
         if st.get("stato") != "COMPRA":
             continue
-        for sg in st.get("segnali_attivi", []):
+        for sg in sorted(st.get("segnali_attivi", []), key=lambda x: x["data"]):
             if sg["giorni_fa"] > k - 1:
                 continue
             nuovo = nuovo_segnale(st, sg)
-            if nuovo["id"] not in noti:
-                segnali.append(nuovo)
-                noti.add(nuovo["id"])
-    for s in segnali:
-        if s["stato"] == "chiuso" or s["strumento"] not in dati:
-            continue
-        tipo = s.get("tipo", "azione")
-        costo = par["costi_per_lato_pct"].get(tipo, par["costi_per_lato_pct"]["azione"])
-        max_b = par["regole"]["ritracciamento"]["max_barre"] if s["regola"] == "ritracciamento" else None
-        avanza(s, dati[s["strumento"]], uscite[s["strumento"]][s["regola"]], costo, max_b)
+            if nuovo["id"] in noti or _sovrapposto(segnali + nuovi, nuovo):
+                continue
+            nuovi.append(nuovo)
+            noti.add(nuovo["id"])
+    avanza_tutti(nuovi)
+    segnali += nuovi
     segnali.sort(key=lambda s: (s["data"], s["strumento"], s["regola"]), reverse=True)
     return {"aggiornato_il": adesso_iso, "segnali": segnali, "riepilogo": riepilogo(segnali)}

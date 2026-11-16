@@ -167,9 +167,11 @@ Stato, in ordine di precedenza:
 
 1. `ESCI`: c'è un avviso di gravità alta nelle ultime 3 barre.
 2. `COMPRA`: c'è un segnale d'ingresso nelle ultime 3 barre, punteggio ≥ 65 e clima del mercato diverso da `sfavorevole`.
-3. `OSSERVA`: punteggio ≥ 60; oppure segnale d'ingresso recente con clima `sfavorevole` (in tal caso `frenato_dal_clima: true`).
+3. `OSSERVA`: segnale d'ingresso recente e punteggio ≥ 65 ma clima `sfavorevole` (`frenato_dal_clima: true`); oppure punteggio ≥ 60.
 4. `DEBOLE`: punteggio < 35.
 5. `NEUTRO`.
+
+Uno strumento con qualità `dati_vecchi` non può essere `COMPRA` (diventa `OSSERVA`) e non entra nell'ampiezza del clima.
 
 Gli ETF ricevono indicatori, tendenza e metriche PAC ma non stato di trading.
 
@@ -185,7 +187,7 @@ Per ogni regola e ogni strumento, dopo 252 barre di riscaldamento:
 - Barra d'ingresso: se `L ≤ stop` uscita allo stop. Barre successive: se `O ≤ stop` uscita a `O`; altrimenti se `L ≤ stop` uscita allo stop; altrimenti, se alla chiusura vale la condizione d'uscita della regola, uscita all'apertura successiva (alla chiusura se è l'ultima barra).
 - Un'operazione alla volta per strumento e regola. Le operazioni ancora aperte a fine dati non entrano nelle statistiche (si contano in `aperte`).
 - Rendimento netto = lordo − 2·costo per lato.
-- Statistiche per (regola, mercato) e per (regola, `TUTTI`): `operazioni`, `vincenti_pct`, `guadagno_medio_pct`, `perdita_media_pct`, `rendimento_medio_netto_pct`, `mediana_giorni`, `fattore_profitto`, `peggior_serie_perdite`, `prima_meta` e `seconda_meta` (operazioni divise alla data mediana del periodo: `operazioni`, `rendimento_medio_netto_pct`), `indice_periodo_pct` (variazione dell'indice principale nello stesso periodo), `giudizio`.
+- Statistiche per (regola, mercato) e per (regola, `TUTTI`): `operazioni`, `vincenti_pct`, `guadagno_medio_pct`, `perdita_media_pct`, `rendimento_medio_netto_pct`, `mediana_giorni`, `fattore_profitto`, `peggior_serie_perdite`, `prima_meta` e `seconda_meta` (operazioni divise alla data mediana del periodo: `operazioni`, `rendimento_medio_netto_pct`), `indice_periodo_pct` (variazione dell'indice principale nello stesso periodo; `null` per `TUTTI`, che non ha un indice unico), `giudizio`.
 - `giudizio`: `dati insufficienti` sotto 30 operazioni; `positiva` se rendimento medio netto > 0,5 ed entrambe le metà > 0; `debole` se > 0; altrimenti `negativa`.
 - **Forza relativa** (statistica di coorte, non regola d'ingresso): a ogni fine mese, rendimento a 21 barre del quintile più alto per `momentum_6m_pct` meno la media del mercato → `eccesso_medio_mensile_pct`, `mesi_positivi_pct`, `mesi`.
 - `avvertenze` fisse nel file: universo composto dai titoli di oggi (distorsione da sopravvivenza); storico di circa 5 anni; costi stimati; il passato non garantisce il futuro.
@@ -193,7 +195,7 @@ Per ogni regola e ogni strumento, dopo 252 barre di riscaldamento:
 
 ## 10. Registro dei segnali (misura in avanti)
 
-`dati/registro_segnali.json` è persistente: a ogni esecuzione il flusso lo recupera dal ramo `dati`, il motore lo carica, aggiunge i nuovi segnali e aggiorna quelli aperti con le stesse regole del backtest. Si registra un segnale quando uno strumento è in stato `COMPRA` per un segnale la cui data non è già registrata per quella coppia strumento–regola. `id = "<data>-<strumento>-<regola>"`. Prezzo d'ingresso: apertura della barra successiva al segnale; finché non c'è, stato `in attesa`. Riepilogo: chiusi, vincenti, rendimento medio netto, aperti.
+`dati/registro_segnali.json` è persistente: a ogni esecuzione il flusso lo recupera dal ramo `dati`, il motore lo carica, aggiorna quelli aperti con le stesse regole del backtest e aggiunge i nuovi. Come nel backtest, un'operazione alla volta per coppia strumento–regola: un segnale che cade mentre la coppia ha un'operazione in attesa o aperta non si registra (uno nel giorno dell'uscita sì). Si registra un segnale quando uno strumento è in stato `COMPRA` per un segnale la cui data non è già registrata per quella coppia strumento–regola. `id = "<data>-<strumento>-<regola>"`. Prezzo d'ingresso: apertura della barra successiva al segnale; finché non c'è, stato `in attesa`. Riepilogo: chiusi, vincenti, rendimento medio netto, aperti.
 
 ## 11. ETF e PAC
 
@@ -233,7 +235,7 @@ JSON UTF-8, `ensure_ascii=False`, compatti. Prezzi con 4 cifre significative uti
   "livelli": {"stop_suggerito": 13.99, "supporto_20g": 13.8, "massimo_55g": 14.9},
   "qualita": "ok"}]}
 ```
-Per le crypto: `tipo` `crypto`, `mercato` `CRYPTO`, `categoria` al posto di `settore`, `valuta` `EUR`, più `su_trade_republic` e `su_revolut_x`. `giorni_fa` conta le barre. `stop_suggerito` è sempre `prezzo − 2,5·ATR14`.
+Per le crypto: `tipo` `crypto`, `mercato` `CRYPTO`, `categoria` al posto di `settore`, `valuta` `EUR`, più `su_trade_republic` e `su_revolut_x`. `giorni_fa` conta le barre. `stop_suggerito` è sempre `prezzo − 2,5·ATR14`. `supporto_20g` e `massimo_55g` sono il minimo delle ultime 20 barre e il massimo delle ultime 55, **barra corrente compresa**: sono i livelli che le regole confronteranno con la chiusura della prossima seduta.
 
 **`etf.json`**
 ```json

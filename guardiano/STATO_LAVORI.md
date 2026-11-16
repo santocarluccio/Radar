@@ -14,8 +14,8 @@ Vincolo: il piano Claude dell'utente ha un limite di utilizzo ogni 5 ore. Pochi 
 5. [x] Interfaccia (`guardiano/interfaccia/index.html`) provata su telefono e PC
 6. [x] Squadra di agenti: ruoli in `.claude/agents/`, `guardiano/agenti/PROCEDURA.md`, schema ed esempio del rapporto, comando `/guardiano`
 7. [x] Pubblicazione dell'artifact privato con i dati reali e database (slug `90783c6c-0c6b-4dcd-88d7-04f7413a11dc`)
-8. [ ] Attività programmata notturna (analisi degli agenti verso le 02:00, ora di Roma) con notifica
-9. [ ] Verifica finale
+8. [x] Attività programmata notturna «Guardiano: analisi notturna» ogni giorno alle 01:35 (ora di Roma), notifica push, approvazione automatica
+9. [x] Verifica finale (revisione indipendente del motore: nessun uso di dati futuri, backtest conforme; corretti registro, «frenato dal clima» e dati vecchi)
 10. [ ] Ricerca con fonti, a piccole dosi: metodo PAC, dettagli operativi dei broker, strumenti GitHub, metodologia dei segnali
 
 ## Diario
@@ -26,3 +26,10 @@ Vincolo: il piano Claude dell'utente ha un limite di utilizzo ogni 5 ore. Pochi 
 - 16/11 07:10 — Terzo giro reale: 199 strumenti su 199, 78 s; `main` aggiornato in avanti (esecuzione notturna attiva alle 23:20 UTC).
 - 16/11 07:40 — Interfaccia scritta e provata con Playwright (390×844 e 1280×800, tema chiaro e scuro): viste, scheda con grafico, portafoglio, calcolatore, simulatore PAC; nessun errore in console a parte i font bloccati nella prova.
 - 16/11 07:20 — Pagina privata pubblicata con i dati reali (https://claude.ai/artifact/JqhrbXM6wGBuW1eRzee2xB), database dichiarato (`guardiano/*` leggibile e scrivibile solo dal proprietario). Squadra di agenti: 9 ruoli, procedura del direttore, schema, validatore del rapporto con test, comando `/guardiano`.
+- 16/11 07:20 — Attività programmata creata (prima esecuzione 17/11 01:35). Controllo dell'esito programmato in questa conversazione per il 17/11 alle 07:40. Revisione indipendente del motore avviata.
+- 16/11 07:30 — Revisione indipendente: nessun dato futuro (riprodotto troncando le serie), regole e backtest conformi alla specifica. Corretti: registro con un'operazione alla volta per coppia strumento–regola, «frenato dal clima» solo con punteggio da COMPRA, strumenti con dati vecchi esclusi da COMPRA e dall'ampiezza; chiariti in specifica i livelli 20/55 giorni e `indice_periodo_pct` nullo per TUTTI. 29 test.
+
+## Da fare nelle prossime sessioni
+
+- Controllare l'esito della prima analisi notturna (17/11): pubblicazione nella pagina, budget rispettato, qualità del rapporto.
+- Passo 10: ricerca con fonti a piccole dosi (metodo PAC, broker, strumenti GitHub, metodologia dei segnali); verificare i campi `da_verificare` degli universi (TER, simboli, disponibilità crypto su Trade Republic e Revolut X).

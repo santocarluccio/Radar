@@ -91,3 +91,6 @@ def test_stato_e_punteggio():
     assert sg.stato(70, [{"giorni_fa": 3}], [], "favorevole", PAR) == ("OSSERVA", False)
     assert sg.stato(30, [], [], "favorevole", PAR) == ("DEBOLE", False)
     assert sg.stato(50, [], [], "favorevole", PAR) == ("NEUTRO", False)
+    # «frenato dal clima» solo se senza clima sarebbe stato COMPRA
+    assert sg.stato(20, segn, [], "sfavorevole", PAR) == ("DEBOLE", False)
+    assert sg.stato(62, segn, [], "sfavorevole", PAR) == ("OSSERVA", False)

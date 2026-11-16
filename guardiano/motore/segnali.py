@@ -221,7 +221,7 @@ def stato(punteggio: int, segnali: list[dict], avvisi_r: list[dict], clima: str,
     s = par["soglie"]
     if recente and punteggio >= s["compra"] and clima != "sfavorevole":
         return "COMPRA", False
-    if recente and clima == "sfavorevole":
+    if recente and clima == "sfavorevole" and punteggio >= s["compra"]:
         return "OSSERVA", True
     if punteggio >= s["osserva"]:
         return "OSSERVA", False
