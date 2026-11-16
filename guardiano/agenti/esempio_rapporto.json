@@ -1,0 +1,59 @@
+{
+  "esempio": true,
+  "data": "2026-11-16",
+  "generato_il": "2026-11-16T02:31:00+01:00",
+  "dati_del": "2026-11-16T00:21:05+01:00",
+  "clima": {
+    "sintesi": "ESEMPIO — Borse europee e americane in tendenza, con la maggior parte dei titoli sopra la media a 200 giorni. Crypto in fase debole: il motore frena i nuovi acquisti.",
+    "mercati": [
+      {"mercato": "IT", "giudizio": "favorevole", "nota": "ESEMPIO — Indice sopra le medie, banche ed energia in testa."},
+      {"mercato": "EU", "giudizio": "favorevole", "nota": "ESEMPIO — Ampiezza buona ma in calo nell'ultimo mese."},
+      {"mercato": "US", "giudizio": "favorevole", "nota": "ESEMPIO — Indice sopra la media a 200 giorni, tecnologia meno brillante."},
+      {"mercato": "CRYPTO", "giudizio": "sfavorevole", "nota": "ESEMPIO — Bitcoin sotto la media a 200 giorni: nessun nuovo acquisto."}
+    ]
+  },
+  "proposte": [
+    {
+      "id": "2026-11-16-ESEMPIO1.MI", "strumento": "ESEMPIO1.MI", "nome": "Società Esempio Alfa", "tipo": "azione", "mercato": "IT",
+      "azione": "COMPRA", "orizzonte": "2-6 settimane", "fiducia": "media",
+      "tesi": "ESEMPIO — Il titolo ha chiuso sopra il massimo degli ultimi 55 giorni con volumi alti. I conti dell'ultimo trimestre confermano la crescita.",
+      "perche": [
+        "ESEMPIO — Rottura dei massimi con volumi 1,8 volte la media.",
+        "ESEMPIO — Tendenza rialzista: prezzo sopra le medie a 50 e 200 giorni.",
+        "ESEMPIO — Debito in calo e flusso di cassa positivo nell'ultimo bilancio (fonte inventata)."
+      ],
+      "piano": {"prezzo_riferimento": 14.52, "stop": 13.99, "obiettivo": 15.58, "rischio_pct": 3.65,
+                "ingresso": "ESEMPIO — Ordine limite poco sopra la chiusura, nella prima ora di Borsa.",
+                "dimensione": "ESEMPIO — Con 1% di rischio su 10.000 € servono circa 188 azioni (2.730 €)."},
+      "rischi": ["ESEMPIO — Risultati trimestrali tra 9 giorni.", "ESEMPIO — Settore sensibile ai tassi."],
+      "affidabilita_segnale": "ESEMPIO — In Italia la rottura dei massimi ha dato 143 operazioni in 5 anni: vincenti il 41%, +1,6% netto in media.",
+      "solidita": {"giudizio": "buona", "punti": ["ESEMPIO — Margine operativo stabile.", "ESEMPIO — Debito netto basso."]},
+      "notizie": [{"titolo": "ESEMPIO — Titolo di una notizia inventata", "fonte": "Fonte di esempio", "url": "https://example.com/notizia-esempio", "data": "2026-11-14"}],
+      "vagli": {"analista": "ESEMPIO — Proposta con fiducia media.", "supervisore": "ESEMPIO — Confermata con riserve: attendere i conti se il prezzo apre sopra 15 €.", "rischio": "ESEMPIO — Dimensione entro l'1% di rischio, settore non ancora in portafoglio."}
+    },
+    {
+      "id": "2026-11-16-ESEMPIO2.DE", "strumento": "ESEMPIO2.DE", "nome": "Esempio Beta AG", "tipo": "azione", "mercato": "EU",
+      "azione": "ATTENDI", "orizzonte": "2-6 settimane", "fiducia": "bassa",
+      "tesi": "ESEMPIO — Segnale di ripartenza del trend, ma il clima europeo si sta indebolendo. Meglio aspettare una conferma.",
+      "perche": ["ESEMPIO — Prezzo tornato sopra la media a 200 giorni.", "ESEMPIO — Media a 200 giorni in salita.", "ESEMPIO — Bilancio solido."],
+      "piano": {"prezzo_riferimento": 48.1, "stop": 45.2, "obiettivo": 53.9, "rischio_pct": 6.03,
+                "ingresso": "ESEMPIO — Solo se chiude sopra 49 € nei prossimi tre giorni.",
+                "dimensione": "ESEMPIO — Metà della dimensione normale."},
+      "rischi": ["ESEMPIO — La regola di ripartenza ha un giudizio storico debole."],
+      "affidabilita_segnale": "ESEMPIO — In Europa la ripartenza ha dato 41 operazioni: +0,8% netto in media, giudizio debole.",
+      "solidita": {"giudizio": "discreta", "punti": ["ESEMPIO — Utili stabili."]},
+      "notizie": [],
+      "vagli": {"analista": "ESEMPIO — Interessante ma prematuro.", "supervisore": "ESEMPIO — Confermata con riserve.", "rischio": "ESEMPIO — Nessun problema di concentrazione."}
+    }
+  ],
+  "posizioni": [
+    {"strumento": "ESEMPIO3.MI", "nome": "Esempio Gamma", "azione": "MANTIENI", "motivo": "ESEMPIO — Tendenza intatta, nessun avviso d'uscita.", "stop_aggiornato": 4.1},
+    {"strumento": "ESEMPIO4", "nome": "Esempio Delta Inc.", "azione": "VENDI", "motivo": "ESEMPIO — Persa la media a 200 giorni e rottura del supporto a 20 giorni.", "stop_aggiornato": null}
+  ],
+  "scartate": [
+    {"strumento": "ESEMPIO5.PA", "nome": "Esempio Epsilon SA", "motivo": "ESEMPIO — Conti tra 3 giorni: rischio di forte oscillazione."},
+    {"strumento": "ESEMPIO6-EUR", "nome": "Esempiocoin", "motivo": "ESEMPIO — Clima crypto sfavorevole e liquidità bassa."}
+  ],
+  "pac": {"nota": "ESEMPIO — Nessun cambiamento consigliato: i costi degli ETF sono invariati.", "controlli": ["ESEMPIO — TER verificati sui siti degli emittenti.", "ESEMPIO — Nessun ETF chiuso o fuso."]},
+  "avvertenze": "ESEMPIO — Questo è un rapporto di esempio con nomi e numeri inventati. Il Guardiano dà segnali e analisi, non consulenza finanziaria personale: i mercati possono far perdere denaro e le decisioni restano tue."
+}

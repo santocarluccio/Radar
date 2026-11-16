@@ -518,6 +518,8 @@ def main(argv: list[str] | None = None) -> int:
         codice = 2
     cartella_dati.mkdir(parents=True, exist_ok=True)
     esporta.scrivi(cartella_dati, "stato.json", stato_json)
+    if codice == 0:  # sul ramo dati, dopo un giro fallito, il flusso lo sostituisce con la diagnosi
+        esporta.scrivi(cartella_dati, "errore_ultimo_giro.json", {"esito": "ok", "generato_il": None})
     (cartella_dati / "ultimo_log.txt").write_text("\n".join(log.righe[-400:]) + "\n", encoding="utf-8")
     return codice
 
