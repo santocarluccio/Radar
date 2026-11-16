@@ -126,7 +126,7 @@
    "nome": "Sui",
    "simbolo": "SUI",
    "categoria": "Piattaforme smart contract",
-   "yahoo": "SUI20947-EUR",
+   "yahoo": null,
    "kraken_pair_eur": "SUIEUR",
    "coingecko_id": "sui",
    "su_trade_republic": null,
@@ -170,7 +170,7 @@
    "nome": "Toncoin",
    "simbolo": "TON",
    "categoria": "Piattaforme smart contract",
-   "yahoo": "TON11419-EUR",
+   "yahoo": null,
    "kraken_pair_eur": "TONEUR",
    "coingecko_id": "the-open-network",
    "su_trade_republic": null,
@@ -203,8 +203,8 @@
    "nome": "Hyperliquid",
    "simbolo": "HYPE",
    "categoria": "DeFi",
-   "yahoo": "HYPE32196-EUR",
-   "kraken_pair_eur": null,
+   "yahoo": null,
+   "kraken_pair_eur": "HYPEEUR",
    "coingecko_id": "hyperliquid",
    "su_trade_republic": null,
    "su_revolut_x": null,
@@ -214,7 +214,7 @@
    "nome": "NEAR Protocol",
    "simbolo": "NEAR",
    "categoria": "Piattaforme smart contract",
-   "yahoo": "NEAR-EUR",
+   "yahoo": null,
    "kraken_pair_eur": "NEAREUR",
    "coingecko_id": "near",
    "su_trade_republic": null,
@@ -247,7 +247,7 @@
    "nome": "Pepe",
    "simbolo": "PEPE",
    "categoria": "Meme",
-   "yahoo": "PEPE24478-EUR",
+   "yahoo": null,
    "kraken_pair_eur": "PEPEEUR",
    "coingecko_id": "pepe",
    "su_trade_republic": null,
@@ -280,7 +280,7 @@
    "nome": "Arbitrum",
    "simbolo": "ARB",
    "categoria": "Layer 2",
-   "yahoo": "ARB11841-EUR",
+   "yahoo": null,
    "kraken_pair_eur": "ARBEUR",
    "coingecko_id": "arbitrum",
    "su_trade_republic": null,
@@ -302,7 +302,7 @@
    "nome": "Bittensor",
    "simbolo": "TAO",
    "categoria": "AI e DePIN",
-   "yahoo": "TAO22974-EUR",
+   "yahoo": null,
    "kraken_pair_eur": "TAOEUR",
    "coingecko_id": "bittensor",
    "su_trade_republic": null,
@@ -312,16 +312,20 @@
  ],
  "da_verificare": [
   {
-   "strumento": "SUI, TON, UNI, HYPE, PEPE, POL, ARB, TAO",
-   "nota": "Simboli Yahoo con suffisso numerico: da confermare al primo giro."
+   "strumento": "SUI, TON, NEAR, HYPE, PEPE, ARB, TAO",
+   "nota": "Yahoo non restituisce dati in EUR per questi simboli (giro del 16/11/2026): prezzi solo da Kraken, circa 2 anni di storico."
   },
   {
    "strumento": "tutte",
    "nota": "Disponibilità su Trade Republic e Revolut X da confermare nelle app: null significa non verificato."
   },
   {
-   "strumento": "BNB, HBAR, HYPE",
+   "strumento": "BNB, HBAR",
    "nota": "Coppia Kraken in EUR non inserita: senza Yahoo non c'è ripiego."
+  },
+  {
+   "strumento": "HYPE",
+   "nota": "Coppia Kraken HYPEEUR da confermare al primo giro."
   }
  ]
 }

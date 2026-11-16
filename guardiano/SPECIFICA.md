@@ -113,7 +113,7 @@ I costi per lato comprendono 1 € di commissione su un ordine di riferimento di
 
 ## 4. Fonti dati
 
-- **Primaria**: `yfinance`, `yf.download(lista, period="5y", interval="1d", auto_adjust=True, group_by="ticker", threads=True, progress=False)` a lotti di 40 con pausa di 2 s; i ticker falliti si riprovano uno a uno fino a 3 volte con attese di 5, 15, 45 s. Per gli ETF `period="max"`.
+- **Primaria**: `yfinance`, `yf.download(lista, period="5y", interval="1d", auto_adjust=True, group_by="ticker", threads=True, progress=False)` a lotti di 40 con pausa di 2 s; i ticker mancanti si riprovano a lotti di 10 (o uno a uno se sono pochi) fino a 3 giri con attese di 20, 60 e 120 s, entro un tetto di 10 minuti per lo scarico. Per gli ETF `period="max"`.
 - **Crypto**: simbolo Yahoo da config (`BTC-EUR`). Ripiego se Yahoo fallisce o dà meno di 250 barre: Kraken pubblico `https://api.kraken.com/0/public/OHLC?pair=<kraken_pair_eur>&interval=1440` (fino a 720 candele giornaliere: tempo, apertura, massimo, minimo, chiusura, vwap, volume, conteggio).
 - **Pulizia**: indice di date senza fuso, ordine crescente, colonne `apertura, massimo, minimo, chiusura, volume` in float; via le righe senza chiusura. **Barra parziale**: per le crypto si scarta l'ultima barra se ha la data UTC di oggi; per azioni, ETF e indici si scarta l'ultima barra se ha la data di oggi e l'ora UTC dell'esecuzione è tra le 07:00 e le 21:10 di un giorno feriale.
 - **Qualità** per strumento: `storico_corto` sotto 260 barre; `dati_vecchi` se l'ultima barra ha più di 5 giorni di calendario (azioni, ETF) o più di 2 (crypto); altrimenti `ok`. Sotto 60 barre lo strumento è escluso e finisce in `stato.json → problemi`.

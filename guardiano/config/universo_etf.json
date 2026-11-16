@@ -392,14 +392,14 @@
    "note": ""
   },
   {
-   "nome": "BTCetc – Bitcoin Exchange Traded Crypto",
-   "isin": "DE000A27Z304",
-   "ticker_yahoo": "BTCE.DE",
+   "nome": "VanEck Bitcoin ETN",
+   "isin": "DE000A28M8D0",
+   "ticker_yahoo": "VBTC.DE",
    "categoria": "Crypto ETP",
-   "indice_replicato": "Bitcoin (fisico)",
-   "ter_pct": 2.0,
+   "indice_replicato": "MarketVector Bitcoin VWAP Close (bitcoin fisico)",
+   "ter_pct": 1.0,
    "politica": "acc",
-   "emittente": "ETC Group",
+   "emittente": "VanEck",
    "valuta_fondo": "EUR",
    "copertura_cambio": false,
    "note": "Rischio molto alto: oscillazioni ampie quanto il bitcoin. Al massimo una piccola quota."

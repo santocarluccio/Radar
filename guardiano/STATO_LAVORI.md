@@ -8,8 +8,8 @@ Vincolo: il piano Claude dell'utente ha un limite di utilizzo ogni 5 ore. Pochi 
 ## Piano
 
 1. [x] Specifica e stato dei lavori nel repository
-2. [ ] Universi (`config/universo_*.json`) e `parametri.json`
-3. [ ] Motore, test, flusso GitHub Actions, README
+2. [x] Universi (`config/universo_*.json`) e `parametri.json`
+3. [x] Motore, test, flusso GitHub Actions, README
 4. [ ] Primo giro con dati reali, correzione dei ticker, `main` aggiornato (attiva l'esecuzione notturna)
 5. [ ] Interfaccia (`guardiano/interfaccia/index.html`) provata su telefono e PC
 6. [ ] Squadra di agenti: ruoli in `.claude/agents/`, `guardiano/agenti/PROCEDURA.md`, schema ed esempio del rapporto, comando `/guardiano`
@@ -22,3 +22,4 @@ Vincolo: il piano Claude dell'utente ha un limite di utilizzo ogni 5 ore. Pochi 
 
 - 15/11 21:50–04:12 — Prima sessione (Claude Fable 5.2): specifica scritta, agenti avviati due volte, interrotti dal limite di utilizzo; nulla salvato su GitHub.
 - 16/11 06:30 — Seconda sessione (Claude Opus 5.5): specifica ricostruita dalla chat, con il ramo `dati` separato; lavoro diretto, salvataggi frequenti.
+- 16/11 06:50 — Motore, 27 test e flusso pubblicati. Primo giro reale (Actions, 9 min): 196 strumenti su 199; prezzi verificati con le notizie (FTSE MIB 51.805 il 29/9, Technoprobe 32,32 €) e con CoinGecko (BTC 58.167 € il 15/11 alle 00:00 UTC). Correzioni: nuovi tentativi a lotti con tetto di tempo, Kraken completa le ultime barre crypto (Yahoo di notte resta indietro di un giorno), 7 crypto solo da Kraken, ETP bitcoin sostituito da VanEck VBTC.

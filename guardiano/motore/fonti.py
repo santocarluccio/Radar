@@ -81,44 +81,64 @@ def _estrai(dati: pd.DataFrame, ticker: str) -> pd.DataFrame | None:
     return dati.dropna(how="all")
 
 
+def _giro(yf, gruppo: list[str], periodo: str, threads: bool, log, etichetta: str) -> tuple[dict, str | None]:
+    """Un tentativo su un gruppo di ticker: restituisce le serie ottenute e l'eventuale errore."""
+    try:
+        dati = yf.download(gruppo if len(gruppo) > 1 else gruppo[0], period=periodo, interval="1d",
+                           auto_adjust=True, group_by="ticker", threads=threads, progress=False)
+    except Exception as e:  # rete, limiti di richieste, formato inatteso
+        msg = f"{type(e).__name__}: {e}"[:200]
+        log(f"  {etichetta}: errore {msg}")
+        return {}, msg
+    out = {}
+    for t in gruppo:
+        df = pulisci(_estrai(dati, t))
+        if len(df):
+            out[t] = df
+    return out, None
+
+
 def scarica_yahoo(tickers: list[str], periodo: str, log: Callable[[str], None],
-                  lotto: int = 40, pausa: float = 2.0, attese=(5, 15, 45)) -> tuple[dict, dict]:
-    """Scarica a lotti; i ticker falliti si riprovano uno a uno. Restituisce (serie, errori)."""
+                  lotto: int = 40, pausa: float = 2.0, attese=(20, 60, 120),
+                  tetto_secondi: float = 600.0) -> tuple[dict, dict]:
+    """Scarica a lotti; i ticker mancanti si riprovano a lotti più piccoli, fino a tre giri con
+    attese crescenti, entro un tetto di tempo complessivo. Restituisce (serie, errori)."""
     import yfinance as yf  # importato qui: i test e la demo non ne hanno bisogno
 
+    inizio = time.time()
     serie: dict[str, pd.DataFrame] = {}
     errori: dict[str, str] = {}
     unici = list(dict.fromkeys(tickers))
     for k in range(0, len(unici), lotto):
         gruppo = unici[k:k + lotto]
-        try:
-            dati = yf.download(gruppo, period=periodo, interval="1d", auto_adjust=True, group_by="ticker",
-                               threads=True, progress=False)
-        except Exception as e:  # rete, limiti di richieste, formato inatteso
-            log(f"  lotto {k // lotto + 1}: errore {type(e).__name__}: {e}")
-            dati = None
-        for t in gruppo:
-            df = pulisci(_estrai(dati, t))
-            if len(df):
-                serie[t] = df
+        ottenute, err = _giro(yf, gruppo, periodo, True, log, f"lotto {k // lotto + 1}")
+        serie.update(ottenute)
+        if err:
+            for t in gruppo:
+                errori.setdefault(t, err)
         if k + lotto < len(unici):
             time.sleep(pausa)
-    mancanti = [t for t in unici if t not in serie]
-    for t in mancanti:
-        ultimo_errore = "nessun dato"
-        for attesa in attese:
-            time.sleep(attesa)
-            try:
-                dati = yf.download(t, period=periodo, interval="1d", auto_adjust=True, group_by="ticker",
-                                   threads=False, progress=False)
-                df = pulisci(_estrai(dati, t))
-                if len(df):
-                    serie[t] = df
-                    break
-            except Exception as e:
-                ultimo_errore = f"{type(e).__name__}: {e}"[:200]
-        if t not in serie:
-            errori[t] = ultimo_errore
+    for n_giro, attesa in enumerate(attese, start=1):
+        mancanti = [t for t in unici if t not in serie]
+        if not mancanti or time.time() - inizio + attesa > tetto_secondi:
+            break
+        log(f"  nuovo tentativo {n_giro} tra {attesa} s per {len(mancanti)} ticker: {', '.join(mancanti[:15])}"
+            + (" …" if len(mancanti) > 15 else ""))
+        time.sleep(attesa)
+        piccolo = 10 if len(mancanti) > 10 else 1
+        for k in range(0, len(mancanti), piccolo):
+            gruppo = mancanti[k:k + piccolo]
+            ottenute, err = _giro(yf, gruppo, periodo, len(gruppo) > 1, log, f"tentativo {n_giro}")
+            serie.update(ottenute)
+            if err:
+                for t in gruppo:
+                    errori[t] = err
+            time.sleep(pausa)
+    for t in unici:
+        if t in serie:
+            errori.pop(t, None)
+        else:
+            errori.setdefault(t, "nessun dato")
     return serie, errori
 
 

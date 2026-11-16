@@ -92,18 +92,18 @@ def scarica(strumenti: list[dict], modalita_demo: bool, adesso_utc: dt.datetime,
     """Restituisce (serie per id, problemi di scarico, fonti usate)."""
     serie: dict[str, pd.DataFrame] = {}
     problemi: list[dict] = []
-    fonti_usate = {"kraken": []}
+    fonti_usate = {"kraken": [], "kraken_completamento": []}
     if modalita_demo:
         fine = data_demo or adesso_utc.date()
         for s in strumenti:
             tipo = s["tipo"]
             anni = 8 if tipo == "etf" else par["storico_anni"]
             fine_s = fine if tipo == "crypto" else pd.bdate_range(end=pd.Timestamp(fine), periods=1)[0].date()
-            serie[s["id"]] = fonti.pulisci(demo.serie(s["ticker"], tipo, fine_s, anni))
+            serie[s["id"]] = fonti.pulisci(demo.serie(s["ticker"] or s["id"], tipo, fine_s, anni))
         return serie, problemi, fonti_usate
     anni = par["storico_anni"]
     gruppi = {
-        f"{anni}y": [s for s in strumenti if s["tipo"] != "etf"],
+        f"{anni}y": [s for s in strumenti if s["tipo"] != "etf" and s["ticker"]],
         "max": [s for s in strumenti if s["tipo"] == "etf"],
     }
     for periodo, lista in gruppi.items():
@@ -115,21 +115,35 @@ def scarica(strumenti: list[dict], modalita_demo: bool, adesso_utc: dt.datetime,
         for s in lista:
             if s["ticker"] in ottenute:
                 serie[s["id"]] = ottenute[s["ticker"]]
-    # ripiego Kraken per le crypto
+    # Kraken: ripiego per le crypto senza dati Yahoo sufficienti e completamento delle ultime barre,
+    # perché di notte Yahoo può non avere ancora la barra giornaliera del giorno prima
+    prima = True
     for s in strumenti:
-        if s["tipo"] != "crypto":
+        coppia = s["meta"].get("kraken_pair_eur") if s["tipo"] == "crypto" else None
+        if not coppia:
             continue
+        if not prima:
+            time.sleep(1.1)  # limite di richieste dell'API pubblica di Kraken
+        prima = False
         df = serie.get(s["id"])
-        coppia = s["meta"].get("kraken_pair_eur")
-        if (df is None or len(df) < 250) and coppia:
-            try:
-                kr = fonti.scarica_kraken(coppia)
-                if df is None or len(kr) > len(df):
-                    serie[s["id"]] = kr
-                    fonti_usate["kraken"].append(s["id"])
-                    log(f"  {s['id']}: dati da Kraken ({len(kr)} barre)")
-            except Exception as e:
-                log(f"  {s['id']}: ripiego Kraken fallito ({type(e).__name__}: {e})")
+        try:
+            kr = fonti.scarica_kraken(coppia)
+        except Exception as e:
+            log(f"  {s['id']}: Kraken non disponibile ({type(e).__name__}: {e})"[:200])
+            continue
+        if not len(kr):
+            continue
+        if df is None or len(df) < 250:
+            if df is None or len(kr) > len(df):
+                serie[s["id"]] = kr
+                fonti_usate["kraken"].append(s["id"])
+                log(f"  {s['id']}: dati da Kraken ({len(kr)} barre)")
+        elif kr.index[-1] > df.index[-1]:
+            nuove = kr[kr.index > df.index[-1]]
+            serie[s["id"]] = pd.concat([df, nuove])
+            fonti_usate["kraken_completamento"].append(s["id"])
+    if fonti_usate["kraken_completamento"]:
+        log(f"  ultime barre completate con Kraken per {len(fonti_usate['kraken_completamento'])} crypto")
     for s in strumenti:
         if s["id"] not in serie:
             problemi.append({"strumento": s["id"], "motivo": "nessun dato"})
@@ -448,7 +462,7 @@ def esegui(args, log: Diario, adesso_utc: dt.datetime, generato: str) -> tuple[d
     if corti:
         avvisi.append(f"{len(corti)} strumenti con storico corto (meno di 260 barre): {', '.join(sorted(corti)[:12])}")
     if fonti_usate["kraken"]:
-        avvisi.append(f"Prezzi da Kraken per: {', '.join(fonti_usate['kraken'])}")
+        avvisi.append(f"Prezzi solo da Kraken (circa 2 anni di storico) per: {', '.join(fonti_usate['kraken'])}")
     for i in ("FTSEMIB.MI", "^STOXX50E", "^GSPC"):
         if any(s["id"] == i for s in strumenti) and i not in calcolati:
             avvisi.append(f"Indice {i} mancante: clima e forza relativa del suo mercato incompleti.")
