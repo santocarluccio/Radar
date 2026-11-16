@@ -1,0 +1,89 @@
+name: Guardiano - dati di mercato
+
+on:
+  schedule:
+    - cron: "20 23 * * *"   # 23:20 UTC, dopo la chiusura di Wall Street (solo dal ramo main)
+  workflow_dispatch:
+  push:
+    branches-ignore: [dati]
+    paths:
+      - "guardiano/motore/**"
+      - "guardiano/config/**"
+      - "guardiano/test/**"
+      - "guardiano/requirements.txt"
+      - ".github/workflows/guardiano-dati.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: guardiano-dati
+  cancel-in-progress: false
+
+jobs:
+  dati:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: guardiano/requirements.txt
+
+      - name: Installa le dipendenze
+        run: pip install -r guardiano/requirements.txt
+
+      - name: Recupera il registro dei segnali dal ramo dati
+        run: |
+          mkdir -p guardiano/dati
+          if git ls-remote --exit-code --heads origin dati > /dev/null 2>&1; then
+            git fetch --depth 1 origin dati
+            git show origin/dati:guardiano/dati/registro_segnali.json > guardiano/dati/registro_segnali.json 2> /dev/null \
+              || rm -f guardiano/dati/registro_segnali.json
+          fi
+          ls -la guardiano/dati
+
+      - name: Test
+        run: python -m pytest -q guardiano/test
+
+      - name: Motore
+        id: motore
+        run: |
+          set -o pipefail
+          python -m guardiano.motore.esegui 2>&1 | tee /tmp/esecuzione.log
+
+      - name: Pubblica i dati sul ramo dati
+        if: always() && (steps.motore.outcome == 'success' || steps.motore.outcome == 'failure')
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ESITO: ${{ steps.motore.outcome }}
+        run: |
+          set -e
+          DEST=$(mktemp -d)
+          mkdir -p "$DEST/guardiano"
+          if [ "$ESITO" = "success" ]; then
+            cp -r guardiano/dati "$DEST/guardiano/dati"
+            MSG="dati: aggiornamento $(TZ=Europe/Rome date '+%Y-%m-%d %H:%M')"
+          else
+            # giro fallito: si conservano i dati precedenti e si aggiunge la diagnosi
+            if git ls-remote --exit-code --heads origin dati > /dev/null 2>&1; then
+              git fetch --depth 1 origin dati
+              git archive origin/dati | tar -x -C "$DEST"
+            fi
+            mkdir -p "$DEST/guardiano/dati"
+            [ -f guardiano/dati/stato.json ] && cp guardiano/dati/stato.json "$DEST/guardiano/dati/errore_ultimo_giro.json"
+            if [ -f guardiano/dati/ultimo_log.txt ]; then cp guardiano/dati/ultimo_log.txt "$DEST/guardiano/dati/"; \
+              else tail -n 400 /tmp/esecuzione.log > "$DEST/guardiano/dati/ultimo_log.txt" || true; fi
+            MSG="dati: giro fallito $(TZ=Europe/Rome date '+%Y-%m-%d %H:%M'), dati precedenti conservati"
+          fi
+          cd "$DEST"
+          git init -q -b dati
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -q -m "$MSG"
+          git push -q -f "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" dati:dati
+          echo "$MSG"

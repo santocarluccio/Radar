@@ -155,6 +155,8 @@ Avvisi di uscita, calcolati per tutti gli strumenti e mostrati se scattati nelle
 
 ## 7. Punteggio (0–100) e stato
 
+Conteggio delle barre: `giorni_fa` = 0 è l'ultima barra; «nelle ultime k barre» ed «entro k barre» significano `giorni_fa` da 0 a k−1, «tra 4 e 10 barre» significa `giorni_fa` da 3 a 9. `segnali_attivi` elenca il segnale più recente di ogni regola nelle ultime 10 barre. Il controllo della condizione d'uscita vale anche alla chiusura della barra d'ingresso (backtest e registro). Per le crypto le variazioni `var_pct` usano distanze riscalate a 365 barre l'anno (g5 = 7 barre, m1 = 30, …); il momentum usa le stesse distanze delle azioni.
+
 - **tendenza** (40): C > SMA200 → 15; SMA50 > SMA200 → 10; SMA200[t] > SMA200[t-20] → 5; C > SMA50 → 10.
 - **momentum** (25): 0,15·percentile di `momentum_6m_pct` + 0,10·percentile di `momentum_12_1_pct`.
 - **forza_relativa** (10): lineare da 0 (≤ −10%) a 10 (≥ +10%) su `forza_relativa_3m_pct`.

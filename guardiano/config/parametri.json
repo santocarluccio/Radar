@@ -1,0 +1,20 @@
+{
+  "versione": 1,
+  "storico_anni": 5,
+  "barre_anno": {"azione": 252, "etf": 252, "crypto": 365},
+  "costi_per_lato_pct": {"azione": 0.20, "etf": 0.15, "crypto": 0.40},
+  "regole": {
+    "rottura": {"finestra_massimo": 55, "volume_min_rapporto": 1.5, "usa_volume": {"azione": true, "crypto": false}, "finestra_uscita": 20},
+    "ritracciamento": {"rsi_periodo": 2, "rsi_ingresso": 10, "rsi_uscita": 70, "max_barre": 10},
+    "ripartenza": {"barre_osservate": 30, "barre_sotto_min": 20, "uscita_sotto_sma200_pct": 3.0}
+  },
+  "stop_atr_multiplo": 2.5,
+  "obiettivo_multiplo_rischio": 2.0,
+  "validita_segnale_barre": 3,
+  "punteggio": {"tendenza": 40, "momentum": 25, "forza_relativa": 10, "setup": 15, "rischio": 10},
+  "soglie": {"compra": 65, "osserva": 60, "debole": 35},
+  "clima": {"ampiezza_favorevole": 55, "ampiezza_sfavorevole": 40},
+  "candidati": {"max_acquisto": 8, "max_osservati": 6, "max_uscita": 15},
+  "backtest": {"min_operazioni": 30, "riscaldamento_barre": 252},
+  "pac": {"versamento_mensile_simulato": 100, "anni_simulazione": 5}
+}

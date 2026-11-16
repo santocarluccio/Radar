@@ -1,0 +1,327 @@
+{
+ "aggiornato": "2026-11-16",
+ "crypto": [
+  {
+   "nome": "Bitcoin",
+   "simbolo": "BTC",
+   "categoria": "Riserva di valore",
+   "yahoo": "BTC-EUR",
+   "kraken_pair_eur": "XBTEUR",
+   "coingecko_id": "bitcoin",
+   "su_trade_republic": true,
+   "su_revolut_x": true,
+   "note": ""
+  },
+  {
+   "nome": "Ethereum",
+   "simbolo": "ETH",
+   "categoria": "Piattaforme smart contract",
+   "yahoo": "ETH-EUR",
+   "kraken_pair_eur": "ETHEUR",
+   "coingecko_id": "ethereum",
+   "su_trade_republic": true,
+   "su_revolut_x": true,
+   "note": ""
+  },
+  {
+   "nome": "XRP",
+   "simbolo": "XRP",
+   "categoria": "Pagamenti",
+   "yahoo": "XRP-EUR",
+   "kraken_pair_eur": "XRPEUR",
+   "coingecko_id": "ripple",
+   "su_trade_republic": true,
+   "su_revolut_x": true,
+   "note": ""
+  },
+  {
+   "nome": "BNB",
+   "simbolo": "BNB",
+   "categoria": "Exchange token",
+   "yahoo": "BNB-EUR",
+   "kraken_pair_eur": null,
+   "coingecko_id": "binancecoin",
+   "su_trade_republic": null,
+   "su_revolut_x": null,
+   "note": "Token legato a Binance."
+  },
+  {
+   "nome": "Solana",
+   "simbolo": "SOL",
+   "categoria": "Piattaforme smart contract",
+   "yahoo": "SOL-EUR",
+   "kraken_pair_eur": "SOLEUR",
+   "coingecko_id": "solana",
+   "su_trade_republic": true,
+   "su_revolut_x": true,
+   "note": ""
+  },
+  {
+   "nome": "Dogecoin",
+   "simbolo": "DOGE",
+   "categoria": "Meme",
+   "yahoo": "DOGE-EUR",
+   "kraken_pair_eur": "XDGEUR",
+   "coingecko_id": "dogecoin",
+   "su_trade_republic": true,
+   "su_revolut_x": true,
+   "note": ""
+  },
+  {
+   "nome": "Cardano",
+   "simbolo": "ADA",
+   "categoria": "Piattaforme smart contract",
+   "yahoo": "ADA-EUR",
+   "kraken_pair_eur": "ADAEUR",
+   "coingecko_id": "cardano",
+   "su_trade_republic": true,
+   "su_revolut_x": true,
+   "note": ""
+  },
+  {
+   "nome": "Tron",
+   "simbolo": "TRX",
+   "categoria": "Piattaforme smart contract",
+   "yahoo": "TRX-EUR",
+   "kraken_pair_eur": "TRXEUR",
+   "coingecko_id": "tron",
+   "su_trade_republic": null,
+   "su_revolut_x": null,
+   "note": ""
+  },
+  {
+   "nome": "Chainlink",
+   "simbolo": "LINK",
+   "categoria": "Infrastruttura e oracoli",
+   "yahoo": "LINK-EUR",
+   "kraken_pair_eur": "LINKEUR",
+   "coingecko_id": "chainlink",
+   "su_trade_republic": true,
+   "su_revolut_x": true,
+   "note": ""
+  },
+  {
+   "nome": "Avalanche",
+   "simbolo": "AVAX",
+   "categoria": "Piattaforme smart contract",
+   "yahoo": "AVAX-EUR",
+   "kraken_pair_eur": "AVAXEUR",
+   "coingecko_id": "avalanche-2",
+   "su_trade_republic": true,
+   "su_revolut_x": true,
+   "note": ""
+  },
+  {
+   "nome": "Stellar",
+   "simbolo": "XLM",
+   "categoria": "Pagamenti",
+   "yahoo": "XLM-EUR",
+   "kraken_pair_eur": "XLMEUR",
+   "coingecko_id": "stellar",
+   "su_trade_republic": true,
+   "su_revolut_x": true,
+   "note": ""
+  },
+  {
+   "nome": "Sui",
+   "simbolo": "SUI",
+   "categoria": "Piattaforme smart contract",
+   "yahoo": "SUI20947-EUR",
+   "kraken_pair_eur": "SUIEUR",
+   "coingecko_id": "sui",
+   "su_trade_republic": null,
+   "su_revolut_x": null,
+   "note": ""
+  },
+  {
+   "nome": "Bitcoin Cash",
+   "simbolo": "BCH",
+   "categoria": "Pagamenti",
+   "yahoo": "BCH-EUR",
+   "kraken_pair_eur": "BCHEUR",
+   "coingecko_id": "bitcoin-cash",
+   "su_trade_republic": true,
+   "su_revolut_x": true,
+   "note": ""
+  },
+  {
+   "nome": "Hedera",
+   "simbolo": "HBAR",
+   "categoria": "Piattaforme smart contract",
+   "yahoo": "HBAR-EUR",
+   "kraken_pair_eur": null,
+   "coingecko_id": "hedera-hashgraph",
+   "su_trade_republic": null,
+   "su_revolut_x": null,
+   "note": ""
+  },
+  {
+   "nome": "Litecoin",
+   "simbolo": "LTC",
+   "categoria": "Pagamenti",
+   "yahoo": "LTC-EUR",
+   "kraken_pair_eur": "LTCEUR",
+   "coingecko_id": "litecoin",
+   "su_trade_republic": true,
+   "su_revolut_x": true,
+   "note": ""
+  },
+  {
+   "nome": "Toncoin",
+   "simbolo": "TON",
+   "categoria": "Piattaforme smart contract",
+   "yahoo": "TON11419-EUR",
+   "kraken_pair_eur": "TONEUR",
+   "coingecko_id": "the-open-network",
+   "su_trade_republic": null,
+   "su_revolut_x": null,
+   "note": ""
+  },
+  {
+   "nome": "Polkadot",
+   "simbolo": "DOT",
+   "categoria": "Piattaforme smart contract",
+   "yahoo": "DOT-EUR",
+   "kraken_pair_eur": "DOTEUR",
+   "coingecko_id": "polkadot",
+   "su_trade_republic": true,
+   "su_revolut_x": true,
+   "note": ""
+  },
+  {
+   "nome": "Uniswap",
+   "simbolo": "UNI",
+   "categoria": "DeFi",
+   "yahoo": "UNI7083-EUR",
+   "kraken_pair_eur": "UNIEUR",
+   "coingecko_id": "uniswap",
+   "su_trade_republic": true,
+   "su_revolut_x": true,
+   "note": ""
+  },
+  {
+   "nome": "Hyperliquid",
+   "simbolo": "HYPE",
+   "categoria": "DeFi",
+   "yahoo": "HYPE32196-EUR",
+   "kraken_pair_eur": null,
+   "coingecko_id": "hyperliquid",
+   "su_trade_republic": null,
+   "su_revolut_x": null,
+   "note": "Token della borsa decentralizzata Hyperliquid."
+  },
+  {
+   "nome": "NEAR Protocol",
+   "simbolo": "NEAR",
+   "categoria": "Piattaforme smart contract",
+   "yahoo": "NEAR-EUR",
+   "kraken_pair_eur": "NEAREUR",
+   "coingecko_id": "near",
+   "su_trade_republic": null,
+   "su_revolut_x": true,
+   "note": ""
+  },
+  {
+   "nome": "Aave",
+   "simbolo": "AAVE",
+   "categoria": "DeFi",
+   "yahoo": "AAVE-EUR",
+   "kraken_pair_eur": "AAVEEUR",
+   "coingecko_id": "aave",
+   "su_trade_republic": null,
+   "su_revolut_x": true,
+   "note": ""
+  },
+  {
+   "nome": "Ethereum Classic",
+   "simbolo": "ETC",
+   "categoria": "Piattaforme smart contract",
+   "yahoo": "ETC-EUR",
+   "kraken_pair_eur": "ETCEUR",
+   "coingecko_id": "ethereum-classic",
+   "su_trade_republic": null,
+   "su_revolut_x": null,
+   "note": ""
+  },
+  {
+   "nome": "Pepe",
+   "simbolo": "PEPE",
+   "categoria": "Meme",
+   "yahoo": "PEPE24478-EUR",
+   "kraken_pair_eur": "PEPEEUR",
+   "coingecko_id": "pepe",
+   "su_trade_republic": null,
+   "su_revolut_x": true,
+   "note": "Moneta meme: rischio estremo."
+  },
+  {
+   "nome": "Shiba Inu",
+   "simbolo": "SHIB",
+   "categoria": "Meme",
+   "yahoo": "SHIB-EUR",
+   "kraken_pair_eur": "SHIBEUR",
+   "coingecko_id": "shiba-inu",
+   "su_trade_republic": null,
+   "su_revolut_x": true,
+   "note": "Moneta meme: rischio estremo."
+  },
+  {
+   "nome": "Polygon",
+   "simbolo": "POL",
+   "categoria": "Layer 2",
+   "yahoo": "POL28321-EUR",
+   "kraken_pair_eur": "POLEUR",
+   "coingecko_id": "polygon-ecosystem-token",
+   "su_trade_republic": true,
+   "su_revolut_x": true,
+   "note": "Ex MATIC."
+  },
+  {
+   "nome": "Arbitrum",
+   "simbolo": "ARB",
+   "categoria": "Layer 2",
+   "yahoo": "ARB11841-EUR",
+   "kraken_pair_eur": "ARBEUR",
+   "coingecko_id": "arbitrum",
+   "su_trade_republic": null,
+   "su_revolut_x": true,
+   "note": ""
+  },
+  {
+   "nome": "Artificial Superintelligence Alliance",
+   "simbolo": "FET",
+   "categoria": "AI e DePIN",
+   "yahoo": "FET-EUR",
+   "kraken_pair_eur": "FETEUR",
+   "coingecko_id": "fetch-ai",
+   "su_trade_republic": null,
+   "su_revolut_x": null,
+   "note": "Ex Fetch.ai."
+  },
+  {
+   "nome": "Bittensor",
+   "simbolo": "TAO",
+   "categoria": "AI e DePIN",
+   "yahoo": "TAO22974-EUR",
+   "kraken_pair_eur": "TAOEUR",
+   "coingecko_id": "bittensor",
+   "su_trade_republic": null,
+   "su_revolut_x": null,
+   "note": ""
+  }
+ ],
+ "da_verificare": [
+  {
+   "strumento": "SUI, TON, UNI, HYPE, PEPE, POL, ARB, TAO",
+   "nota": "Simboli Yahoo con suffisso numerico: da confermare al primo giro."
+  },
+  {
+   "strumento": "tutte",
+   "nota": "Disponibilità su Trade Republic e Revolut X da confermare nelle app: null significa non verificato."
+  },
+  {
+   "strumento": "BNB, HBAR, HYPE",
+   "nota": "Coppia Kraken in EUR non inserita: senza Yahoo non c'è ripiego."
+  }
+ ]
+}

@@ -1,0 +1,1483 @@
+{
+ "aggiornato": "2026-11-16",
+ "titoli": [
+  {
+   "nome": "A2A",
+   "ticker_yahoo": "A2A.MI",
+   "isin": "IT0001233417",
+   "mercato": "IT",
+   "paese": "Italia",
+   "indice": "FTSE MIB",
+   "settore": "Utility",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "Amplifon",
+   "ticker_yahoo": "AMP.MI",
+   "isin": "IT0004056880",
+   "mercato": "IT",
+   "paese": "Italia",
+   "indice": "FTSE MIB",
+   "settore": "Salute",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "Avio",
+   "ticker_yahoo": "AVIO.MI",
+   "isin": null,
+   "mercato": "IT",
+   "paese": "Italia",
+   "indice": "FTSE MIB",
+   "settore": "Difesa",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "Azimut Holding",
+   "ticker_yahoo": "AZM.MI",
+   "isin": "IT0003261697",
+   "mercato": "IT",
+   "paese": "Italia",
+   "indice": "FTSE MIB",
+   "settore": "Finanza",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "Banca Generali",
+   "ticker_yahoo": "BGN.MI",
+   "isin": "IT0001031084",
+   "mercato": "IT",
+   "paese": "Italia",
+   "indice": "FTSE MIB",
+   "settore": "Finanza",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "Banca Mediolanum",
+   "ticker_yahoo": "BMED.MI",
+   "isin": "IT0004776628",
+   "mercato": "IT",
+   "paese": "Italia",
+   "indice": "FTSE MIB",
+   "settore": "Finanza",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "Banca Monte dei Paschi di Siena",
+   "ticker_yahoo": "BMPS.MI",
+   "isin": "IT0005508921",
+   "mercato": "IT",
+   "paese": "Italia",
+   "indice": "FTSE MIB",
+   "settore": "Finanza",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "Banco BPM",
+   "ticker_yahoo": "BAMI.MI",
+   "isin": "IT0005218380",
+   "mercato": "IT",
+   "paese": "Italia",
+   "indice": "FTSE MIB",
+   "settore": "Finanza",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "BPER Banca",
+   "ticker_yahoo": "BPE.MI",
+   "isin": "IT0000066123",
+   "mercato": "IT",
+   "paese": "Italia",
+   "indice": "FTSE MIB",
+   "settore": "Finanza",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "Brunello Cucinelli",
+   "ticker_yahoo": "BC.MI",
+   "isin": "IT0004764699",
+   "mercato": "IT",
+   "paese": "Italia",
+   "indice": "FTSE MIB",
+   "settore": "Lusso",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "Buzzi",
+   "ticker_yahoo": "BZU.MI",
+   "isin": "IT0001347308",
+   "mercato": "IT",
+   "paese": "Italia",
+   "indice": "FTSE MIB",
+   "settore": "Materiali",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "Campari",
+   "ticker_yahoo": "CPR.MI",
+   "isin": "NL0015435975",
+   "mercato": "IT",
+   "paese": "Italia",
+   "indice": "FTSE MIB",
+   "settore": "Beni di consumo",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "DiaSorin",
+   "ticker_yahoo": "DIA.MI",
+   "isin": "IT0003492391",
+   "mercato": "IT",
+   "paese": "Italia",
+   "indice": "FTSE Italia Mid Cap",
+   "settore": "Salute",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "Enel",
+   "ticker_yahoo": "ENEL.MI",
+   "isin": "IT0003128367",
+   "mercato": "IT",
+   "paese": "Italia",
+   "indice": "FTSE MIB",
+   "settore": "Utility",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "Eni",
+   "ticker_yahoo": "ENI.MI",
+   "isin": "IT0003132476",
+   "mercato": "IT",
+   "paese": "Italia",
+   "indice": "FTSE MIB",
+   "settore": "Energia",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "Ferrari",
+   "ticker_yahoo": "RACE.MI",
+   "isin": "NL0011585146",
+   "mercato": "IT",
+   "paese": "Italia",
+   "indice": "FTSE MIB",
+   "settore": "Auto",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "Fincantieri",
+   "ticker_yahoo": "FCT.MI",
+   "isin": null,
+   "mercato": "IT",
+   "paese": "Italia",
+   "indice": "FTSE MIB",
+   "settore": "Industria",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "FinecoBank",
+   "ticker_yahoo": "FBK.MI",
+   "isin": "IT0000072170",
+   "mercato": "IT",
+   "paese": "Italia",
+   "indice": "FTSE MIB",
+   "settore": "Finanza",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "Generali",
+   "ticker_yahoo": "G.MI",
+   "isin": "IT0000062072",
+   "mercato": "IT",
+   "paese": "Italia",
+   "indice": "FTSE MIB",
+   "settore": "Finanza",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "Hera",
+   "ticker_yahoo": "HER.MI",
+   "isin": "IT0001250932",
+   "mercato": "IT",
+   "paese": "Italia",
+   "indice": "FTSE MIB",
+   "settore": "Utility",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "Interpump Group",
+   "ticker_yahoo": "IP.MI",
+   "isin": "IT0001078911",
+   "mercato": "IT",
+   "paese": "Italia",
+   "indice": "FTSE MIB",
+   "settore": "Industria",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "Intesa Sanpaolo",
+   "ticker_yahoo": "ISP.MI",
+   "isin": "IT0000072618",
+   "mercato": "IT",
+   "paese": "Italia",
+   "indice": "FTSE MIB",
+   "settore": "Finanza",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "Inwit",
+   "ticker_yahoo": "INW.MI",
+   "isin": "IT0005090300",
+   "mercato": "IT",
+   "paese": "Italia",
+   "indice": "FTSE MIB",
+   "settore": "Telecomunicazioni",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "Italgas",
+   "ticker_yahoo": "IG.MI",
+   "isin": "IT0005211237",
+   "mercato": "IT",
+   "paese": "Italia",
+   "indice": "FTSE MIB",
+   "settore": "Utility",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "Leonardo",
+   "ticker_yahoo": "LDO.MI",
+   "isin": "IT0003856405",
+   "mercato": "IT",
+   "paese": "Italia",
+   "indice": "FTSE MIB",
+   "settore": "Difesa",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "Lottomatica",
+   "ticker_yahoo": "LTMC.MI",
+   "isin": null,
+   "mercato": "IT",
+   "paese": "Italia",
+   "indice": "FTSE MIB",
+   "settore": "Beni di consumo",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "Mediobanca",
+   "ticker_yahoo": "MB.MI",
+   "isin": "IT0000062957",
+   "mercato": "IT",
+   "paese": "Italia",
+   "indice": "FTSE MIB",
+   "settore": "Finanza",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "Moncler",
+   "ticker_yahoo": "MONC.MI",
+   "isin": "IT0004965148",
+   "mercato": "IT",
+   "paese": "Italia",
+   "indice": "FTSE MIB",
+   "settore": "Lusso",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "Nexi",
+   "ticker_yahoo": "NEXI.MI",
+   "isin": "IT0005366767",
+   "mercato": "IT",
+   "paese": "Italia",
+   "indice": "FTSE MIB",
+   "settore": "Tecnologia",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "Pirelli",
+   "ticker_yahoo": "PIRC.MI",
+   "isin": "IT0005278236",
+   "mercato": "IT",
+   "paese": "Italia",
+   "indice": "FTSE MIB",
+   "settore": "Auto",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "Poste Italiane",
+   "ticker_yahoo": "PST.MI",
+   "isin": "IT0003796171",
+   "mercato": "IT",
+   "paese": "Italia",
+   "indice": "FTSE MIB",
+   "settore": "Finanza",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "Prysmian",
+   "ticker_yahoo": "PRY.MI",
+   "isin": "IT0004176001",
+   "mercato": "IT",
+   "paese": "Italia",
+   "indice": "FTSE MIB",
+   "settore": "Industria",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "Saipem",
+   "ticker_yahoo": "SPM.MI",
+   "isin": "IT0005495657",
+   "mercato": "IT",
+   "paese": "Italia",
+   "indice": "FTSE MIB",
+   "settore": "Energia",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "Snam",
+   "ticker_yahoo": "SRG.MI",
+   "isin": "IT0003153415",
+   "mercato": "IT",
+   "paese": "Italia",
+   "indice": "FTSE MIB",
+   "settore": "Utility",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "Stellantis",
+   "ticker_yahoo": "STLAM.MI",
+   "isin": "NL00150001Q9",
+   "mercato": "IT",
+   "paese": "Italia",
+   "indice": "FTSE MIB",
+   "settore": "Auto",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "STMicroelectronics",
+   "ticker_yahoo": "STMMI.MI",
+   "isin": "NL0000226223",
+   "mercato": "IT",
+   "paese": "Italia",
+   "indice": "FTSE MIB",
+   "settore": "Tecnologia",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "Technoprobe",
+   "ticker_yahoo": "TPRO.MI",
+   "isin": "IT0005482333",
+   "mercato": "IT",
+   "paese": "Italia",
+   "indice": "FTSE MIB",
+   "settore": "Tecnologia",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "Telecom Italia",
+   "ticker_yahoo": "TIT.MI",
+   "isin": "IT0003497168",
+   "mercato": "IT",
+   "paese": "Italia",
+   "indice": "FTSE MIB",
+   "settore": "Telecomunicazioni",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "Tenaris",
+   "ticker_yahoo": "TEN.MI",
+   "isin": "LU0156801721",
+   "mercato": "IT",
+   "paese": "Italia",
+   "indice": "FTSE MIB",
+   "settore": "Energia",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "Terna",
+   "ticker_yahoo": "TRN.MI",
+   "isin": "IT0003242622",
+   "mercato": "IT",
+   "paese": "Italia",
+   "indice": "FTSE MIB",
+   "settore": "Utility",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "UniCredit",
+   "ticker_yahoo": "UCG.MI",
+   "isin": "IT0005239360",
+   "mercato": "IT",
+   "paese": "Italia",
+   "indice": "FTSE MIB",
+   "settore": "Finanza",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "Unipol",
+   "ticker_yahoo": "UNI.MI",
+   "isin": "IT0004810054",
+   "mercato": "IT",
+   "paese": "Italia",
+   "indice": "FTSE MIB",
+   "settore": "Finanza",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "SAP",
+   "ticker_yahoo": "SAP.DE",
+   "isin": "DE0007164600",
+   "mercato": "EU",
+   "paese": "Germania",
+   "indice": "DAX",
+   "settore": "Tecnologia",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "Siemens",
+   "ticker_yahoo": "SIE.DE",
+   "isin": "DE0007236101",
+   "mercato": "EU",
+   "paese": "Germania",
+   "indice": "DAX",
+   "settore": "Industria",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "Allianz",
+   "ticker_yahoo": "ALV.DE",
+   "isin": "DE0008404005",
+   "mercato": "EU",
+   "paese": "Germania",
+   "indice": "DAX",
+   "settore": "Finanza",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "Deutsche Telekom",
+   "ticker_yahoo": "DTE.DE",
+   "isin": "DE0005557508",
+   "mercato": "EU",
+   "paese": "Germania",
+   "indice": "DAX",
+   "settore": "Telecomunicazioni",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "Mercedes-Benz Group",
+   "ticker_yahoo": "MBG.DE",
+   "isin": "DE0007100000",
+   "mercato": "EU",
+   "paese": "Germania",
+   "indice": "DAX",
+   "settore": "Auto",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "BMW",
+   "ticker_yahoo": "BMW.DE",
+   "isin": "DE0005190003",
+   "mercato": "EU",
+   "paese": "Germania",
+   "indice": "DAX",
+   "settore": "Auto",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "Volkswagen (privilegiate)",
+   "ticker_yahoo": "VOW3.DE",
+   "isin": "DE0007664039",
+   "mercato": "EU",
+   "paese": "Germania",
+   "indice": "DAX",
+   "settore": "Auto",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "BASF",
+   "ticker_yahoo": "BAS.DE",
+   "isin": "DE000BASF111",
+   "mercato": "EU",
+   "paese": "Germania",
+   "indice": "DAX",
+   "settore": "Materiali",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "Bayer",
+   "ticker_yahoo": "BAYN.DE",
+   "isin": "DE000BAY0017",
+   "mercato": "EU",
+   "paese": "Germania",
+   "indice": "DAX",
+   "settore": "Salute",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "Munich Re",
+   "ticker_yahoo": "MUV2.DE",
+   "isin": "DE0008430026",
+   "mercato": "EU",
+   "paese": "Germania",
+   "indice": "DAX",
+   "settore": "Finanza",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "Deutsche Bank",
+   "ticker_yahoo": "DBK.DE",
+   "isin": "DE0005140008",
+   "mercato": "EU",
+   "paese": "Germania",
+   "indice": "DAX",
+   "settore": "Finanza",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "Infineon Technologies",
+   "ticker_yahoo": "IFX.DE",
+   "isin": "DE0006231004",
+   "mercato": "EU",
+   "paese": "Germania",
+   "indice": "DAX",
+   "settore": "Tecnologia",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "Rheinmetall",
+   "ticker_yahoo": "RHM.DE",
+   "isin": "DE0007030033",
+   "mercato": "EU",
+   "paese": "Germania",
+   "indice": "DAX",
+   "settore": "Difesa",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "adidas",
+   "ticker_yahoo": "ADS.DE",
+   "isin": "DE000A1EWWW0",
+   "mercato": "EU",
+   "paese": "Germania",
+   "indice": "DAX",
+   "settore": "Beni di consumo",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "LVMH",
+   "ticker_yahoo": "MC.PA",
+   "isin": "FR0000121014",
+   "mercato": "EU",
+   "paese": "Francia",
+   "indice": "CAC 40",
+   "settore": "Lusso",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "TotalEnergies",
+   "ticker_yahoo": "TTE.PA",
+   "isin": "FR0000120271",
+   "mercato": "EU",
+   "paese": "Francia",
+   "indice": "CAC 40",
+   "settore": "Energia",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "Sanofi",
+   "ticker_yahoo": "SAN.PA",
+   "isin": "FR0000120578",
+   "mercato": "EU",
+   "paese": "Francia",
+   "indice": "CAC 40",
+   "settore": "Salute",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "L'Oréal",
+   "ticker_yahoo": "OR.PA",
+   "isin": "FR0000120321",
+   "mercato": "EU",
+   "paese": "Francia",
+   "indice": "CAC 40",
+   "settore": "Beni di consumo",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "Schneider Electric",
+   "ticker_yahoo": "SU.PA",
+   "isin": "FR0000121972",
+   "mercato": "EU",
+   "paese": "Francia",
+   "indice": "CAC 40",
+   "settore": "Industria",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "Hermès",
+   "ticker_yahoo": "RMS.PA",
+   "isin": "FR0000052292",
+   "mercato": "EU",
+   "paese": "Francia",
+   "indice": "CAC 40",
+   "settore": "Lusso",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "BNP Paribas",
+   "ticker_yahoo": "BNP.PA",
+   "isin": "FR0000131104",
+   "mercato": "EU",
+   "paese": "Francia",
+   "indice": "CAC 40",
+   "settore": "Finanza",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "Air Liquide",
+   "ticker_yahoo": "AI.PA",
+   "isin": "FR0000120073",
+   "mercato": "EU",
+   "paese": "Francia",
+   "indice": "CAC 40",
+   "settore": "Materiali",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "Safran",
+   "ticker_yahoo": "SAF.PA",
+   "isin": "FR0000073272",
+   "mercato": "EU",
+   "paese": "Francia",
+   "indice": "CAC 40",
+   "settore": "Industria",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "EssilorLuxottica",
+   "ticker_yahoo": "EL.PA",
+   "isin": "FR0000121667",
+   "mercato": "EU",
+   "paese": "Francia",
+   "indice": "CAC 40",
+   "settore": "Salute",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "AXA",
+   "ticker_yahoo": "CS.PA",
+   "isin": "FR0000120628",
+   "mercato": "EU",
+   "paese": "Francia",
+   "indice": "CAC 40",
+   "settore": "Finanza",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "Airbus",
+   "ticker_yahoo": "AIR.PA",
+   "isin": "NL0000235190",
+   "mercato": "EU",
+   "paese": "Francia",
+   "indice": "CAC 40",
+   "settore": "Industria",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "ASML",
+   "ticker_yahoo": "ASML.AS",
+   "isin": "NL0010273215",
+   "mercato": "EU",
+   "paese": "Paesi Bassi",
+   "indice": "AEX",
+   "settore": "Tecnologia",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "ING Groep",
+   "ticker_yahoo": "INGA.AS",
+   "isin": "NL0011821202",
+   "mercato": "EU",
+   "paese": "Paesi Bassi",
+   "indice": "AEX",
+   "settore": "Finanza",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "Prosus",
+   "ticker_yahoo": "PRX.AS",
+   "isin": "NL0013654783",
+   "mercato": "EU",
+   "paese": "Paesi Bassi",
+   "indice": "AEX",
+   "settore": "Tecnologia",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "Adyen",
+   "ticker_yahoo": "ADYEN.AS",
+   "isin": "NL0012969182",
+   "mercato": "EU",
+   "paese": "Paesi Bassi",
+   "indice": "AEX",
+   "settore": "Tecnologia",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "Heineken",
+   "ticker_yahoo": "HEIA.AS",
+   "isin": "NL0000009165",
+   "mercato": "EU",
+   "paese": "Paesi Bassi",
+   "indice": "AEX",
+   "settore": "Beni di consumo",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "Shell",
+   "ticker_yahoo": "SHELL.AS",
+   "isin": "GB00BP6MXD84",
+   "mercato": "EU",
+   "paese": "Regno Unito",
+   "indice": "AEX",
+   "settore": "Energia",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "Unilever",
+   "ticker_yahoo": "UNA.AS",
+   "isin": "GB00B10RZP78",
+   "mercato": "EU",
+   "paese": "Regno Unito",
+   "indice": "AEX",
+   "settore": "Beni di consumo",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "Banco Santander",
+   "ticker_yahoo": "SAN.MC",
+   "isin": "ES0113900J37",
+   "mercato": "EU",
+   "paese": "Spagna",
+   "indice": "IBEX 35",
+   "settore": "Finanza",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "Iberdrola",
+   "ticker_yahoo": "IBE.MC",
+   "isin": "ES0144580Y14",
+   "mercato": "EU",
+   "paese": "Spagna",
+   "indice": "IBEX 35",
+   "settore": "Utility",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "Inditex",
+   "ticker_yahoo": "ITX.MC",
+   "isin": "ES0148396007",
+   "mercato": "EU",
+   "paese": "Spagna",
+   "indice": "IBEX 35",
+   "settore": "Beni di consumo",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "BBVA",
+   "ticker_yahoo": "BBVA.MC",
+   "isin": "ES0113211835",
+   "mercato": "EU",
+   "paese": "Spagna",
+   "indice": "IBEX 35",
+   "settore": "Finanza",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "Nestlé",
+   "ticker_yahoo": "NESN.SW",
+   "isin": "CH0038863350",
+   "mercato": "EU",
+   "paese": "Svizzera",
+   "indice": "SMI",
+   "settore": "Beni di consumo",
+   "valuta": "CHF"
+  },
+  {
+   "nome": "Novartis",
+   "ticker_yahoo": "NOVN.SW",
+   "isin": "CH0012005267",
+   "mercato": "EU",
+   "paese": "Svizzera",
+   "indice": "SMI",
+   "settore": "Salute",
+   "valuta": "CHF"
+  },
+  {
+   "nome": "Roche",
+   "ticker_yahoo": "ROG.SW",
+   "isin": "CH0012032048",
+   "mercato": "EU",
+   "paese": "Svizzera",
+   "indice": "SMI",
+   "settore": "Salute",
+   "valuta": "CHF"
+  },
+  {
+   "nome": "UBS Group",
+   "ticker_yahoo": "UBSG.SW",
+   "isin": "CH0244767585",
+   "mercato": "EU",
+   "paese": "Svizzera",
+   "indice": "SMI",
+   "settore": "Finanza",
+   "valuta": "CHF"
+  },
+  {
+   "nome": "Zurich Insurance",
+   "ticker_yahoo": "ZURN.SW",
+   "isin": "CH0011075394",
+   "mercato": "EU",
+   "paese": "Svizzera",
+   "indice": "SMI",
+   "settore": "Finanza",
+   "valuta": "CHF"
+  },
+  {
+   "nome": "ABB",
+   "ticker_yahoo": "ABBN.SW",
+   "isin": "CH0012221716",
+   "mercato": "EU",
+   "paese": "Svizzera",
+   "indice": "SMI",
+   "settore": "Industria",
+   "valuta": "CHF"
+  },
+  {
+   "nome": "Novo Nordisk",
+   "ticker_yahoo": "NOVO-B.CO",
+   "isin": "DK0062498333",
+   "mercato": "EU",
+   "paese": "Danimarca",
+   "indice": "OMX Copenhagen 25",
+   "settore": "Salute",
+   "valuta": "DKK"
+  },
+  {
+   "nome": "Volvo",
+   "ticker_yahoo": "VOLV-B.ST",
+   "isin": "SE0000115446",
+   "mercato": "EU",
+   "paese": "Svezia",
+   "indice": "OMX Stockholm 30",
+   "settore": "Industria",
+   "valuta": "SEK"
+  },
+  {
+   "nome": "Ericsson",
+   "ticker_yahoo": "ERIC-B.ST",
+   "isin": "SE0000108656",
+   "mercato": "EU",
+   "paese": "Svezia",
+   "indice": "OMX Stockholm 30",
+   "settore": "Tecnologia",
+   "valuta": "SEK"
+  },
+  {
+   "nome": "Nokia",
+   "ticker_yahoo": "NOKIA.HE",
+   "isin": "FI0009000681",
+   "mercato": "EU",
+   "paese": "Finlandia",
+   "indice": "OMX Helsinki 25",
+   "settore": "Tecnologia",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "AB InBev",
+   "ticker_yahoo": "ABI.BR",
+   "isin": "BE0974293251",
+   "mercato": "EU",
+   "paese": "Belgio",
+   "indice": "BEL 20",
+   "settore": "Beni di consumo",
+   "valuta": "EUR"
+  },
+  {
+   "nome": "Apple",
+   "ticker_yahoo": "AAPL",
+   "isin": "US0378331005",
+   "mercato": "US",
+   "paese": "Stati Uniti",
+   "indice": "S&P 500",
+   "settore": "Tecnologia",
+   "valuta": "USD"
+  },
+  {
+   "nome": "Microsoft",
+   "ticker_yahoo": "MSFT",
+   "isin": "US5949181045",
+   "mercato": "US",
+   "paese": "Stati Uniti",
+   "indice": "S&P 500",
+   "settore": "Tecnologia",
+   "valuta": "USD"
+  },
+  {
+   "nome": "Nvidia",
+   "ticker_yahoo": "NVDA",
+   "isin": "US67066G1040",
+   "mercato": "US",
+   "paese": "Stati Uniti",
+   "indice": "S&P 500",
+   "settore": "Tecnologia",
+   "valuta": "USD"
+  },
+  {
+   "nome": "Amazon",
+   "ticker_yahoo": "AMZN",
+   "isin": "US0231351067",
+   "mercato": "US",
+   "paese": "Stati Uniti",
+   "indice": "S&P 500",
+   "settore": "Beni di consumo",
+   "valuta": "USD"
+  },
+  {
+   "nome": "Alphabet (classe A)",
+   "ticker_yahoo": "GOOGL",
+   "isin": "US02079K3059",
+   "mercato": "US",
+   "paese": "Stati Uniti",
+   "indice": "S&P 500",
+   "settore": "Tecnologia",
+   "valuta": "USD"
+  },
+  {
+   "nome": "Meta Platforms",
+   "ticker_yahoo": "META",
+   "isin": "US30303M1027",
+   "mercato": "US",
+   "paese": "Stati Uniti",
+   "indice": "S&P 500",
+   "settore": "Tecnologia",
+   "valuta": "USD"
+  },
+  {
+   "nome": "Tesla",
+   "ticker_yahoo": "TSLA",
+   "isin": "US88160R1014",
+   "mercato": "US",
+   "paese": "Stati Uniti",
+   "indice": "S&P 500",
+   "settore": "Auto",
+   "valuta": "USD"
+  },
+  {
+   "nome": "Berkshire Hathaway (classe B)",
+   "ticker_yahoo": "BRK-B",
+   "isin": "US0846707026",
+   "mercato": "US",
+   "paese": "Stati Uniti",
+   "indice": "S&P 500",
+   "settore": "Finanza",
+   "valuta": "USD"
+  },
+  {
+   "nome": "Broadcom",
+   "ticker_yahoo": "AVGO",
+   "isin": "US11135F1012",
+   "mercato": "US",
+   "paese": "Stati Uniti",
+   "indice": "S&P 500",
+   "settore": "Tecnologia",
+   "valuta": "USD"
+  },
+  {
+   "nome": "JPMorgan Chase",
+   "ticker_yahoo": "JPM",
+   "isin": "US46625H1005",
+   "mercato": "US",
+   "paese": "Stati Uniti",
+   "indice": "S&P 500",
+   "settore": "Finanza",
+   "valuta": "USD"
+  },
+  {
+   "nome": "Eli Lilly",
+   "ticker_yahoo": "LLY",
+   "isin": "US5324571083",
+   "mercato": "US",
+   "paese": "Stati Uniti",
+   "indice": "S&P 500",
+   "settore": "Salute",
+   "valuta": "USD"
+  },
+  {
+   "nome": "Visa",
+   "ticker_yahoo": "V",
+   "isin": "US92826C8394",
+   "mercato": "US",
+   "paese": "Stati Uniti",
+   "indice": "S&P 500",
+   "settore": "Finanza",
+   "valuta": "USD"
+  },
+  {
+   "nome": "Mastercard",
+   "ticker_yahoo": "MA",
+   "isin": "US57636Q1040",
+   "mercato": "US",
+   "paese": "Stati Uniti",
+   "indice": "S&P 500",
+   "settore": "Finanza",
+   "valuta": "USD"
+  },
+  {
+   "nome": "UnitedHealth",
+   "ticker_yahoo": "UNH",
+   "isin": "US91324P1021",
+   "mercato": "US",
+   "paese": "Stati Uniti",
+   "indice": "S&P 500",
+   "settore": "Salute",
+   "valuta": "USD"
+  },
+  {
+   "nome": "Exxon Mobil",
+   "ticker_yahoo": "XOM",
+   "isin": "US30231G1022",
+   "mercato": "US",
+   "paese": "Stati Uniti",
+   "indice": "S&P 500",
+   "settore": "Energia",
+   "valuta": "USD"
+  },
+  {
+   "nome": "Johnson & Johnson",
+   "ticker_yahoo": "JNJ",
+   "isin": "US4781601046",
+   "mercato": "US",
+   "paese": "Stati Uniti",
+   "indice": "S&P 500",
+   "settore": "Salute",
+   "valuta": "USD"
+  },
+  {
+   "nome": "Procter & Gamble",
+   "ticker_yahoo": "PG",
+   "isin": "US7427181091",
+   "mercato": "US",
+   "paese": "Stati Uniti",
+   "indice": "S&P 500",
+   "settore": "Beni di consumo",
+   "valuta": "USD"
+  },
+  {
+   "nome": "Home Depot",
+   "ticker_yahoo": "HD",
+   "isin": "US4370761029",
+   "mercato": "US",
+   "paese": "Stati Uniti",
+   "indice": "S&P 500",
+   "settore": "Beni di consumo",
+   "valuta": "USD"
+  },
+  {
+   "nome": "Costco",
+   "ticker_yahoo": "COST",
+   "isin": "US22160K1051",
+   "mercato": "US",
+   "paese": "Stati Uniti",
+   "indice": "S&P 500",
+   "settore": "Beni di consumo",
+   "valuta": "USD"
+  },
+  {
+   "nome": "AbbVie",
+   "ticker_yahoo": "ABBV",
+   "isin": "US00287Y1091",
+   "mercato": "US",
+   "paese": "Stati Uniti",
+   "indice": "S&P 500",
+   "settore": "Salute",
+   "valuta": "USD"
+  },
+  {
+   "nome": "Walmart",
+   "ticker_yahoo": "WMT",
+   "isin": "US9311421039",
+   "mercato": "US",
+   "paese": "Stati Uniti",
+   "indice": "S&P 500",
+   "settore": "Beni di consumo",
+   "valuta": "USD"
+  },
+  {
+   "nome": "Netflix",
+   "ticker_yahoo": "NFLX",
+   "isin": "US64110L1061",
+   "mercato": "US",
+   "paese": "Stati Uniti",
+   "indice": "S&P 500",
+   "settore": "Media",
+   "valuta": "USD"
+  },
+  {
+   "nome": "Bank of America",
+   "ticker_yahoo": "BAC",
+   "isin": "US0605051046",
+   "mercato": "US",
+   "paese": "Stati Uniti",
+   "indice": "S&P 500",
+   "settore": "Finanza",
+   "valuta": "USD"
+  },
+  {
+   "nome": "Coca-Cola",
+   "ticker_yahoo": "KO",
+   "isin": "US1912161007",
+   "mercato": "US",
+   "paese": "Stati Uniti",
+   "indice": "S&P 500",
+   "settore": "Beni di consumo",
+   "valuta": "USD"
+  },
+  {
+   "nome": "PepsiCo",
+   "ticker_yahoo": "PEP",
+   "isin": "US7134481081",
+   "mercato": "US",
+   "paese": "Stati Uniti",
+   "indice": "S&P 500",
+   "settore": "Beni di consumo",
+   "valuta": "USD"
+  },
+  {
+   "nome": "Chevron",
+   "ticker_yahoo": "CVX",
+   "isin": "US1667641005",
+   "mercato": "US",
+   "paese": "Stati Uniti",
+   "indice": "S&P 500",
+   "settore": "Energia",
+   "valuta": "USD"
+  },
+  {
+   "nome": "Merck & Co.",
+   "ticker_yahoo": "MRK",
+   "isin": "US58933Y1055",
+   "mercato": "US",
+   "paese": "Stati Uniti",
+   "indice": "S&P 500",
+   "settore": "Salute",
+   "valuta": "USD"
+  },
+  {
+   "nome": "Oracle",
+   "ticker_yahoo": "ORCL",
+   "isin": "US68389X1054",
+   "mercato": "US",
+   "paese": "Stati Uniti",
+   "indice": "S&P 500",
+   "settore": "Tecnologia",
+   "valuta": "USD"
+  },
+  {
+   "nome": "Salesforce",
+   "ticker_yahoo": "CRM",
+   "isin": "US79466L3024",
+   "mercato": "US",
+   "paese": "Stati Uniti",
+   "indice": "S&P 500",
+   "settore": "Tecnologia",
+   "valuta": "USD"
+  },
+  {
+   "nome": "AMD",
+   "ticker_yahoo": "AMD",
+   "isin": "US0079031078",
+   "mercato": "US",
+   "paese": "Stati Uniti",
+   "indice": "S&P 500",
+   "settore": "Tecnologia",
+   "valuta": "USD"
+  },
+  {
+   "nome": "Adobe",
+   "ticker_yahoo": "ADBE",
+   "isin": "US00724F1012",
+   "mercato": "US",
+   "paese": "Stati Uniti",
+   "indice": "S&P 500",
+   "settore": "Tecnologia",
+   "valuta": "USD"
+  },
+  {
+   "nome": "Cisco",
+   "ticker_yahoo": "CSCO",
+   "isin": "US17275R1023",
+   "mercato": "US",
+   "paese": "Stati Uniti",
+   "indice": "S&P 500",
+   "settore": "Tecnologia",
+   "valuta": "USD"
+  },
+  {
+   "nome": "Intel",
+   "ticker_yahoo": "INTC",
+   "isin": "US4581401001",
+   "mercato": "US",
+   "paese": "Stati Uniti",
+   "indice": "S&P 500",
+   "settore": "Tecnologia",
+   "valuta": "USD"
+  },
+  {
+   "nome": "Qualcomm",
+   "ticker_yahoo": "QCOM",
+   "isin": "US7475251036",
+   "mercato": "US",
+   "paese": "Stati Uniti",
+   "indice": "S&P 500",
+   "settore": "Tecnologia",
+   "valuta": "USD"
+  },
+  {
+   "nome": "IBM",
+   "ticker_yahoo": "IBM",
+   "isin": "US4592001014",
+   "mercato": "US",
+   "paese": "Stati Uniti",
+   "indice": "S&P 500",
+   "settore": "Tecnologia",
+   "valuta": "USD"
+  },
+  {
+   "nome": "Walt Disney",
+   "ticker_yahoo": "DIS",
+   "isin": "US2546871060",
+   "mercato": "US",
+   "paese": "Stati Uniti",
+   "indice": "S&P 500",
+   "settore": "Media",
+   "valuta": "USD"
+  },
+  {
+   "nome": "McDonald's",
+   "ticker_yahoo": "MCD",
+   "isin": "US5801351017",
+   "mercato": "US",
+   "paese": "Stati Uniti",
+   "indice": "S&P 500",
+   "settore": "Beni di consumo",
+   "valuta": "USD"
+  },
+  {
+   "nome": "Nike",
+   "ticker_yahoo": "NKE",
+   "isin": "US6541061031",
+   "mercato": "US",
+   "paese": "Stati Uniti",
+   "indice": "S&P 500",
+   "settore": "Beni di consumo",
+   "valuta": "USD"
+  },
+  {
+   "nome": "Caterpillar",
+   "ticker_yahoo": "CAT",
+   "isin": "US1491231015",
+   "mercato": "US",
+   "paese": "Stati Uniti",
+   "indice": "S&P 500",
+   "settore": "Industria",
+   "valuta": "USD"
+  },
+  {
+   "nome": "GE Aerospace",
+   "ticker_yahoo": "GE",
+   "isin": "US3696043013",
+   "mercato": "US",
+   "paese": "Stati Uniti",
+   "indice": "S&P 500",
+   "settore": "Industria",
+   "valuta": "USD"
+  },
+  {
+   "nome": "Boeing",
+   "ticker_yahoo": "BA",
+   "isin": "US0970231058",
+   "mercato": "US",
+   "paese": "Stati Uniti",
+   "indice": "S&P 500",
+   "settore": "Industria",
+   "valuta": "USD"
+  },
+  {
+   "nome": "Lockheed Martin",
+   "ticker_yahoo": "LMT",
+   "isin": "US5398301094",
+   "mercato": "US",
+   "paese": "Stati Uniti",
+   "indice": "S&P 500",
+   "settore": "Difesa",
+   "valuta": "USD"
+  },
+  {
+   "nome": "RTX",
+   "ticker_yahoo": "RTX",
+   "isin": "US75513E1010",
+   "mercato": "US",
+   "paese": "Stati Uniti",
+   "indice": "S&P 500",
+   "settore": "Difesa",
+   "valuta": "USD"
+  },
+  {
+   "nome": "Goldman Sachs",
+   "ticker_yahoo": "GS",
+   "isin": "US38141G1040",
+   "mercato": "US",
+   "paese": "Stati Uniti",
+   "indice": "S&P 500",
+   "settore": "Finanza",
+   "valuta": "USD"
+  },
+  {
+   "nome": "Pfizer",
+   "ticker_yahoo": "PFE",
+   "isin": "US7170811035",
+   "mercato": "US",
+   "paese": "Stati Uniti",
+   "indice": "S&P 500",
+   "settore": "Salute",
+   "valuta": "USD"
+  },
+  {
+   "nome": "Thermo Fisher Scientific",
+   "ticker_yahoo": "TMO",
+   "isin": "US8835561023",
+   "mercato": "US",
+   "paese": "Stati Uniti",
+   "indice": "S&P 500",
+   "settore": "Salute",
+   "valuta": "USD"
+  },
+  {
+   "nome": "NextEra Energy",
+   "ticker_yahoo": "NEE",
+   "isin": "US65339F1012",
+   "mercato": "US",
+   "paese": "Stati Uniti",
+   "indice": "S&P 500",
+   "settore": "Utility",
+   "valuta": "USD"
+  },
+  {
+   "nome": "Verizon",
+   "ticker_yahoo": "VZ",
+   "isin": "US92343V1044",
+   "mercato": "US",
+   "paese": "Stati Uniti",
+   "indice": "S&P 500",
+   "settore": "Telecomunicazioni",
+   "valuta": "USD"
+  },
+  {
+   "nome": "Palantir",
+   "ticker_yahoo": "PLTR",
+   "isin": "US69608A1088",
+   "mercato": "US",
+   "paese": "Stati Uniti",
+   "indice": "S&P 500",
+   "settore": "Tecnologia",
+   "valuta": "USD"
+  },
+  {
+   "nome": "Uber",
+   "ticker_yahoo": "UBER",
+   "isin": "US90353T1007",
+   "mercato": "US",
+   "paese": "Stati Uniti",
+   "indice": "S&P 500",
+   "settore": "Tecnologia",
+   "valuta": "USD"
+  }
+ ],
+ "indici_riferimento": [
+  {
+   "mercato": "IT",
+   "nome": "FTSE MIB",
+   "ticker_yahoo": "FTSEMIB.MI",
+   "principale": true
+  },
+  {
+   "mercato": "EU",
+   "nome": "Euro Stoxx 50",
+   "ticker_yahoo": "^STOXX50E",
+   "principale": true
+  },
+  {
+   "mercato": "EU",
+   "nome": "Stoxx Europe 600",
+   "ticker_yahoo": "^STOXX",
+   "principale": false
+  },
+  {
+   "mercato": "US",
+   "nome": "S&P 500",
+   "ticker_yahoo": "^GSPC",
+   "principale": true
+  },
+  {
+   "mercato": "US",
+   "nome": "Nasdaq 100",
+   "ticker_yahoo": "^NDX",
+   "principale": false
+  },
+  {
+   "mercato": "GLOBALE",
+   "nome": "VIX",
+   "ticker_yahoo": "^VIX",
+   "principale": false
+  },
+  {
+   "mercato": "GLOBALE",
+   "nome": "Euro/Dollaro",
+   "ticker_yahoo": "EURUSD=X",
+   "principale": false
+  }
+ ],
+ "da_verificare": [
+  {
+   "strumento": "MB.MI",
+   "nota": "Fusione per incorporazione in MPS annunciata: il titolo può uscire dalla Borsa. Da togliere quando smette di quotare."
+  },
+  {
+   "strumento": "SPM.MI",
+   "nota": "Fusione Saipem–Subsea7 (Saipem7) attesa nel 2026: ticker e ISIN potrebbero cambiare."
+  },
+  {
+   "strumento": "FCT.MI",
+   "nota": "ISIN non inserito (possibile cambio dopo l'operazione sul capitale); appartenenza al FTSE MIB da verificare."
+  },
+  {
+   "strumento": "AVIO.MI",
+   "nota": "ISIN non inserito; nel FTSE MIB da marzo 2026 al posto di Banca Popolare di Sondrio."
+  },
+  {
+   "strumento": "LTMC.MI",
+   "nota": "ISIN non inserito; nel FTSE MIB da settembre 2025."
+  },
+  {
+   "strumento": "AMP.MI, IP.MI, IG.MI, INW.MI, NEXI.MI",
+   "nota": "Appartenenza attuale al FTSE MIB non verificata: restano nell'universo come titoli italiani liquidi."
+  },
+  {
+   "strumento": "IVG.MI, REC.MI",
+   "nota": "Esclusi: in uscita dalla Borsa dopo le OPA (FTSE Russell, 11/11/2026)."
+  },
+  {
+   "strumento": "BPSO.MI",
+   "nota": "Escluso: acquisita da BPER, fuori dal FTSE MIB da marzo 2026."
+  }
+ ]
+}
