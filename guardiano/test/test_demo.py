@@ -52,3 +52,17 @@ def test_esecuzione_demo_completa(tmp_path):
     reg = _leggi(tmp_path, "registro_segnali.json")
     ids = [s["id"] for s in reg["segnali"]]
     assert len(ids) == len(set(ids))
+
+
+def test_titoli_in_ritardo():
+    import pandas as pd
+    giorni = pd.bdate_range("2026-11-10", periods=5)
+    serie = {"FTSEMIB.MI": pd.DataFrame({"chiusura": 1.0}, index=giorni),
+             "ENI.MI": pd.DataFrame({"chiusura": 1.0}, index=giorni[:-1]),
+             "ISP.MI": pd.DataFrame({"chiusura": 1.0}, index=giorni),
+             "VWCE.DE": pd.DataFrame({"chiusura": 1.0}, index=giorni[:-1])}
+    strumenti = [{"id": "ENI.MI", "tipo": "azione", "meta": {"mercato": "IT"}},
+                 {"id": "ISP.MI", "tipo": "azione", "meta": {"mercato": "IT"}},
+                 {"id": "VWCE.DE", "tipo": "etf", "meta": {}}]
+    # l'ETF si confronta con l'Euro Stoxx 50, qui assente: nessun confronto possibile
+    assert [s["id"] for s in esegui.in_ritardo(serie, strumenti)] == ["ENI.MI"]

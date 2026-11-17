@@ -31,15 +31,17 @@ mkdir -p notte && cp dati_ramo/guardiano/dati/*.json notte/
 
 Da qui in poi i dati sono in `/home/claude/notte/` e i risultati dei ruoli vanno in `/home/claude/notte/<ruolo>.json`.
 
-## 2. Controlla che i dati siano buoni
+## 2. Controlla che i dati siano buoni e freschi
 
 Leggi `notte/stato.json` (ed `errore_ultimo_giro.json`, se ha `generato_il`):
 
 - `modalita` deve essere `reale`;
-- `generato_il` deve essere di meno di 30 ore fa (ora di Roma);
-- se `errore_ultimo_giro.json` ha un `generato_il` più recente di `stato.json`, l'ultimo giro del motore è fallito: i dati sono quelli del giro prima.
+- **la seduta giusta**: `ultima_seduta.US` deve essere l'ultimo giorno feriale prima di oggi, ora di Roma (il lunedì vale il venerdì; se quel giorno Wall Street era chiusa per festa, va bene il giorno feriale precedente);
+- se non lo è, il motore non ha ancora finito il giro della notte: GitHub a volte avvia i flussi programmati con ore di ritardo, e il motore gira tre volte a notte proprio per questo. **Aspetta**: ogni 5 minuti controlla con `git ls-remote https://github.com/santocarluccio/Radar refs/heads/dati` se il ramo è cambiato, per al massimo 40 minuti; quando cambia, ricopia i dati (punto 1, solo il ramo `dati`) e ricontrolla;
+- se `errore_ultimo_giro.json` ha un `generato_il` più recente di `stato.json`, l'ultimo giro del motore è fallito e i dati sono quelli del giro prima;
+- leggi `stato.json → avvisi`: i titoli **in ritardo** (senza l'ultima seduta del loro indice) non possono essere proposti come acquisti; se sono molti, dillo nella sintesi del clima.
 
-Se una di queste condizioni non va: **non proporre niente**. Scrivi un rapporto minimo (proposte vuote, `clima.sintesi` che spiega in due frasi cosa non va e da quando, posizioni giudicate solo con i dati che hai, oppure elenco vuoto), validalo, pubblicalo come al punto 9 e chiudi con il riepilogo.
+Se dopo l'attesa i dati non sono della seduta giusta, o sono dimostrativi, o hanno più di 30 ore: **nessuna nuova proposta**. Scrivi comunque il rapporto con clima e posizioni sui dati che hai, e in `clima.sintesi` e nelle `avvertenze` indica la data dei prezzi usati. Validalo, pubblicalo come al punto 9 e chiudi con il riepilogo.
 
 ## 3. Leggi portafoglio e impostazioni
 

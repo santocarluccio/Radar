@@ -921,7 +921,7 @@ tbody tr.categoria td { background: var(--superficie-2); font-family: var(--font
       <div class="foglio-corpo">
         <p style="margin:0"><span class="num" style="font-size:1.9rem;font-weight:600">${prezzo(o.prezzo, o.valuta)}</span>
           <span class="num ${classeSegno(v.g1)}">${pct(v.g1)} nel giorno</span>, <span class="num ${classeSegno(v.m1)}">${pct(v.m1)} in un mese</span>, <span class="num ${classeSegno(v.a1)}">${pct(v.a1)} in un anno</span></p>
-        <p class="piccolo muto">Chiusura del ${esc(data(o.data))}${o.qualita !== "ok" ? ` (qualità dei dati: ${esc(o.qualita)})` : ""}</p>
+        <p class="piccolo muto">Chiusura del ${esc(data(o.data))}${o.qualita !== "ok" ? ` (${esc({ storico_corto: "storico breve", dati_vecchi: "dati fermi da giorni", in_ritardo: "manca l'ultima seduta" }[o.qualita] || o.qualita)})` : ""}</p>
         <p>${chipStato(o.stato)} ${barraPunteggio(o.punteggio)} ${o.frenato_dal_clima ? '<span class="piccolo secondario">segnale frenato dal clima sfavorevole</span>' : ""}</p>
         ${isin}
         <section class="sezione"><h3>Ultimo anno</h3>

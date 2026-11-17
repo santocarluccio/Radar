@@ -116,7 +116,7 @@ I costi per lato comprendono 1 € di commissione su un ordine di riferimento di
 - **Primaria**: `yfinance`, `yf.download(lista, period="5y", interval="1d", auto_adjust=True, group_by="ticker", threads=True, progress=False)` a lotti di 40 con pausa di 2 s; i ticker mancanti si riprovano a lotti di 10 (o uno a uno se sono pochi) fino a 3 giri con attese di 20, 60 e 120 s, entro un tetto di 10 minuti per lo scarico. Per gli ETF `period="max"`.
 - **Crypto**: simbolo Yahoo da config (`BTC-EUR`). Ripiego se Yahoo fallisce o dà meno di 250 barre: Kraken pubblico `https://api.kraken.com/0/public/OHLC?pair=<kraken_pair_eur>&interval=1440` (fino a 720 candele giornaliere: tempo, apertura, massimo, minimo, chiusura, vwap, volume, conteggio).
 - **Pulizia**: indice di date senza fuso, ordine crescente, colonne `apertura, massimo, minimo, chiusura, volume` in float; via le righe senza chiusura. **Barra parziale**: per le crypto si scarta l'ultima barra se ha la data UTC di oggi; per azioni, ETF e indici si scarta l'ultima barra se ha la data di oggi e l'ora UTC dell'esecuzione è tra le 07:00 e le 21:10 di un giorno feriale.
-- **Qualità** per strumento: `storico_corto` sotto 260 barre; `dati_vecchi` se l'ultima barra ha più di 5 giorni di calendario (azioni, ETF) o più di 2 (crypto); altrimenti `ok`. Sotto 60 barre lo strumento è escluso e finisce in `stato.json → problemi`.
+- **Qualità** per strumento: `storico_corto` sotto 260 barre; `dati_vecchi` se l'ultima barra ha più di 5 giorni di calendario (azioni, ETF) o più di 2 (crypto); `in_ritardo` se un'azione o un ETF non ha ancora l'ultima seduta del suo indice (FTSE MIB, Euro Stoxx 50, S&P 500; per gli ETF l'Euro Stoxx 50) anche dopo un secondo tentativo su un mese; altrimenti `ok`. Sotto 60 barre lo strumento è escluso e finisce in `stato.json → problemi`.
 - Il motore non deve mai fallire per pochi ticker mancanti: produce comunque tutti i file e documenta i problemi. Esce con errore solo se manca più della metà degli strumenti o per errore fatale, e anche allora scrive `stato.json`.
 
 ## 5. Indicatori (barra corrente `t`; C chiusura, H massimo, L minimo, O apertura, V volume)
@@ -171,7 +171,7 @@ Stato, in ordine di precedenza:
 4. `DEBOLE`: punteggio < 35.
 5. `NEUTRO`.
 
-Uno strumento con qualità `dati_vecchi` non può essere `COMPRA` (diventa `OSSERVA`) e non entra nell'ampiezza del clima.
+Uno strumento con qualità `dati_vecchi` o `in_ritardo` non può essere `COMPRA` (diventa `OSSERVA`) e non entra nell'ampiezza del clima.
 
 Gli ETF ricevono indicatori, tendenza e metriche PAC ma non stato di trading.
 
@@ -284,7 +284,7 @@ Per le crypto: `tipo` `crypto`, `mercato` `CRYPTO`, `categoria` al posto di `set
 
 ## 14. Flusso GitHub Actions `guardiano-dati.yml`
 
-- Avvio: `schedule` alle 23:20 UTC ogni giorno (dopo la chiusura USA; GitHub lo esegue solo dal ramo predefinito `main`), `workflow_dispatch`, e `push` su qualunque ramo tranne `dati` sui percorsi `guardiano/motore/**`, `guardiano/config/**`, `guardiano/test/**`, `guardiano/requirements.txt`, `.github/workflows/guardiano-dati.yml`.
+- Avvio: `schedule` tre volte a notte, alle 22:17, 00:47 e 04:17 UTC (dopo la chiusura USA; GitHub esegue i flussi programmati solo dal ramo `main` e a volte con ore di ritardo: i giri successivi rinfrescano i dati), `workflow_dispatch`, e `push` su qualunque ramo tranne `dati` sui percorsi `guardiano/motore/**`, `guardiano/config/**`, `guardiano/test/**`, `guardiano/requirements.txt`, `.github/workflows/guardiano-dati.yml`.
 - `permissions: contents: write`; `concurrency` con gruppo unico senza annullamento; `timeout-minutes: 30`; Python 3.12 con cache pip.
 - Passi: installa le dipendenze; recupera dal ramo `dati`, se esiste, `guardiano/dati/registro_segnali.json`; esegue i test; esegue il motore salvando l'output in `guardiano/dati/ultimo_log.txt`; poi un passo `if: always()` che, se esiste `guardiano/dati/stato.json`, pubblica il contenuto di `guardiano/dati/` sul ramo orfano `dati` come unico commit (push forzato, autore `github-actions[bot]`, messaggio `dati: aggiornamento <data ora>`). Il ramo del codice non riceve mai commit di dati. I push fatti con `GITHUB_TOKEN` non riavviano il flusso.
 - GitHub sospende i flussi programmati dopo 60 giorni senza attività sul repository: si riattivano dalla scheda Actions.

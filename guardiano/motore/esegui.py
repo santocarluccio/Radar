@@ -87,6 +87,26 @@ def elenco_strumenti(az: dict, etf: dict, cr: dict, solo: str | None, limite: in
 
 # ---------------------------------------------------------------- scarico
 
+def riferimento(s: dict) -> str | None:
+    """Indice con cui confrontare la data dell'ultima barra di azioni ed ETF."""
+    if s["tipo"] == "etf":
+        return "^STOXX50E"
+    if s["tipo"] == "azione":
+        return INDICE_PRINCIPALE.get(s["meta"].get("mercato"))
+    return None
+
+
+def in_ritardo(serie: dict, strumenti: list[dict]) -> list[dict]:
+    """Azioni ed ETF la cui ultima barra è più vecchia di quella del loro indice."""
+    out = []
+    for s in strumenti:
+        r = riferimento(s)
+        if r and s["id"] in serie and r in serie and len(serie[s["id"]]) and len(serie[r]):
+            if serie[s["id"]].index[-1] < serie[r].index[-1]:
+                out.append(s)
+    return out
+
+
 def scarica(strumenti: list[dict], modalita_demo: bool, adesso_utc: dt.datetime, par: dict,
             log: Diario, data_demo: dt.date | None) -> tuple[dict, list[dict], dict]:
     """Restituisce (serie per id, problemi di scarico, fonti usate)."""
@@ -115,6 +135,22 @@ def scarica(strumenti: list[dict], modalita_demo: bool, adesso_utc: dt.datetime,
         for s in lista:
             if s["ticker"] in ottenute:
                 serie[s["id"]] = ottenute[s["ticker"]]
+    # azioni ed ETF senza l'ultima seduta del loro indice: secondo tentativo su un periodo breve
+    indietro = in_ritardo(serie, strumenti)
+    if indietro:
+        log(f"  {len(indietro)} titoli senza l'ultima seduta del loro indice: secondo tentativo su un mese")
+        ottenute, _ = fonti.scarica_yahoo([s["ticker"] for s in indietro], "1mo", log, attese=())
+        recuperati = 0
+        for s in indietro:
+            nuovo = ottenute.get(s["ticker"])
+            if nuovo is None or not len(nuovo):
+                continue
+            vecchio = serie[s["id"]]
+            aggiunte = nuovo[nuovo.index > vecchio.index[-1]]
+            if len(aggiunte):
+                serie[s["id"]] = pd.concat([vecchio, aggiunte])
+                recuperati += 1
+        log(f"  recuperati {recuperati} su {len(indietro)}")
     # Kraken: ripiego per le crypto senza dati Yahoo sufficienti e completamento delle ultime barre,
     # perché di notte Yahoo può non avere ancora la barra giornaliera del giorno prima
     prima = True
@@ -240,6 +276,12 @@ def esegui(args, log: Diario, adesso_utc: dt.datetime, generato: str) -> tuple[d
         serie[s["id"]] = df
         qualita[s["id"]] = fonti.qualita(df, tipo_barra, oggi)
 
+    # azioni ed ETF ancora senza l'ultima seduta del loro indice
+    ritardo = [s["id"] for s in in_ritardo(serie, strumenti)]
+    for sid in ritardo:
+        if qualita.get(sid) == "ok":
+            qualita[sid] = "in_ritardo"
+
     # ---- indicatori
     finestre = dict(finestra_massimo=par["regole"]["rottura"]["finestra_massimo"],
                     finestra_supporto=par["regole"]["rottura"]["finestra_uscita"])
@@ -284,7 +326,7 @@ def esegui(args, log: Diario, adesso_utc: dt.datetime, generato: str) -> tuple[d
         else:
             id_idx = INDICE_PRINCIPALE[m]
             nome_idx = next((i["nome"] for i in az["indici_riferimento"] if i["ticker_yahoo"] == id_idx), id_idx)
-        righe = [calcolati[s["id"]].iloc[-1] for s in membri if qualita.get(s["id"]) != "dati_vecchi"]
+        righe = [calcolati[s["id"]].iloc[-1] for s in membri if qualita.get(s["id"]) not in ("dati_vecchi", "in_ritardo")]
         c = cl.calcola_mercato(m, nome_idx, calcolati.get(id_idx), righe, par)
         mercati_clima.append(c)
         clima_per[m] = c
@@ -326,8 +368,8 @@ def esegui(args, log: Diario, adesso_utc: dt.datetime, generato: str) -> tuple[d
             comp = sg.componenti_punteggio(u, p6[s["id"]], p12[s["id"]], alto, segn, s["tipo"], par)
             punteggio = int(sum(comp.values()))
             st, fren = sg.stato(punteggio, segn, avv, stato_clima, par)
-            if st == "COMPRA" and qualita[s["id"]] == "dati_vecchi":
-                st = "OSSERVA"  # un segnale su dati fermi da giorni non è un acquisto
+            if st == "COMPRA" and qualita[s["id"]] in ("dati_vecchi", "in_ritardo"):
+                st = "OSSERVA"  # un segnale su dati incompleti o fermi non è un acquisto
             oggetti[s["id"]] = oggetto_strumento(s, calcolati[s["id"]], segn, avv, comp, punteggio, st, fren,
                                                  p6[s["id"]], par, qualita[s["id"]])
     conteggio_stati = pd.Series([o["stato"] for o in oggetti.values()]).value_counts().to_dict() if oggetti else {}
@@ -466,6 +508,9 @@ def esegui(args, log: Diario, adesso_utc: dt.datetime, generato: str) -> tuple[d
     corti = [k for k, q in qualita.items() if q == "storico_corto" and per_id[k]["tipo"] != "indice"]
     if corti:
         avvisi.append(f"{len(corti)} strumenti con storico corto (meno di 260 barre): {', '.join(sorted(corti)[:12])}")
+    if ritardo:
+        avvisi.append(f"{len(ritardo)} titoli senza l'ultima seduta del loro indice (dati in ritardo): {', '.join(sorted(ritardo)[:12])}"
+                      + (" …" if len(ritardo) > 12 else ""))
     if fonti_usate["kraken"]:
         avvisi.append(f"Prezzi solo da Kraken (circa 2 anni di storico) per: {', '.join(fonti_usate['kraken'])}")
     for i in ("FTSEMIB.MI", "^STOXX50E", "^GSPC"):

@@ -8,9 +8,9 @@ Vincolo: il piano Claude dell'utente ha un limite di utilizzo ogni 5 ore. Pochi 
 ## Come riprendere (per Santo e per Claude)
 
 - **Pagina privata** con dati, segnali e rapporti: https://claude.ai/artifact/JqhrbXM6wGBuW1eRzee2xB (slug `90783c6c-0c6b-4dcd-88d7-04f7413a11dc`; database con `guardiano/portafoglio`, `guardiano/impostazioni`, `guardiano/storico`).
-- **Motore**: GitHub Actions `guardiano-dati.yml`, ogni giorno alle 23:20 UTC; dati sul ramo `dati`.
-- **Agenti**: attività programmata «Guardiano: analisi notturna», ogni notte alle 01:35 (ora di Roma), direttore su Opus, notifica push. Procedura in `guardiano/agenti/PROCEDURA.md`, ruoli in `.claude/agents/`, a mano con il comando `/guardiano`.
-- **Configurazione scelta da Santo (16/11)**: analisi ogni notte con il direttore su Opus, per la massima affidabilità. Alternativa a risparmio, se il limite del piano Pro diventa un problema: agenti due notti a settimana (mercoledì e venerdì alle 01:35, che coprono tutti i segnali grazie alla validità di 3 sedute) e direttore su Sonnet.
+- **Motore**: GitHub Actions `guardiano-dati.yml`, tre giri a notte (22:17, 00:47 e 04:17 UTC); dati sul ramo `dati`.
+- **Agenti**: attività programmata «Guardiano: analisi notturna», ogni giorno alle 06:35 (ora di Roma), direttore su Opus, notifica push. Procedura in `guardiano/agenti/PROCEDURA.md`, ruoli in `.claude/agents/`, a mano con il comando `/guardiano`.
+- **Configurazione scelta da Santo (16/11)**: analisi ogni notte con il direttore su Opus, per la massima affidabilità. Alternativa a risparmio, se il limite del piano Pro diventa un problema: agenti due volte a settimana (mercoledì e venerdì alle 06:35, che coprono tutti i segnali grazie alla validità di 3 sedute) e direttore su Sonnet.
 
 ## Piano
 
@@ -41,3 +41,4 @@ Vincolo: il piano Claude dell'utente ha un limite di utilizzo ogni 5 ore. Pochi 
 - Controllare l'esito della prima analisi notturna (17/11): pubblicazione nella pagina, budget rispettato, qualità del rapporto.
 - Passo 10: ricerca con fonti a piccole dosi (metodo PAC, broker, strumenti GitHub, metodologia dei segnali); verificare i campi `da_verificare` degli universi (TER, simboli, disponibilità crypto su Trade Republic e Revolut X).
 - 16/11 19:50 — Santo mantiene la configurazione ogni notte con Opus; vuole che il Guardiano diventi un progetto Claude da riaprire direttamente. Aggiunta la sezione «Come riprendere».
+- 17/11 07:50 — Prima analisi notturna (01:36–01:55): completata, rapporto valido e pubblicato (nessuna proposta; DiaSorin respinta dal supervisore, Interpump scartata; portafoglio non ancora nel database). Problemi: GitHub ha avviato il motore con quasi 6 ore di ritardo (06:08), quindi gli agenti hanno usato i prezzi di venerdì; nel giro delle 06:08 Yahoo non aveva la seduta di lunedì per le azioni europee e italiane (sì per indici e USA). Correzioni: motore tre volte a notte, secondo tentativo su un mese per i titoli in ritardo e qualità `in_ritardo` (niente COMPRA, fuori dall'ampiezza), analisi spostata alle 06:35, attesa fino a 40 minuti nella procedura se i dati non sono della seduta giusta. 30 test.
