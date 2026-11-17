@@ -142,6 +142,50 @@ def scarica_yahoo(tickers: list[str], periodo: str, log: Callable[[str], None],
     return serie, errori
 
 
+def ricostruisci_da_orari(tickers: list[str], dopo: dict, fino_a: dict, log: Callable[[str], None]) -> dict:
+    """Ricostruisce le barre giornaliere mancanti dai dati orari degli ultimi 5 giorni.
+
+    Serve quando Yahoo ha già la seduta negli indici ma non ancora nella serie giornaliera
+    delle azioni europee. Le date sono quelle di Roma (tutte le Borse europee seguite chiudono
+    entro la giornata). Restituisce, per ticker, solo le barre con data > dopo[t] e <= fino_a[t].
+    I volumi possono essere incompleti (asta di chiusura)."""
+    import yfinance as yf
+
+    out: dict[str, pd.DataFrame] = {}
+    if not tickers:
+        return out
+    try:
+        dati = yf.download(tickers if len(tickers) > 1 else tickers[0], period="5d", interval="60m",
+                           auto_adjust=True, group_by="ticker", threads=True, progress=False, prepost=False)
+    except Exception as e:
+        log(f"  dati orari non disponibili ({type(e).__name__}: {e})"[:200])
+        return out
+    for t in tickers:
+        df = _estrai(dati, t)
+        if df is None or not len(df):
+            continue
+        df = df.rename(columns=MAPPA_YF)
+        for col in COLONNE:
+            if col not in df.columns:
+                df[col] = np.nan
+        idx = pd.DatetimeIndex(df.index)
+        if idx.tz is None:
+            idx = idx.tz_localize("UTC")
+        df = df[COLONNE].apply(pd.to_numeric, errors="coerce").copy()
+        df.index = idx.tz_convert("Europe/Rome")
+        df = df[df["chiusura"].notna()]
+        if not len(df):
+            continue
+        giorni = df.groupby(df.index.date).agg(apertura=("apertura", "first"), massimo=("massimo", "max"),
+                                               minimo=("minimo", "min"), chiusura=("chiusura", "last"),
+                                               volume=("volume", "sum"))
+        giorni.index = pd.DatetimeIndex(pd.to_datetime(giorni.index))
+        giorni = giorni[(giorni.index > dopo[t]) & (giorni.index <= fino_a[t])]
+        if len(giorni):
+            out[t] = pulisci(giorni)
+    return out
+
+
 def scarica_kraken(pair: str, timeout: float = 20.0) -> pd.DataFrame:
     """Candele giornaliere da Kraken (fino a 720). Le date sono quelle UTC dell'apertura."""
     import requests

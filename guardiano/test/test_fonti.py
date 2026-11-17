@@ -55,3 +55,16 @@ def test_pulizia_e_barra_parziale():
     assert len(fonti.scarta_barra_parziale(lunedi, "azione", di_giorno)) == 1
     assert len(fonti.scarta_barra_parziale(lunedi, "azione", di_notte)) == 2
     assert len(fonti.scarta_barra_parziale(lunedi, "crypto", di_notte)) == 1
+
+
+def test_ricostruzione_da_dati_orari(monkeypatch):
+    ore = pd.DatetimeIndex(["2026-11-13 08:00", "2026-11-13 15:00", "2026-11-16 08:00", "2026-11-16 12:00", "2026-11-16 16:00"], tz="UTC")
+    orari = pd.DataFrame({"Open": [10, 11, 12, 12.5, 13], "High": [11, 12, 13, 14, 13.5], "Low": [9, 10, 11.5, 12, 12.8],
+                          "Close": [11, 11.5, 12.5, 13, 13.2], "Volume": [100, 200, 300, 400, 500]}, index=ore)
+    finto = types.SimpleNamespace(download=lambda *a, **k: pd.concat({"ENI.MI": orari}, axis=1, names=["Ticker", "Price"]))
+    monkeypatch.setitem(sys.modules, "yfinance", finto)
+    out = fonti.ricostruisci_da_orari(["ENI.MI"], {"ENI.MI": pd.Timestamp("2026-11-13")}, {"ENI.MI": pd.Timestamp("2026-11-16")}, lambda m: None)
+    b = out["ENI.MI"]
+    assert list(b.index.strftime("%Y-%m-%d")) == ["2026-11-16"]  # il 13 c'era già
+    r = b.iloc[0]
+    assert (r["apertura"], r["massimo"], r["minimo"], r["chiusura"], r["volume"]) == (12, 14, 11.5, 13.2, 1200)

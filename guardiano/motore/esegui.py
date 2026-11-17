@@ -112,7 +112,7 @@ def scarica(strumenti: list[dict], modalita_demo: bool, adesso_utc: dt.datetime,
     """Restituisce (serie per id, problemi di scarico, fonti usate)."""
     serie: dict[str, pd.DataFrame] = {}
     problemi: list[dict] = []
-    fonti_usate = {"kraken": [], "kraken_completamento": []}
+    fonti_usate = {"kraken": [], "kraken_completamento": [], "orari": []}
     if modalita_demo:
         fine = data_demo or adesso_utc.date()
         for s in strumenti:
@@ -151,6 +151,17 @@ def scarica(strumenti: list[dict], modalita_demo: bool, adesso_utc: dt.datetime,
                 serie[s["id"]] = pd.concat([vecchio, aggiunte])
                 recuperati += 1
         log(f"  recuperati {recuperati} su {len(indietro)}")
+        ancora = in_ritardo(serie, strumenti)
+        if ancora:
+            dopo = {s["ticker"]: serie[s["id"]].index[-1] for s in ancora}
+            fino = {s["ticker"]: serie[riferimento(s)].index[-1] for s in ancora}
+            ricostruite = fonti.ricostruisci_da_orari([s["ticker"] for s in ancora], dopo, fino, log)
+            for s in ancora:
+                nuove = ricostruite.get(s["ticker"])
+                if nuove is not None and len(nuove):
+                    serie[s["id"]] = pd.concat([serie[s["id"]], nuove])
+                    fonti_usate["orari"].append(s["id"])
+            log(f"  ricostruite dai dati orari le sedute mancanti di {len(fonti_usate['orari'])} titoli su {len(ancora)}")
     # Kraken: ripiego per le crypto senza dati Yahoo sufficienti e completamento delle ultime barre,
     # perché di notte Yahoo può non avere ancora la barra giornaliera del giorno prima
     prima = True
@@ -508,6 +519,9 @@ def esegui(args, log: Diario, adesso_utc: dt.datetime, generato: str) -> tuple[d
     corti = [k for k, q in qualita.items() if q == "storico_corto" and per_id[k]["tipo"] != "indice"]
     if corti:
         avvisi.append(f"{len(corti)} strumenti con storico corto (meno di 260 barre): {', '.join(sorted(corti)[:12])}")
+    if fonti_usate["orari"]:
+        avvisi.append(f"{len(fonti_usate['orari'])} titoli con l'ultima seduta ricostruita dai dati orari di Yahoo "
+                      "(prezzi affidabili, volumi forse incompleti)")
     if ritardo:
         avvisi.append(f"{len(ritardo)} titoli senza l'ultima seduta del loro indice (dati in ritardo): {', '.join(sorted(ritardo)[:12])}"
                       + (" …" if len(ritardo) > 12 else ""))
