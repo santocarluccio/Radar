@@ -520,8 +520,9 @@ def esegui(args, log: Diario, adesso_utc: dt.datetime, generato: str) -> tuple[d
     if corti:
         avvisi.append(f"{len(corti)} strumenti con storico corto (meno di 260 barre): {', '.join(sorted(corti)[:12])}")
     if fonti_usate["orari"]:
-        avvisi.append(f"{len(fonti_usate['orari'])} titoli con l'ultima seduta ricostruita dai dati orari di Yahoo "
-                      "(prezzi affidabili, volumi forse incompleti)")
+        avvisi.append(f"{len(fonti_usate['orari'])} titoli con l'ultima seduta ricostruita dai dati orari di Yahoo: "
+                      "chiusure approssimate (qualche decimo di punto di scarto dal prezzo ufficiale, per l'asta di "
+                      "chiusura) e volumi forse incompleti; il giro successivo le sostituisce con i dati ufficiali")
     if ritardo:
         avvisi.append(f"{len(ritardo)} titoli senza l'ultima seduta del loro indice (dati in ritardo): {', '.join(sorted(ritardo)[:12])}"
                       + (" …" if len(ritardo) > 12 else ""))
