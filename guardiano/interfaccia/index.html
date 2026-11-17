@@ -253,6 +253,9 @@ summary { cursor: pointer; font-weight: 600; color: var(--accento); }
 details dl { margin: 8px 0 0; }
 details dt { font-weight: 700; font-size: .9rem; }
 details dd { margin: 0 0 8px; color: var(--inchiostro-2); }
+.note-dati { margin-top: 28px; }
+.note-dati ul { margin: 8px 0 0; padding-left: 20px; max-width: 80ch; }
+.note-dati li + li { margin-top: 6px; }
 .marca-esempio { display: inline-block; font-size: .8rem; font-weight: 700; padding: 1px 8px; border-radius: 4px; background: var(--attenzione-fondo); color: var(--attenzione); }
 
 /* --- tessere numeriche --- */
@@ -681,6 +684,10 @@ tbody tr.categoria td { background: var(--superficie-2); font-family: var(--font
     }
     if (rap && rap.pac && (rap.pac.nota || (rap.pac.controlli || []).length)) {
       html += `<section class="sezione"><header><h3>PAC</h3></header><div class="pannello"><p>${esc(rap.pac.nota || "")}</p>${(rap.pac.controlli || []).length ? `<ul>${rap.pac.controlli.map((c) => `<li>${esc(c)}</li>`).join("")}</ul>` : ""}</div></section>`;
+    }
+    const noteDati = (S.dati.stato && S.dati.stato.avvisi) || [];
+    if (noteDati.length) {
+      html += `<details class="note-dati"><summary>Note sui dati di questo aggiornamento (${noteDati.length})</summary><ul class="piccolo secondario">${noteDati.map((a) => `<li>${esc(a)}</li>`).join("")}</ul></details>`;
     }
     el.innerHTML = html;
   }
