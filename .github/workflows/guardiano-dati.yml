@@ -1,10 +1,12 @@
 name: Guardiano - dati di mercato
 
 on:
-  schedule:                 # solo dal ramo main; GitHub può ritardare i giri programmati anche di ore
-    - cron: "17 22 * * *"   # 22:17 UTC, dopo la chiusura di Wall Street
-    - cron: "47 0 * * *"    # 00:47 UTC, secondo giro
-    - cron: "17 4 * * *"    # 04:17 UTC, terzo giro prima dell'analisi degli agenti
+  # IN PAUSA dal 21/11/2026, fino a nuova data, su richiesta di Santo: i giri notturni sono sospesi.
+  # Per riattivarli togli il "#" davanti alle quattro righe del blocco schedule qui sotto.
+  # schedule:                 # solo dal ramo main; GitHub può ritardare i giri programmati anche di ore
+  #   - cron: "17 22 * * *"   # 22:17 UTC, dopo la chiusura di Wall Street
+  #   - cron: "47 0 * * *"    # 00:47 UTC, secondo giro
+  #   - cron: "17 4 * * *"    # 04:17 UTC, terzo giro prima dell'analisi degli agenti
   workflow_dispatch:
   push:
     branches-ignore: [dati]
