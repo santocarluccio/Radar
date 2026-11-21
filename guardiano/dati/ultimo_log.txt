@@ -1,0 +1,22 @@
+13:42:44 Guardiano dei Mercati 1.0.0 — modalità reale, 206 strumenti
+13:42:44 Scarico da Yahoo 168 strumenti (periodo 5y)
+13:43:04   ricevuti 168 su 168; falliti: nessuno
+13:43:04 Scarico da Yahoo 31 strumenti (periodo max)
+13:43:07   ricevuti 31 su 31; falliti: nessuno
+13:43:20   SUI-EUR: dati da Kraken (721 barre)
+13:43:24   TON-EUR: dati da Kraken (721 barre)
+13:43:28   HYPE-EUR: dati da Kraken (298 barre)
+13:43:29   NEAR-EUR: dati da Kraken (721 barre)
+13:43:33   PEPE-EUR: dati da Kraken (721 barre)
+13:43:37   ARB-EUR: dati da Kraken (721 barre)
+13:43:40   TAO-EUR: dati da Kraken (721 barre)
+13:43:43 Clima IT: incerto (sopra la media a 200 giorni: 50%)
+13:43:43 Clima EU: incerto (sopra la media a 200 giorni: 48%)
+13:43:43 Clima US: incerto (sopra la media a 200 giorni: 44%)
+13:43:43 Clima CRYPTO: sfavorevole (sopra la media a 200 giorni: 7%)
+13:43:43 Stati: {'ESCI': 71, 'COMPRA': 42, 'DEBOLE': 24, 'OSSERVA': 21, 'NEUTRO': 10}
+13:43:44 Backtest rottura: 1004 operazioni, media netta 4.10%, positiva
+13:43:44 Backtest ritracciamento: 4437 operazioni, media netta -0.07%, negativa
+13:43:44 Backtest ripartenza: 234 operazioni, media netta 1.45%, debole
+13:43:44 Registro: {'in_attesa': 2, 'aperti': 55, 'chiusi': 13, 'annullati': 0, 'vincenti_pct': 15.384615384615385, 'rendimento_medio_netto_pct': -4.84}
+13:43:44 Fatto: 199 strumenti su 199, 0 problemi, 60.5 s
